@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getProductsData } from "./redux/actions/products";
 import db from "./firebase/firestore";

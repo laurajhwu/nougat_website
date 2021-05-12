@@ -1,9 +1,12 @@
-import React, { useEffect } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const Products = styled.div``;
-const Product = styled.div``;
+const Product = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+`;
 const Img = styled.img`
   width: 300px;
 `;
@@ -17,11 +20,16 @@ function AllProducts() {
     return (
       <Products>
         {allProducts.map((product) => (
-          <Product id={product.id}>
-            <Img src={product.image} />
-            <Name>{product.name}</Name>
-            <Price>{product.price}</Price>
-          </Product>
+          <Link
+            to={`/product?id=${product.id}`}
+            style={{ textDecoration: "none", color: "black" }}
+          >
+            <Product id={product.id}>
+              <Img src={product.image} />
+              <Name>{product.name}</Name>
+              <Price>{product.price}</Price>
+            </Product>
+          </Link>
         ))}
       </Products>
     );
