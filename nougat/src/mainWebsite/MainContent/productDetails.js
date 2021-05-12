@@ -66,25 +66,28 @@ function AllProducts() {
   const id = useQuery().get("id");
   const product = allProducts.find((product) => product.id === id);
   const qty = 1;
-
-  return (
-    <Product>
-      <Img src={product.image} />
-      <Info>
-        <Name>{product.name}</Name>
-        <Price>{product.price}</Price>
-        <Description>{product.description}</Description>
-        <Quantity>
-          <Label>數量 |</Label>
-          <QuantityBar>
-            <Button>-</Button>
-            <QuantityNum>{qty}</QuantityNum>
-            <Button>+</Button>
-          </QuantityBar>
-        </Quantity>
-      </Info>
-    </Product>
-  );
+  if (allProducts.length !== 0) {
+    return (
+      <Product>
+        <Img src={product.image} />
+        <Info>
+          <Name>{product.name}</Name>
+          <Price>{product.price}</Price>
+          <Description>{product.description}</Description>
+          <Quantity>
+            <Label>數量 |</Label>
+            <QuantityBar>
+              <Button>-</Button>
+              <QuantityNum>{qty}</QuantityNum>
+              <Button>+</Button>
+            </QuantityBar>
+          </Quantity>
+        </Info>
+      </Product>
+    );
+  } else {
+    return <Product>Loading...</Product>;
+  }
 }
 
 export default AllProducts;
