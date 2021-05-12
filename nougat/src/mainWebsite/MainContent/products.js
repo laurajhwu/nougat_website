@@ -14,7 +14,6 @@ function AllProducts() {
   const allProducts = useSelector((state) => state.products);
 
   if (allProducts.length !== 0) {
-    console.log(allProducts);
     return (
       <Products>
         {allProducts.map((product) => (

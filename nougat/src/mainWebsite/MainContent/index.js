@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 import Products from "./products";
 
@@ -10,7 +11,9 @@ const Main = styled.main`
 function MainContent() {
   return (
     <Main>
-      <Products />
+      <Switch>
+        <Route exact path="/products" component={Products} />
+      </Switch>
     </Main>
   );
 }
