@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getProductsData } from "./redux/actions/products";
-import db from "./firebase/firestore";
+import db from "./utils/firebase/firestore";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import MainContent from "./mainWebsite/MainContent";
 import Header from "./mainWebsite/Header";
@@ -21,7 +21,6 @@ function App() {
     productsDB.get().then((querySnapshot) => {
       querySnapshot.forEach((product) => {
         products = [...products, product.data()];
-        console.log(product.data());
       });
       dispatch(getProductsData(products));
     });
