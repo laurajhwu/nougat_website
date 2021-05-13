@@ -66,7 +66,7 @@ function AllProducts() {
   const id = useQuery().get("id");
   const product = allProducts.find((product) => product.id === id);
   const qty = 1;
-  if (allProducts.length !== 0) {
+  if (product) {
     return (
       <Product>
         <Img src={product.image} />

@@ -16,10 +16,10 @@ function Header() {
         <Link to="/products">所有產品</Link>
         <Link to="/contact">聯絡我們</Link>
         <Link to="/event">特別活動</Link>
-        <Link to="/">
+        <Link to="/member">
           <i class="far fa-user"></i>
         </Link>
-        <Link to="/">
+        <Link to="/cart">
           <i class="fas fa-shopping-cart"></i>
         </Link>
       </Nav>
