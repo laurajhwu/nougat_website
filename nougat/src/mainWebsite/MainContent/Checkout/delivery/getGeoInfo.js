@@ -2,8 +2,10 @@ import Geocode from "react-geocode";
 const API_KEY = "AIzaSyCnYGRBjB_uakn5NsHUEHSyC4W5-PjD6Oo";
 
 async function getGeoInfo(location) {
-  const fullAddress = location.city + location.district + location.address;
+  Geocode.setLocationType("ROOFTOP");
 
+  const fullAddress = location.city + location.district + location.address;
+  console.log(fullAddress);
   const promise = Geocode.fromAddress(fullAddress, API_KEY, "zh-TW", "TW")
     .then((response) => {
       const { lat, lng } = response.results[0].geometry.location;
@@ -17,7 +19,6 @@ async function getGeoInfo(location) {
       };
     })
     .catch((error) => console.log(error.message));
-
   return promise;
 }
 export default getGeoInfo;

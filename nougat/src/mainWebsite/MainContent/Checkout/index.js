@@ -1,21 +1,24 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import CartItems from "./cartItems";
+import CartItems from "./purchases/cartItems";
 import Map from "./delivery/map";
 import Locations from "./delivery/renderLocations";
 import getGeoInfo from "./delivery/getGeoInfo";
+import PickDate from "./time/calendar";
 import Api from "../../../utils/Api";
 
 const Products = styled.div``;
 const Delivery = styled.div``;
 const Select = styled.select``;
 const Option = styled.option``;
+const Calendar = styled.div``;
 
 function CheckOut() {
   const [delivery, setDelivery] = useState("select");
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState();
+  const [date, setDate] = useState(new Date());
 
   function deliveryOptionChange(event) {
     setDelivery(event.target.value);
@@ -26,7 +29,6 @@ function CheckOut() {
       const promises = allLocations.map((location) => getGeoInfo(location));
       Promise.all(promises).then((values) => {
         setLocations(values);
-        console.log(values);
       });
     });
   }, []);
@@ -59,6 +61,9 @@ function CheckOut() {
           </>
         )}
       </Delivery>
+      <Calendar>
+        <PickDate date={date} setDate={setDate} />
+      </Calendar>
     </div>
   );
 }

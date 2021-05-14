@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import styled from "styled-components";
-import Products from "./products";
-import ProductDetails from "./productDetails";
+import Products from "./AllProducts/products";
+import ProductDetails from "./ProductDetails/productDetails";
 import Cart from "./Checkout";
 
 const Main = styled.main`
