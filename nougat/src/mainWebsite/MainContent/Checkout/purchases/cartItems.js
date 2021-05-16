@@ -49,7 +49,7 @@ function AllProducts() {
       name: "綜合堅果",
       qty: 2,
       price: 300,
-      id: "sdfefwefwefweg",
+      id: "SWMaWhi55Pho0Vdcm5El",
     },
     {
       image:
@@ -57,7 +57,7 @@ function AllProducts() {
       name: "綜合堅果",
       qty: 2,
       price: 300,
-      id: "sdfefwefwefweg",
+      id: "SWMaWhi55Pho0Vdcm5El",
     },
   ];
   return (

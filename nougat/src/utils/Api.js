@@ -4,6 +4,7 @@ class Api {
   constructor() {
     this.products = "product_details";
     this.locations = "locations";
+    this.orders = "orders";
   }
 
   async getLocations() {
@@ -18,6 +19,24 @@ class Api {
 
         return locations;
       });
+  }
+
+  postCheckoutOrder(order) {
+    if (order.id) {
+      db.collection(this.orders).doc(order.id).set(order);
+    } else {
+      db.collection(this.orders)
+        .add(order)
+        .then((docRef) => {
+          db.collection(this.orders)
+            .doc(docRef.id)
+            .update({ id: docRef.id })
+            .then(() => {
+              alert("已收到您的訂單!");
+              window.location.href = "/";
+            });
+        });
+    }
   }
 }
 
