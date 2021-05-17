@@ -42,9 +42,9 @@ function Payment() {
   const [paymentLink, setPaymentLink] = useState();
 
   function getConfigs() {
-    const key = "2ca8d49994ddcd0bf1075bb5e8a3f87c";
+    const key = process.env.REACT_APP_LINE_SECRET_KEY;
     const nonce = uuid();
-    const channelId = "1655987720";
+    const channelId = process.env.REACT_APP_LINE_CHANNEL_ID;
     const encrypt = crypto.HmacSHA256(
       key + requestUri + JSON.stringify(data) + nonce,
       key

@@ -7,7 +7,7 @@ import {
 } from "@react-google-maps/api";
 
 function MainMap(props) {
-  const API_KEY = "AIzaSyCnYGRBjB_uakn5NsHUEHSyC4W5-PjD6Oo";
+  const API_KEY = process.env.REACT_APP_MAPS_API_KEY;
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: API_KEY,
   });

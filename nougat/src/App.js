@@ -10,6 +10,7 @@ import Calendar from "./utils/calendarSettings";
 
 function App() {
   const dispatch = useDispatch();
+  console.log(process.env.REACT_APP_MAPS_API_KEY);
   const MainWebsite = () => (
     <>
       <Header />
