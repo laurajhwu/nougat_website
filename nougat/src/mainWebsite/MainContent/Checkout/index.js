@@ -27,6 +27,8 @@ const Label = styled.label``;
 const Payment = styled.div``;
 const CheckoutBtn = styled.button``;
 
+let isClicked = false;
+
 function CheckOut() {
   const history = useHistory();
   const [delivery, setDelivery] = useState("select");
@@ -92,38 +94,29 @@ function CheckOut() {
   }
 
   function handleCheckout() {
-    setOrder({
-      order_info: {
-        delivery,
-        delivery_address: selectedLocation
-          ? selectedLocation.formatted_address
-          : "",
-        delivery_time: date,
-        notes: personalInfo.notes ? personalInfo.notes : "N/A",
-        payment: payment,
-      },
-      personal_info: {
-        member_id,
-        line_id: personalInfo.line_id,
-        name: personalInfo.name,
-      },
-      products: cartItems,
-      status: 0,
-      timestamp: new Date(),
-      total: getOrderTotal(),
-    });
-    // if (Object.keys(order).length !== 0) {
-    //   if (validateCheckoutInfo()) {
-    //     if (payment === "line-pay") {
-    //       window.localStorage.setItem("order", JSON.stringify(order));
-    //       history.push("/cart/line-pay");
-    //     } else {
-    //       Api.postCheckoutOrder(order);
-    //     }
-    //   } else {
-    //     alert("請填入紅框資料！");
-    //   }
-    // }
+    if (!isClicked) {
+      setOrder({
+        order_info: {
+          delivery,
+          delivery_address: selectedLocation
+            ? selectedLocation.formatted_address
+            : "",
+          delivery_time: date,
+          notes: personalInfo.notes ? personalInfo.notes : "N/A",
+          payment: payment,
+        },
+        personal_info: {
+          member_id,
+          line_id: personalInfo.line_id,
+          name: personalInfo.name,
+        },
+        products: cartItems,
+        status: 0,
+        timestamp: new Date(),
+        total: getOrderTotal(),
+      });
+      isClicked = true;
+    }
   }
 
   useEffect(() => {
@@ -146,6 +139,7 @@ function CheckOut() {
         }
       } else {
         alert("請填入紅框資料！");
+        isClicked = false;
       }
     }
   }, [order]);
