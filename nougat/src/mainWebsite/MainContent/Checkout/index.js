@@ -31,6 +31,7 @@ let isClicked = false;
 
 function CheckOut() {
   const history = useHistory();
+  const allLocations = useSelector((state) => state.locations);
   const [delivery, setDelivery] = useState("select");
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState();
@@ -120,11 +121,9 @@ function CheckOut() {
   }
 
   useEffect(() => {
-    Api.getLocations().then((allLocations) => {
-      const promises = allLocations.map((location) => getGeoInfo(location));
-      Promise.all(promises).then((values) => {
-        setLocations(values);
-      });
+    const promises = allLocations.map((location) => getGeoInfo(location));
+    Promise.all(promises).then((values) => {
+      setLocations(values);
     });
   }, []);
 

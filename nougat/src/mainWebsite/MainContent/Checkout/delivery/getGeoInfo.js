@@ -5,7 +5,6 @@ async function getGeoInfo(location) {
   Geocode.setLocationType("ROOFTOP");
 
   const fullAddress = location.city + location.district + location.address;
-  console.log(fullAddress);
   const promise = Geocode.fromAddress(fullAddress, API_KEY, "zh-TW", "TW")
     .then((response) => {
       const { lat, lng } = response.results[0].geometry.location;
