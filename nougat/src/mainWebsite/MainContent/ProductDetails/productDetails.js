@@ -29,36 +29,6 @@ const Quantity = styled.div`
   align-items: center;
 `;
 
-const QuantityBar = styled.div`
-  margin: 0;
-  padding: 0 10px;
-  width: auto;
-  flex-grow: 1;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 44px;
-  border: 1px solid #979797;
-  font-size: 20px;
-`;
-
-const Button = styled.button`
-  border: none;
-  background-color: transparent;
-  font-size: 20px;
-  font-weight: 700;
-  padding: 1px 6px;
-  outline: none;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const QuantityNum = styled.span`
-  color: #8b572a;
-`;
-
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
@@ -68,6 +38,10 @@ function AllProducts() {
   const id = useQuery().get("id");
   const product = allProducts.find((product) => product.id === id);
   const [qty, setQty] = useState(1);
+
+  function handleChange(event) {
+    setQty(Number(event.target.value));
+  }
 
   if (product) {
     return (
@@ -79,7 +53,12 @@ function AllProducts() {
           <Description>{product.description}</Description>
           <Quantity>
             <Label>數量 |</Label>
-            <QuantityBtn qty={qty} setQty={setQty} stock={product.stock} />
+            <QuantityBtn
+              qty={qty}
+              handleChange={handleChange}
+              stock={product.stock}
+              name={product.id}
+            />
           </Quantity>
         </Info>
       </Product>

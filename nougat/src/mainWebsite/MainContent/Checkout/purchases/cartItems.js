@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import QuantityBtn from "../../../../Components/quantityBtn";
 
 const Product = styled.div`
   display: flex;
@@ -11,36 +12,6 @@ const Img = styled.img`
 const Name = styled.div``;
 const Price = styled.div``;
 
-const QuantityBar = styled.div`
-  margin: 0;
-  padding: 0 10px;
-  width: auto;
-  flex-grow: 1;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 44px;
-  border: 1px solid #979797;
-  font-size: 20px;
-`;
-
-const Button = styled.button`
-  border: none;
-  background-color: transparent;
-  font-size: 20px;
-  font-weight: 700;
-  padding: 1px 6px;
-  outline: none;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const QuantityNum = styled.span`
-  color: #8b572a;
-`;
-
 function AllProducts() {
   const products = [
     {
@@ -50,6 +21,7 @@ function AllProducts() {
       qty: 2,
       price: 300,
       id: "SWMaWhi55Pho0Vdcm5El",
+      stock: 10,
     },
     {
       image:
@@ -58,8 +30,17 @@ function AllProducts() {
       qty: 2,
       price: 300,
       id: "SWMaWhi55Pho0Vdcm5El",
+      stock: 10,
     },
   ];
+
+  function handleChange(event) {
+    const product = products.find(
+      (product) => product.id === event.target.getAttribute("name")
+    );
+    product.qty = event.target.value;
+  }
+
   return (
     <>
       {products.map((product) => (
@@ -72,11 +53,12 @@ function AllProducts() {
           </Link>
           <Name>{product.name}</Name>
           <Price>{product.price}</Price>
-          <QuantityBar>
-            <Button>-</Button>
-            <QuantityNum>{product.qty}</QuantityNum>
-            <Button>+</Button>
-          </QuantityBar>
+          <QuantityBtn
+            qty={product.qty}
+            handleChange={handleChange}
+            stock={product.stock}
+            name={product.id}
+          />
         </Product>
       ))}
     </>
