@@ -7,6 +7,19 @@ class Api {
     this.orders = "orders";
   }
 
+  async getProducts() {
+    return await db
+      .collection(this.products)
+      .get()
+      .then((querySnapshot) => {
+        let products = [];
+        querySnapshot.forEach((product) => {
+          products = [...products, product.data()];
+        });
+        return products;
+      });
+  }
+
   async getLocations() {
     return await db
       .collection(this.locations)
