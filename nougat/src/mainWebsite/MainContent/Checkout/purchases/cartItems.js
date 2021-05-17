@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import handleQuantityChange from "../../../../utils/purchaseQty";
 import QuantityBtn from "../../../../Components/quantityBtn";
 
 const Product = styled.div`
@@ -34,13 +35,6 @@ function AllProducts() {
     },
   ];
 
-  function handleChange(event) {
-    const product = products.find(
-      (product) => product.id === event.target.getAttribute("name")
-    );
-    product.qty = event.target.value;
-  }
-
   return (
     <>
       {products.map((product) => (
@@ -55,7 +49,7 @@ function AllProducts() {
           <Price>{product.price}</Price>
           <QuantityBtn
             qty={product.qty}
-            handleChange={handleChange}
+            handleChange={handleQuantityChange}
             stock={product.stock}
             name={product.id}
           />
