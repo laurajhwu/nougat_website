@@ -3,8 +3,8 @@ import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { getProductsData } from "./redux/actions/products";
 import { getLocations } from "./redux/actions/locations";
-import MainContent from "./mainWebsite/MainContent";
-import Header from "./mainWebsite/Header";
+import MainContent from "./MainWebsite/MainContent";
+import Header from "./MainWebsite/Header";
 import Api from "./utils/Api";
 import Calendar from "./utils/calendarSettings";
 
