@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Order = styled.div``;
 
-function Confirm() {
+function Cancel() {
   return (
     <Link to="/cart">
       <Order>取消付款，返回購物車</Order>
@@ -12,4 +12,4 @@ function Confirm() {
   );
 }
 
-export default Confirm;
+export default Cancel;

@@ -76,10 +76,6 @@ function CheckOut() {
       ...personalInfo,
       [prop]: target.value.trim(),
     });
-    console.log({
-      ...personalInfo,
-      [prop]: target.value.trim(),
-    });
   }
 
   function getOrderTotal() {
@@ -116,18 +112,18 @@ function CheckOut() {
       timestamp: new Date(),
       total: getOrderTotal(),
     });
-    if (Object.keys(order).length !== 0) {
-      console.log(order);
-      console.log("hi");
-      if (validateCheckoutInfo()) {
-        if (payment === "line-pay") {
-          window.localStorage.setItem("order", JSON.stringify(order));
-          history.push("/cart/line-pay");
-        } else {
-          Api.postCheckoutOrder(order);
-        }
-      }
-    }
+    // if (Object.keys(order).length !== 0) {
+    //   if (validateCheckoutInfo()) {
+    //     if (payment === "line-pay") {
+    //       window.localStorage.setItem("order", JSON.stringify(order));
+    //       history.push("/cart/line-pay");
+    //     } else {
+    //       Api.postCheckoutOrder(order);
+    //     }
+    //   } else {
+    //     alert("請填入紅框資料！");
+    //   }
+    // }
   }
 
   useEffect(() => {
@@ -141,7 +137,14 @@ function CheckOut() {
 
   useEffect(() => {
     if (Object.keys(order).length !== 0) {
-      if (!validateCheckoutInfo()) {
+      if (validateCheckoutInfo()) {
+        if (payment === "line-pay") {
+          window.localStorage.setItem("order", JSON.stringify(order));
+          history.push("/cart/line-pay");
+        } else {
+          Api.postCheckoutOrder(order);
+        }
+      } else {
         alert("請填入紅框資料！");
       }
     }

@@ -9,37 +9,47 @@ const Pay = styled.a``;
 
 function Payment() {
   const requestUri = "/v3/payments/request";
+  const nonce = uuid();
   const order = {
-    amount: 4000,
+    ...JSON.parse(window.localStorage.getItem("order")),
+    id: nonce,
+  };
+  const data = {
+    amount: order.total,
     currency: "TWD",
-    orderId: "Order2019101500001",
+    orderId: order.id,
     packages: [
       {
-        id: "Item20191015001",
-        amount: 4000,
-        name: "testPackageName",
-        products: [
-          {
-            name: "testProductName",
-            quantity: 2,
-            price: 2000,
-          },
-        ],
+        id: uuid(),
+        amount: order.total,
+        name: "蝸蝸牛軋糖",
+        products: order.products.map((product) => {
+          return {
+            name: product.name,
+            quantity: product.qty,
+            price: product.price,
+            imageUrl: product.image,
+          };
+        }),
       },
     ],
     redirectUrls: {
       confirmUrl: `${window.location.protocol}//${window.location.host}/cart/line-pay/confirm-order`,
       cancelUrl: `${window.location.protocol}//${window.location.host}/cart/line-pay/cancel-payment`,
     },
+    options: {
+      display: {
+        locale: "zh_TW",
+      },
+    },
   };
   const [paymentLink, setPaymentLink] = useState();
 
-  function getConfigs(requestUri, order) {
+  function getConfigs() {
     const key = "2ca8d49994ddcd0bf1075bb5e8a3f87c";
     const ChannelId = "1655987720";
-    const nonce = uuid();
     const encrypt = crypto.HmacSHA256(
-      key + requestUri + JSON.stringify(order) + nonce,
+      key + requestUri + JSON.stringify(data) + nonce,
       key
     );
     const hmacBase64 = crypto.enc.Base64.stringify(encrypt);
@@ -55,9 +65,10 @@ function Payment() {
 
   useEffect(() => {
     axios
-      .post(requestUri, order, getConfigs(requestUri, order))
+      .post(requestUri, data, getConfigs())
       .then((response) => {
         setPaymentLink(response.data.info.paymentUrl.web);
+        window.localStorage.setItem("order", JSON.stringify(order));
       })
       .catch((error) => console.log(error.message));
   }, []);

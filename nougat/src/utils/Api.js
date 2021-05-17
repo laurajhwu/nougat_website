@@ -22,20 +22,25 @@ class Api {
   }
 
   postCheckoutOrder(order) {
-    if (order.id) {
-      db.collection(this.orders).doc(order.id).set(order);
-    } else {
-      db.collection(this.orders)
-        .add(order)
-        .then((docRef) => {
-          db.collection(this.orders)
-            .doc(docRef.id)
-            .update({ id: docRef.id })
-            .then(() => {
-              alert("已收到您的訂單!");
-              window.location.href = "/";
-            });
-        });
+    if (order) {
+      if (order.id) {
+        db.collection(this.orders)
+          .doc(order.id)
+          .set(order)
+          .then(() => window.localStorage.removeItem("order"));
+      } else {
+        db.collection(this.orders)
+          .add(order)
+          .then((docRef) => {
+            db.collection(this.orders)
+              .doc(docRef.id)
+              .update({ id: docRef.id })
+              .then(() => {
+                alert("已收到您的訂單!");
+                window.location.href = "/";
+              });
+          });
+      }
     }
   }
 }
