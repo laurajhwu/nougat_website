@@ -1,6 +1,8 @@
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import QuantityBtn from "../../../Components/quantityBtn";
 
 const Product = styled.div`
   display: flex;
@@ -65,7 +67,8 @@ function AllProducts() {
   const allProducts = useSelector((state) => state.products);
   const id = useQuery().get("id");
   const product = allProducts.find((product) => product.id === id);
-  const qty = 1;
+  const [qty, setQty] = useState(1);
+
   if (product) {
     return (
       <Product>
@@ -76,11 +79,7 @@ function AllProducts() {
           <Description>{product.description}</Description>
           <Quantity>
             <Label>數量 |</Label>
-            <QuantityBar>
-              <Button>-</Button>
-              <QuantityNum>{qty}</QuantityNum>
-              <Button>+</Button>
-            </QuantityBar>
+            <QuantityBtn qty={qty} setQty={setQty} stock={product.stock} />
           </Quantity>
         </Info>
       </Product>
