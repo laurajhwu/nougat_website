@@ -8,6 +8,7 @@ import Map from "./delivery/map";
 import Locations from "./delivery/renderLocations";
 import getGeoInfo from "./delivery/getGeoInfo";
 import PickDate from "./time/calendar";
+import uuid from "react-uuid";
 
 const Products = styled.div``;
 const Delivery = styled.div`
@@ -28,6 +29,7 @@ const Payment = styled.div``;
 const CheckoutBtn = styled.button``;
 
 let isClicked = false;
+const id = uuid();
 
 function CheckOut() {
   const history = useHistory();
@@ -74,7 +76,6 @@ function CheckOut() {
   function personalInfoOnChange(event) {
     const target = event.target;
     const prop = target.getAttribute("name");
-    console.log(prop);
     setPersonalInfo({
       ...personalInfo,
       [prop]: target.value.trim(),
@@ -115,6 +116,7 @@ function CheckOut() {
         status: 0,
         timestamp: new Date(),
         total: getOrderTotal(),
+        id,
       });
       isClicked = true;
     }

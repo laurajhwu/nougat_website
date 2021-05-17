@@ -12,8 +12,10 @@ const Order = styled.div``;
 
 function Confirm() {
   const order = JSON.parse(window.localStorage.getItem("order"));
-
-  Api.postCheckoutOrder(order);
+  if (order) {
+    order.status = 1;
+    Api.postCheckoutOrder(order);
+  }
 
   return (
     <Order>感謝您的購物，您的訂單編號為：{useQuery().get("orderId")}</Order>
