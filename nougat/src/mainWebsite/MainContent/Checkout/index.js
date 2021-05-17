@@ -151,8 +151,8 @@ function CheckOut() {
       <Delivery
         notFilled={
           order.order_info &&
-          order.order_info.delivery === "select" &&
-          !order.order_info.delivery_address
+          (order.order_info.delivery === "select" ||
+            !order.order_info.delivery_address)
         }
       >
         <Label>取貨方式*</Label>

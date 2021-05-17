@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const Locations = styled.ul``;
 const Location = styled.li`
-  color: ${(props) => (props.selected ? "red" : "black")};
+  color: ${(props) => (props.selected ? "blue" : "black")};
 `;
 
 function RenderLocations(props) {
