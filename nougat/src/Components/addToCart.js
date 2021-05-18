@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Api from "../utils/Api";
+import convertArrToObj from "../utils/arrayToObjectConverter";
 import { CartPlus, CartPlusFill } from "@styled-icons/bootstrap";
 import { useDispatch } from "react-redux";
 import { updateMember } from "../redux/actions/member";
@@ -18,12 +19,13 @@ const CartPlusFillIcon = styled(CartPlusFill)`
   width: 25px;
 `;
 
+const CartButton = styled.button``;
+
 function AddToCart(props) {
   const dispatch = useDispatch();
   const path = window.location.pathname;
-  const isInCart = props.member.cart_items.some(
-    (product) => product.id === props.productId
-  );
+  const cartObject = convertArrToObj(props.member.cart_items, "id");
+  const isInCart = cartObject[props.productId];
 
   function addOnClick() {
     if (!isInCart) {
@@ -40,6 +42,7 @@ function AddToCart(props) {
         props.member.cart_items.push(newCartItem);
         Api.updateCartItems(props.member);
         dispatch(updateMember(props.member));
+        alert("已加入購物車");
       });
     }
   }
@@ -53,7 +56,7 @@ function AddToCart(props) {
           <CartPlusIcon className="cart-plus-icon" />
         )
       ) : (
-        <></>
+        <CartButton>加入購物車</CartButton>
       )}
     </Add>
   );
