@@ -31,6 +31,7 @@ function QuantityBtn(props) {
       (cartItem) => cartItem.id === event.target.getAttribute("name")
     );
     product.qty = Number(event.target.value);
+    product.total = product.qty * product.price;
     Api.updateCartItems(member);
     dispatch(updateMember(member));
   }

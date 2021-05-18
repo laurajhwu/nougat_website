@@ -38,6 +38,7 @@ function AddToCart(props) {
           price,
           stock,
           qty: props.qty,
+          total: price * props.qty,
         };
         props.member.cart_items.push(newCartItem);
         Api.updateCartItems(props.member);
