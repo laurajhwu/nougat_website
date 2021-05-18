@@ -45,7 +45,7 @@ class Api {
       });
   }
 
-  postCheckoutOrder(order) {
+  postCheckoutOrder(order, member) {
     db.collection(this.orders)
       .doc(order.id)
       .set(order)
@@ -56,6 +56,8 @@ class Api {
           alert("已收到您的訂單!");
           window.location.href = "/";
         }
+        member.cart_items = [];
+        this.updateCartItems(member);
       });
   }
 
