@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import AddToCart from "../../../Components/addToCart";
 import QuantityBtn from "../../../Components/cartItemsQty";
+import DeleteIcon from "../../../Components/removeFromCart";
 
 const Products = styled.div``;
 const Product = styled.div`
@@ -28,6 +29,7 @@ const CartImg = styled.img`
 const CartName = styled.div``;
 const CartPrice = styled.div``;
 const Quantity = styled.div``;
+const Delete = styled.div``;
 
 function AllProducts() {
   const allProducts = useSelector((state) => state.products);
@@ -62,6 +64,9 @@ function AllProducts() {
           <Title>購物車({cartItems.length})</Title>
           {cartItems.map((product) => (
             <CartProduct>
+              <Delete>
+                <DeleteIcon member={member} productId={product.id} />
+              </Delete>
               <CartImg src={product.image} />
               <CartName>{product.name}</CartName>
               <CartPrice>{product.price}</CartPrice>

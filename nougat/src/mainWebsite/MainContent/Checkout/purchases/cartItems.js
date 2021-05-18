@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import QuantityBtn from "../../../../Components/cartItemsQty";
+import DeleteIcon from "../../../../Components/removeFromCart";
 
 const Product = styled.div`
   display: flex;
@@ -12,6 +13,7 @@ const Img = styled.img`
 `;
 const Name = styled.div``;
 const Price = styled.div``;
+const Delete = styled.div``;
 
 function AllProducts() {
   const member = useSelector((state) => state.member);
@@ -33,6 +35,9 @@ function AllProducts() {
             stock={product.stock}
             name={product.id}
           />
+          <Delete>
+            <DeleteIcon member={member} productId={product.id} />
+          </Delete>
         </Product>
       ))}
     </>

@@ -12,8 +12,6 @@ const DeleteIcon = styled(DeleteOutline)`
   }
 `;
 
-const CartButton = styled.button``;
-
 function Delete(props) {
   const dispatch = useDispatch();
 
