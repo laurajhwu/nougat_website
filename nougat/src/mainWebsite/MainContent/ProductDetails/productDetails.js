@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import qtyOptions from "../../../utils/qtyOptions";
+import AddToCart from "../../../Components/addToCart";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -33,12 +34,15 @@ const QuantityBar = styled.div``;
 const Select = styled.select``;
 const Option = styled.option``;
 
+const AddToCartIcon = styled.div``;
+
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
 function AllProducts() {
   const allProducts = useSelector((state) => state.products);
+  const member = useSelector((state) => state.member);
   const id = useQuery().get("id");
   const product = allProducts.find((product) => product.id === id);
   const [qty, setQty] = useState(1);
@@ -72,6 +76,9 @@ function AllProducts() {
               斤
             </QuantityBar>
           </Quantity>
+          <AddToCartIcon>
+            <AddToCart productId={product.id} qty={qty} member={member} />
+          </AddToCartIcon>
         </Info>
       </Product>
     );

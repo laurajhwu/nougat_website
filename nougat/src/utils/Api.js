@@ -21,6 +21,16 @@ class Api {
       });
   }
 
+  async getSpecificProduct(id) {
+    return await db
+      .collection(this.products)
+      .doc(id)
+      .get()
+      .then((product) => {
+        return product.data();
+      });
+  }
+
   async getLocations() {
     return await db
       .collection(this.locations)
