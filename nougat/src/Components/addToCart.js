@@ -44,6 +44,10 @@ function AddToCart(props) {
         dispatch(updateMember(props.member));
         alert("已加入購物車");
       });
+    } else if (cartObject[props.productId].qty !== props.qty) {
+      cartObject[props.productId].qty = props.qty;
+      Api.updateCartItems(props.member);
+      alert("已更換商品數量");
     }
   }
 
