@@ -33,6 +33,8 @@ const id = uuid();
 
 function CheckOut() {
   const history = useHistory();
+  const member = useSelector((state) => state.member);
+  const cartItems = member.cart_items;
   const allLocations = useSelector((state) => state.locations);
   const [delivery, setDelivery] = useState("select");
   const [locations, setLocations] = useState([]);
@@ -41,29 +43,6 @@ function CheckOut() {
   const [date, setDate] = useState(new Date());
   const [order, setOrder] = useState({});
   const [personalInfo, setPersonalInfo] = useState({});
-
-  // fake data
-  const member_id = "CQuJUQzLvvbrlPiDYC9SaWkrcg23";
-  const cartItems = [
-    {
-      image:
-        "https://files.meilleurduchef.com/mdc/photo/recipe/nougat/nougat-1200.jpg",
-      name: "綜合堅果",
-      qty: 2,
-      price: 300,
-      id: "SWMaWhi55Pho0Vdcm5El",
-      total: 600,
-    },
-    {
-      image:
-        "https://files.meilleurduchef.com/mdc/photo/recipe/nougat/nougat-1200.jpg",
-      name: "綜合堅果",
-      qty: 2,
-      price: 300,
-      id: "SWMaWhi55Pho0Vdcm5El",
-      total: 600,
-    },
-  ];
 
   function deliveryOptionChange(event) {
     setDelivery(event.target.value);
@@ -96,29 +75,33 @@ function CheckOut() {
   }
 
   function handleCheckout() {
-    if (!isClicked) {
-      setOrder({
-        order_info: {
-          delivery,
-          delivery_address: selectedLocation
-            ? selectedLocation.formatted_address
-            : "",
-          delivery_time: date,
-          notes: personalInfo.notes ? personalInfo.notes : "N/A",
-          payment: payment,
-        },
-        personal_info: {
-          member_id,
-          line_id: personalInfo.line_id,
-          name: personalInfo.name,
-        },
-        products: cartItems,
-        status: 0,
-        timestamp: new Date(),
-        total: getOrderTotal(),
-        id,
-      });
-      isClicked = true;
+    if (cartItems.length !== 0) {
+      if (!isClicked) {
+        setOrder({
+          order_info: {
+            delivery,
+            delivery_address: selectedLocation
+              ? selectedLocation.formatted_address
+              : "",
+            delivery_time: date,
+            notes: personalInfo.notes ? personalInfo.notes : "N/A",
+            payment: payment,
+          },
+          personal_info: {
+            member_id: member.id,
+            line_id: personalInfo.line_id,
+            name: personalInfo.name,
+          },
+          products: cartItems,
+          status: 0,
+          timestamp: new Date(),
+          total: getOrderTotal(),
+          id,
+        });
+        isClicked = true;
+      }
+    } else {
+      alert("請選取欲購賣商品！");
     }
   }
 
@@ -136,7 +119,7 @@ function CheckOut() {
           window.localStorage.setItem("order", JSON.stringify(order));
           history.push("/cart/line-pay");
         } else {
-          Api.postCheckoutOrder(order);
+          Api.postCheckoutOrder(order, member);
         }
       } else {
         alert("請填入紅框資料！");
@@ -148,7 +131,7 @@ function CheckOut() {
   return (
     <div>
       <Products>
-        <CartItems />
+        <CartItems member={member} />
       </Products>
       <Delivery
         notFilled={
