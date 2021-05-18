@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import AddToCart from "../../../Components/addToCart";
 import QuantityBtn from "../../../Components/cartItemsQty";
 
 const Products = styled.div``;
@@ -15,6 +16,8 @@ const Name = styled.div``;
 const Price = styled.div``;
 const Cart = styled.div``;
 const Title = styled.div``;
+const AddToCartIcon = styled.div``;
+
 const CartProduct = styled.div`
   display: flex;
   flex-flow: column nowrap;
@@ -30,22 +33,29 @@ function AllProducts() {
   const allProducts = useSelector((state) => state.products);
   const member = useSelector((state) => state.member);
   const cartItems = member.cart_items;
+  const qty = 1;
 
   if (allProducts.length !== 0) {
     return (
       <>
         <Products>
           {allProducts.map((product) => (
-            <Link
-              to={`/product?id=${product.id}`}
-              style={{ textDecoration: "none", color: "black" }}
-            >
-              <Product id={product.id}>
-                <Img src={product.image} />
-                <Name>{product.name}</Name>
-                <Price>{product.price}</Price>
-              </Product>
-            </Link>
+            <>
+              <AddToCartIcon>
+                <AddToCart productId={product.id} qty={qty} member={member} />
+              </AddToCartIcon>
+              <Link
+                to={`/product?id=${product.id}`}
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <Product id={product.id}>
+                  <Img src={product.image} />
+                  <Name>{product.name}</Name>
+
+                  <Price>{product.price}</Price>
+                </Product>
+              </Link>
+            </>
           ))}
         </Products>
         <Cart>
