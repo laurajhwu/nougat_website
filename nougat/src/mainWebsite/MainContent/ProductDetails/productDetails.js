@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import qtyOptions from "../../../utils/qtyOptions";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import QuantityBtn from "../../../Components/quantityBtn";
 
 const Product = styled.div`
   display: flex;
@@ -29,6 +29,10 @@ const Quantity = styled.div`
   align-items: center;
 `;
 
+const QuantityBar = styled.div``;
+const Select = styled.select``;
+const Option = styled.option``;
+
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
@@ -53,12 +57,20 @@ function AllProducts() {
           <Description>{product.description}</Description>
           <Quantity>
             <Label>數量 |</Label>
-            <QuantityBtn
-              qty={qty}
-              handleChange={handleChange}
-              stock={product.stock}
-              name={product.id}
-            />
+            <QuantityBar>
+              <Select onChange={handleChange}>
+                {qtyOptions(product.stock).map((option) =>
+                  option === qty.toFixed(1) ? (
+                    <Option value={option} selected>
+                      {option}
+                    </Option>
+                  ) : (
+                    <Option value={option}>{option}</Option>
+                  )
+                )}
+              </Select>
+              斤
+            </QuantityBar>
           </Quantity>
         </Info>
       </Product>

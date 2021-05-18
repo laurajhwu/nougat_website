@@ -1,4 +1,8 @@
 import styled from "styled-components";
+import Api from "../utils/Api";
+import qtyOptions from "../utils/qtyOptions";
+import { useSelector, useDispatch } from "react-redux";
+import { updateMember } from "../redux/actions/member";
 
 const QuantityBar = styled.div`
   margin: 0;
@@ -18,18 +22,23 @@ const Select = styled.select``;
 const Option = styled.option``;
 
 function QuantityBtn(props) {
-  function options() {
-    let options = [];
-    for (let i = 0.5; i <= props.stock; i += 0.5) {
-      options = [...options, i.toFixed(1)];
-    }
-    return options;
+  const dispatch = useDispatch();
+  const member = useSelector((state) => state.member);
+
+  function handleChange(event) {
+    const cartItems = member.cart_items;
+    const product = cartItems.find(
+      (cartItem) => cartItem.id === event.target.getAttribute("name")
+    );
+    product.qty = Number(event.target.value);
+    Api.updateCartItems(member);
+    dispatch(updateMember(member));
   }
 
   return (
     <QuantityBar>
-      <Select onChange={props.handleChange} name={props.name}>
-        {options().map((option) =>
+      <Select onChange={handleChange} name={props.name}>
+        {qtyOptions(props.stock).map((option) =>
           option === props.qty.toFixed(1) ? (
             <Option value={option} selected>
               {option}

@@ -5,6 +5,7 @@ class Api {
     this.products = "product_details";
     this.locations = "locations";
     this.orders = "orders";
+    this.member = "members";
   }
 
   async getProducts() {
@@ -46,6 +47,20 @@ class Api {
           window.location.href = "/";
         }
       });
+  }
+
+  async getMemberInfo(id) {
+    return await db
+      .collection(this.member)
+      .doc(id)
+      .get()
+      .then((doc) => doc.data());
+  }
+
+  updateCartItems(member) {
+    db.collection(this.member).doc(member.id).update({
+      cart_items: member.cart_items,
+    });
   }
 }
 

@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import handleQuantityChange from "../../../utils/purchaseQty";
-import QuantityBtn from "../../../Components/quantityBtn";
+import QuantityBtn from "../../../Components/cartItemsQty";
 
 const Products = styled.div``;
 const Product = styled.div`
@@ -29,28 +28,8 @@ const Quantity = styled.div``;
 
 function AllProducts() {
   const allProducts = useSelector((state) => state.products);
-  const cartItems = [
-    {
-      image:
-        "https://files.meilleurduchef.com/mdc/photo/recipe/nougat/nougat-1200.jpg",
-      name: "綜合堅果",
-      qty: 2,
-      price: 300,
-      id: "SWMaWhi55Pho0Vdcm5El",
-      total: 600,
-      stock: 10,
-    },
-    {
-      image:
-        "https://files.meilleurduchef.com/mdc/photo/recipe/nougat/nougat-1200.jpg",
-      name: "綜合堅果",
-      qty: 2,
-      price: 300,
-      id: "SWMaWhi55Pho0Vdcm5El",
-      total: 600,
-      stock: 10,
-    },
-  ];
+  const member = useSelector((state) => state.member);
+  const cartItems = member.cart_items;
 
   if (allProducts.length !== 0) {
     return (
@@ -79,7 +58,6 @@ function AllProducts() {
               <Quantity>
                 <QuantityBtn
                   qty={product.qty}
-                  handleChange={handleQuantityChange}
                   stock={product.stock}
                   name={product.id}
                 />
