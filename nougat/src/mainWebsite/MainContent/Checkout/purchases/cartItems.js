@@ -14,6 +14,7 @@ const Img = styled.img`
 const Name = styled.div``;
 const Price = styled.div``;
 const Delete = styled.div``;
+const Total = styled.div``;
 
 function AllProducts() {
   const member = useSelector((state) => state.member);
@@ -33,8 +34,11 @@ function AllProducts() {
           <QuantityBtn
             qty={product.qty}
             stock={product.stock}
-            name={product.id}
+            productId={product.id}
           />
+          <Total>
+            小計：<span>{product.total}</span>
+          </Total>
           <Delete>
             <DeleteIcon member={member} productId={product.id} />
           </Delete>

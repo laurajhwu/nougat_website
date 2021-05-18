@@ -28,7 +28,7 @@ function QuantityBtn(props) {
   function handleChange(event) {
     const cartItems = member.cart_items;
     const product = cartItems.find(
-      (cartItem) => cartItem.id === event.target.getAttribute("name")
+      (cartItem) => cartItem.id === props.productId
     );
     product.qty = Number(event.target.value);
     product.total = product.qty * product.price;
@@ -38,7 +38,7 @@ function QuantityBtn(props) {
 
   return (
     <QuantityBar>
-      <Select onChange={handleChange} name={props.name}>
+      <Select onChange={handleChange}>
         {qtyOptions(props.stock).map((option) =>
           option === props.qty.toFixed(1) ? (
             <Option value={option} selected>

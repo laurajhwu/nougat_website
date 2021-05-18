@@ -30,6 +30,7 @@ const CartName = styled.div``;
 const CartPrice = styled.div``;
 const Quantity = styled.div``;
 const Delete = styled.div``;
+const Total = styled.div``;
 
 function AllProducts() {
   const allProducts = useSelector((state) => state.products);
@@ -70,11 +71,14 @@ function AllProducts() {
               <CartImg src={product.image} />
               <CartName>{product.name}</CartName>
               <CartPrice>{product.price}</CartPrice>
+              <Total>
+                小計：<span>{product.total}</span>
+              </Total>
               <Quantity>
                 <QuantityBtn
                   qty={product.qty}
                   stock={product.stock}
-                  name={product.id}
+                  productId={product.id}
                 />
               </Quantity>
             </CartProduct>
