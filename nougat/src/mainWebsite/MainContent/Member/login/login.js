@@ -6,7 +6,7 @@ import { getMember } from "../../../../redux/actions/member";
 import Api from "../../../../utils/Api";
 import CreateAccount from "./createAccount";
 import LoginAccount from "./existingAccount";
-import FbLogin from "./fbLogin";
+import SocialLogin from "./socialLogin";
 
 const Email = styled.div``;
 const Create = styled.div``;
@@ -85,7 +85,7 @@ function Login() {
         <Create onClick={handleClickCreate}>註冊</Create>
       </Email>
       <SocialMedia>
-        <FbLogin
+        <SocialLogin
           initMemberState={initMemberState}
           setIsLoading={setIsLoading}
         />

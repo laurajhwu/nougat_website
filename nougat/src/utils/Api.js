@@ -1,4 +1,4 @@
-import { db, auth, fb } from "./firebase/firebase";
+import { db, auth, fb, google } from "./firebase/firebase";
 
 class Api {
   constructor() {
@@ -127,6 +127,12 @@ class Api {
     fb.addScope("email");
     auth.languageCode = "zh-TW";
     return await auth.signInWithPopup(fb);
+  }
+
+  async googleLogin() {
+    google.addScope("https://www.googleapis.com/auth/contacts.readonly");
+    auth.languageCode = "zh-TW";
+    return await auth.signInWithPopup(google);
   }
 }
 

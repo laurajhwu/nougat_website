@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Facebook } from "@styled-icons/bootstrap";
+import { Facebook, Google } from "@styled-icons/bootstrap";
 import Api from "../../../../utils/Api";
 
 const FbIcon = styled(Facebook)`
@@ -9,10 +9,17 @@ const FbIcon = styled(Facebook)`
   }
 `;
 
-function FBLogin(props) {
-  function login() {
+const GoogleIcon = styled(Google)`
+  width: 40px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+function SocialLogin(props) {
+  function login(api) {
     props.setIsLoading(true);
-    Api.facebookLogin()
+    api()
       .then((result) => {
         const user = result.user;
         Api.isMember().then((isMember) => {
@@ -35,16 +42,20 @@ function FBLogin(props) {
         const errorCode = error.code;
         const errorMessage = error.message;
         const email = error.email;
-        const credential = error.credential;
         if (email) {
           alert("該信箱已被使用過！");
         }
-        console.log(errorCode, errorMessage, email, credential);
+        console.log(errorCode, errorMessage);
         props.setIsLoading(false);
       });
   }
 
-  return <FbIcon onClick={login} />;
+  return (
+    <>
+      <FbIcon onClick={() => login(Api.facebookLogin)} />
+      <GoogleIcon onClick={() => login(Api.googleLogin)} />
+    </>
+  );
 }
 
-export default FBLogin;
+export default SocialLogin;
