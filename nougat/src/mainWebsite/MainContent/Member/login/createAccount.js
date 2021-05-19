@@ -35,7 +35,7 @@ function CreateAccount() {
       Api.createAccount(email, password)
         .then((user) => {
           const actionCodeSettings = {
-            url: "http://localhost:3000/member/logged-in/profile",
+            url: `${window.location.origin}/member/login/verify`,
             handleCodeInApp: true,
           };
           Api.addNewMember(user.uid, {
@@ -45,7 +45,20 @@ function CreateAccount() {
             cart_items: [],
             order_info: {},
           });
-          Api.sendVerificationEmail(email, actionCodeSettings, event.target);
+
+          Api.sendVerificationEmail(email, actionCodeSettings)
+            .then(() => {
+              window.localStorage.setItem("emailForSignIn", email);
+              alert("已寄出驗證信囉，請查看信箱進行驗證～");
+              event.target.reset();
+              setRegister(false);
+            })
+            .catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              alert("寄件失敗");
+              console.log(errorCode, errorMessage);
+            });
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -56,10 +69,10 @@ function CreateAccount() {
             alert(`註冊失敗，請在試一次！${errorMessage}(${errorCode})`);
           }
         });
+    } else {
+      setRegister(false);
     }
   }
-
-  function checkEmail() {}
 
   function validEmail() {
     return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
@@ -131,7 +144,9 @@ function CreateAccount() {
           notValid={register && !validConfirmPW()}
         />
       </Password>
-      <Register type="submit">註冊</Register>
+      <Register type="submit" disabled={register}>
+        註冊
+      </Register>
     </Form>
   );
 }

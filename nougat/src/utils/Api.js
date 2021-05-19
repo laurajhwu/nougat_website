@@ -75,6 +75,15 @@ class Api {
     });
   }
 
+  async updateMember(id, prop, value) {
+    return await db
+      .collection(this.member)
+      .doc(id)
+      .update({
+        [prop]: value,
+      });
+  }
+
   addNewMember(id, data) {
     db.collection(this.member).doc(id).set(data);
   }
@@ -86,22 +95,20 @@ class Api {
         return userCredential.user;
       });
   }
-  sendVerificationEmail(email, actionCodeSettings, form = "") {
-    auth
-      .sendSignInLinkToEmail(email, actionCodeSettings)
-      .then(() => {
-        window.localStorage.setItem("emailForSignIn", email);
-        alert("已寄出驗證信囉，請查看信箱進行驗證～");
-        if (form) {
-          form.reset();
-        }
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        alert("寄件失敗");
-        console.log(errorCode, errorMessage);
-      });
+
+  async sendVerificationEmail(email, actionCodeSettings) {
+    return await auth.sendSignInLinkToEmail(email, actionCodeSettings);
+  }
+
+  async verifyEmail() {
+    if (auth.isSignInWithEmailLink(window.location.href)) {
+      let email = window.localStorage.getItem("emailForSignIn");
+      if (!email) {
+        email = window.prompt("請輸入您的信箱進行驗證");
+      }
+      return await auth.signInWithEmailLink(email, window.location.href);
+    }
+    return new Promise((resolve) => resolve(false));
   }
 }
 
