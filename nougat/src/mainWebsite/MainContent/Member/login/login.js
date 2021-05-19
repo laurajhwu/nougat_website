@@ -13,11 +13,9 @@ const Existing = styled.div``;
 const SocialMedia = styled.div``;
 const Container = styled.div`
   & * {
-    opacity: ${(props) => (props.isLoading ? 0.5 : 1)};
+    opacity: ${(props) => (props.isLoading ? 0.7 : 1)};
   }
 `;
-
-// "#99a4ad71"
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -71,7 +69,14 @@ function Login() {
   return (
     <Container isLoading={isLoading}>
       <Email>
-        {exist ? <LoginAccount /> : <CreateAccount />}
+        {exist ? (
+          <LoginAccount
+            initMemberState={initMemberState}
+            setIsLoading={setIsLoading}
+          />
+        ) : (
+          <CreateAccount />
+        )}
         <Existing onClick={handleClickExist}>登入</Existing>
         <Create onClick={handleClickCreate}>註冊</Create>
       </Email>

@@ -110,6 +110,10 @@ class Api {
     }
     return new Promise((resolve) => resolve(false));
   }
+
+  async signIn(email, password) {
+    return await auth.signInWithEmailAndPassword(email, password);
+  }
 }
 
 export default new Api();

@@ -17,12 +17,13 @@ const Input = styled.input`
 const Register = styled.button``;
 
 function CreateAccount() {
-  const [name, setName] = useState("");
+  const [name, setName] = useState();
   const [line_id, setLine] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [confirmPW, setConfirmPW] = useState();
   const [register, setRegister] = useState(false);
+  const [checkInput, setCheckInput] = useState(false);
 
   function handleChange(event, setFunc) {
     setFunc(event.target.value.trim());
@@ -31,6 +32,7 @@ function CreateAccount() {
   function handleSubmit(event) {
     event.preventDefault();
     setRegister(true);
+    setCheckInput(true);
     if (validateInfo()) {
       Api.createAccount(email, password)
         .then((user) => {
@@ -110,7 +112,7 @@ function CreateAccount() {
         <Input
           type="text"
           onChange={(event) => handleChange(event, setName)}
-          notValid={register && !name}
+          notValid={checkInput && !name}
         />
       </Name>
       <Line>
@@ -118,7 +120,7 @@ function CreateAccount() {
         <Input
           type="text"
           onChange={(event) => handleChange(event, setLine)}
-          notValid={register && !line_id}
+          notValid={checkInput && !line_id}
         />
       </Line>
       <Email>
@@ -126,7 +128,7 @@ function CreateAccount() {
         <Input
           type="text"
           onChange={(event) => handleChange(event, setEmail)}
-          notValid={register && !validEmail()}
+          notValid={checkInput && !validEmail()}
         />
       </Email>
       <Password>
@@ -134,14 +136,14 @@ function CreateAccount() {
         <PasswordInput
           handleChange={(event) => handleChange(event, setPassword)}
           placeholder="至少6個字"
-          notValid={register && !validPassword()}
+          notValid={checkInput && !validPassword()}
         />
       </Password>
       <Password>
         <Label>確認密碼</Label>
         <PasswordInput
           handleChange={(event) => handleChange(event, setConfirmPW)}
-          notValid={register && !validConfirmPW()}
+          notValid={checkInput && !validConfirmPW()}
         />
       </Password>
       <Register type="submit" disabled={register}>
