@@ -1,4 +1,4 @@
-import { db, auth } from "./firebase/firebase";
+import { db, auth, fb } from "./firebase/firebase";
 
 class Api {
   constructor() {
@@ -69,6 +69,14 @@ class Api {
       .then((doc) => doc.data());
   }
 
+  async isMember(id) {
+    return await db
+      .collection(this.member)
+      .doc(id)
+      .get()
+      .then((doc) => doc.exists);
+  }
+
   updateCartItems(member) {
     db.collection(this.member).doc(member.id).update({
       cart_items: member.cart_items,
@@ -84,8 +92,8 @@ class Api {
       });
   }
 
-  addNewMember(id, data) {
-    db.collection(this.member).doc(id).set(data);
+  async addNewMember(id, data) {
+    return await db.collection(this.member).doc(id).set(data);
   }
 
   async createAccount(email, password) {
@@ -113,6 +121,12 @@ class Api {
 
   async signIn(email, password) {
     return await auth.signInWithEmailAndPassword(email, password);
+  }
+
+  async facebookLogin() {
+    fb.addScope("email");
+    auth.languageCode = "zh-TW";
+    return await auth.signInWithPopup(fb);
   }
 }
 
