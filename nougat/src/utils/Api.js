@@ -1,4 +1,4 @@
-import db from "./firebase/firestore";
+import { db, auth } from "./firebase/firebase";
 
 class Api {
   constructor() {
@@ -73,6 +73,35 @@ class Api {
     db.collection(this.member).doc(member.id).update({
       cart_items: member.cart_items,
     });
+  }
+
+  addNewMember(id, data) {
+    db.collection(this.member).doc(id).set(data);
+  }
+
+  async createAccount(email, password) {
+    return await auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        return userCredential.user;
+      });
+  }
+  sendVerificationEmail(email, actionCodeSettings, form = "") {
+    auth
+      .sendSignInLinkToEmail(email, actionCodeSettings)
+      .then(() => {
+        window.localStorage.setItem("emailForSignIn", email);
+        alert("已寄出驗證信囉，請查看信箱進行驗證～");
+        if (form) {
+          form.reset();
+        }
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        alert("寄件失敗");
+        console.log(errorCode, errorMessage);
+      });
   }
 }
 
