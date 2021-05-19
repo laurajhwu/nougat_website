@@ -26,10 +26,10 @@ function LoggedIn() {
     <>
       <ProfilePage onClick={() => handleClick("profile")}>會員資料</ProfilePage>
       <OrderPage onClick={() => handleClick("orders")}>訂單瀏覽</OrderPage>
-      <Route path={`${match.url}/logged-in/profile`}>
+      <Route path={`${match.url}/profile`}>
         <Profile />
       </Route>
-      <Route path={`${match.url}/logged-in/orders`}>
+      <Route path={`${match.url}/orders`}>
         <Orders />
       </Route>
     </>

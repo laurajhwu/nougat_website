@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { getProductsData } from "./redux/actions/products";
 import { getLocations } from "./redux/actions/locations";
-import { updateMember } from "./redux/actions/member";
+import { getMember } from "./redux/actions/member";
 import MainContent from "./MainWebsite/MainContent";
 import Header from "./MainWebsite/Header";
 import Api from "./utils/Api";
+import getLoginStatus from "./utils/loginStatus";
 import Calendar from "./utils/calendarSettings";
 
 function App() {
   const dispatch = useDispatch();
-  const member = useSelector((state) => state.member);
   const MainWebsite = () => (
     <>
       <Header />
@@ -30,11 +30,13 @@ function App() {
       dispatch(getLocations(allLocations));
     });
 
-    if (member.id) {
-      Api.getMemberInfo(member.id).then((memberInfo) => {
-        dispatch(updateMember(memberInfo));
-      });
-    }
+    getLoginStatus((user) => {
+      if (user) {
+        Api.getMemberInfo(user.uid).then((data) => {
+          dispatch(getMember(data));
+        });
+      }
+    });
   }, []);
 
   return (

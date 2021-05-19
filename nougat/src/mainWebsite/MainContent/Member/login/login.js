@@ -24,7 +24,6 @@ function useQuery() {
 
 function Login() {
   let verify = useQuery().get("apiKey");
-  const history = useHistory();
   const dispatch = useDispatch();
   const [exist, setExist] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -33,7 +32,6 @@ function Login() {
     Api.getMemberInfo(id).then((data) => {
       dispatch(getMember(data));
       setIsLoading(false);
-      history.push("/member/logged-in");
     });
   }
 

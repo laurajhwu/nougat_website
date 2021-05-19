@@ -24,11 +24,14 @@ const CartButton = styled.button``;
 function AddToCart(props) {
   const dispatch = useDispatch();
   const path = window.location.pathname;
-  const cartObject = convertArrToObj(props.member.cart_items, "id");
+  const cartItems = props.member.cart_items;
+  const cartObject = cartItems ? convertArrToObj(cartItems, "id") : {};
   const isInCart = cartObject[props.productId];
 
   function addOnClick() {
-    if (!isInCart) {
+    if (!cartItems) {
+      alert("請先登入！");
+    } else if (!isInCart) {
       Api.getSpecificProduct(props.productId).then((product) => {
         const { name, image, id, price, stock } = product;
         const newCartItem = {
@@ -40,7 +43,7 @@ function AddToCart(props) {
           qty: props.qty,
           total: price * props.qty,
         };
-        props.member.cart_items.push(newCartItem);
+        cartItems.push(newCartItem);
         Api.updateCartItems(props.member);
         dispatch(updateMember(props.member));
         alert("已加入購物車");
