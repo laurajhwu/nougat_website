@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Modal from "react-bootstrap/Modal";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
