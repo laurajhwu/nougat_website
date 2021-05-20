@@ -9,6 +9,7 @@ import Header from "./MainWebsite/Header";
 import Api from "./utils/Api";
 import getLoginStatus from "./utils/loginStatus";
 import Calendar from "./utils/calendarSettings";
+import Admin from "./Admin";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,7 +46,7 @@ function App() {
       {products ? (
         <Router>
           <Switch>
-            <Route exact path="/admin" />
+            <Route path="/admin" component={Admin} />
             <Route path="/" component={MainWebsite} />
           </Switch>
         </Router>

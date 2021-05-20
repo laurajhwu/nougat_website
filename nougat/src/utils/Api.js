@@ -1,4 +1,6 @@
 import { db, auth, fb, google } from "./firebase/firebase";
+import uuid from "react-uuid";
+import { encrypt, decrypt } from "./crypt";
 
 class Api {
   constructor() {
@@ -6,6 +8,7 @@ class Api {
     this.locations = "locations";
     this.orders = "orders";
     this.member = "members";
+    this.admin = "admin";
   }
 
   async getProducts() {
@@ -131,6 +134,39 @@ class Api {
 
   async signOut() {
     return await auth.signOut();
+  }
+
+  createAdmin(username, password) {
+    //need to check if user name and password already exists (rmb to trim)
+    const id = uuid();
+    db.collection(this.admin)
+      .doc(id)
+      .set({
+        username,
+        password_encrypt: encrypt(password, id),
+      });
+  }
+
+  async adminLogin(username, password) {
+    return await db
+      .collection(this.admin)
+      .where("username", "==", username)
+      .get()
+      .then((querySnapshot) => {
+        const data = {};
+        querySnapshot.forEach((doc) => {
+          data.id = doc.id;
+          data.cipher = doc.data().password_encrypt;
+        });
+        if (data.id) {
+          return decrypt(data.cipher, data.id) === password;
+        } else {
+          return "usernameInvalid";
+        }
+      })
+      .catch((error) => {
+        throw error;
+      });
   }
 }
 
