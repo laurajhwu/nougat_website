@@ -137,6 +137,7 @@ class Api {
   }
 
   createAdmin(username, password) {
+    //need to check if user name and password already exists (rmb to trim)
     const id = uuid();
     db.collection(this.admin)
       .doc(id)
@@ -146,7 +147,27 @@ class Api {
       });
   }
 
-  adminLogin() {}
+  async adminLogin(username, password) {
+    return await db
+      .collection(this.admin)
+      .where("username", "==", username)
+      .get()
+      .then((querySnapshot) => {
+        const data = {};
+        querySnapshot.forEach((doc) => {
+          data.id = doc.id;
+          data.cipher = doc.data().password_encrypt;
+        });
+        if (data.id) {
+          return decrypt(data.cipher, data.id) === password;
+        } else {
+          return "usernameInvalid";
+        }
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
 }
 
 export default new Api();
