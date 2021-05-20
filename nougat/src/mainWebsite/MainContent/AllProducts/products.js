@@ -62,27 +62,33 @@ function AllProducts() {
           ))}
         </Products>
         <Cart>
-          <Title>購物車({cartItems.length})</Title>
-          {cartItems.map((product) => (
-            <CartProduct>
-              <Delete>
-                <DeleteIcon member={member} productId={product.id} />
-              </Delete>
-              <CartImg src={product.image} />
-              <CartName>{product.name}</CartName>
-              <CartPrice>{product.price}</CartPrice>
-              <Total>
-                小計：<span>{product.total}</span>
-              </Total>
-              <Quantity>
-                <QuantityBtn
-                  qty={product.qty}
-                  stock={product.stock}
-                  productId={product.id}
-                />
-              </Quantity>
-            </CartProduct>
-          ))}
+          {cartItems ? (
+            <>
+              <Title>購物車({cartItems.length})</Title>
+              {cartItems.map((product) => (
+                <CartProduct>
+                  <Delete>
+                    <DeleteIcon member={member} productId={product.id} />
+                  </Delete>
+                  <CartImg src={product.image} />
+                  <CartName>{product.name}</CartName>
+                  <CartPrice>{product.price}</CartPrice>
+                  <Total>
+                    小計：<span>{product.total}</span>
+                  </Total>
+                  <Quantity>
+                    <QuantityBtn
+                      qty={product.qty}
+                      stock={product.stock}
+                      productId={product.id}
+                    />
+                  </Quantity>
+                </CartProduct>
+              ))}
+            </>
+          ) : (
+            <Title>購物車({0})</Title>
+          )}
         </Cart>
       </>
     );
