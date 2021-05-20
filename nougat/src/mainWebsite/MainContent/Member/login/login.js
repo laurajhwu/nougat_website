@@ -29,10 +29,14 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   function initMemberState(id) {
-    Api.getMemberInfo(id).then((data) => {
-      dispatch(getMember(data));
-      setIsLoading(false);
-    });
+    Api.getMemberInfo(id)
+      .then((data) => {
+        dispatch(getMember(data));
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        throw error.message;
+      });
   }
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
-import PasswordInput from "../../../../Components/password";
+import PasswordInput from "../../../../Components/Password";
 import Api from "../../../../utils/Api";
 
 const Form = styled.form``;

@@ -134,6 +134,10 @@ class Api {
     auth.languageCode = "zh-TW";
     return await auth.signInWithPopup(google);
   }
+
+  async signOut() {
+    return await auth.signOut();
+  }
 }
 
 export default new Api();
