@@ -89,6 +89,23 @@ class Api {
       });
   }
 
+  updateMemberAuthEmail(email, success) {
+    auth.currentUser
+      .updateEmail(email)
+      .then(() => {
+        success();
+      })
+      .catch((error) => {
+        if (error.code === "auth/email-already-in-use") {
+          alert("該信箱已被註冊過！");
+        } else if (error.code === "auth/requires-recent-login") {
+          alert("因更改敏感資料，請登出後再重新登入試一次");
+        }
+
+        throw error;
+      });
+  }
+
   async addNewMember(id, data) {
     return await db.collection(this.member).doc(id).set(data);
   }
