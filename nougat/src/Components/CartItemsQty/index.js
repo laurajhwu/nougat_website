@@ -1,27 +1,12 @@
-import styled from "styled-components";
-import Api from "../utils/Api";
-import qtyOptions from "../utils/qtyOptions";
+import React from "react";
+import Api from "../../utils/Api";
+import qtyOptions from "../../utils/qtyOptions";
 import { useSelector, useDispatch } from "react-redux";
-import { updateMember } from "../redux/actions/member";
+import { updateMember } from "../../redux/actions/member";
 
-const QuantityBar = styled.div`
-  margin: 0;
-  padding: 0 10px;
-  width: auto;
-  flex-grow: 1;
+import { QuantityBar, Select, Option } from "./styles";
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 44px;
-  border: 1px solid #979797;
-  font-size: 20px;
-`;
-
-const Select = styled.select``;
-const Option = styled.option``;
-
-function QuantityBtn(props) {
+export default function QuantityBtn(props) {
   const dispatch = useDispatch();
   const member = useSelector((state) => state.member);
 
@@ -53,5 +38,3 @@ function QuantityBtn(props) {
     </QuantityBar>
   );
 }
-
-export default QuantityBtn;

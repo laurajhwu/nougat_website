@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { getMember } from "../../../../redux/actions/member";
 import Api from "../../../../utils/Api";
-import CreateAccount from "./createAccount";
-import LoginAccount from "./existingAccount";
-import SocialLogin from "./socialLogin";
+import CreateAccount from "./CreateAccount";
+import LoginAccount from "./ExistingAccount";
+import SocialLogin from "./SocialLogin";
 
 const Email = styled.div``;
 const Create = styled.div``;

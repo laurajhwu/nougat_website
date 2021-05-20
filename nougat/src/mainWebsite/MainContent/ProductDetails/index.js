@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import qtyOptions from "../../../utils/qtyOptions";
-import AddToCart from "../../../Components/addToCart";
+import AddToCart from "../../../Components/AddToCart";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 

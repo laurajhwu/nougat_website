@@ -1,27 +1,13 @@
 import React from "react";
-import styled from "styled-components";
-import Api from "../utils/Api";
-import convertArrToObj from "../utils/arrayToObjectConverter";
-import { CartPlus, CartPlusFill } from "@styled-icons/bootstrap";
+import { updateMember } from "../../redux/actions/member";
+import Api from "../../utils/Api";
+import convertArrToObj from "../../utils/arrayToObjectConverter";
+
 import { useDispatch } from "react-redux";
-import { updateMember } from "../redux/actions/member";
 
-const Add = styled.div`
-  &:hover {
-    cursor: pointer;
-  }
-`;
+import { Add, CartPlusFillIcon, CartPlusIcon, CartButton } from "./styles";
 
-const CartPlusIcon = styled(CartPlus)`
-  width: 25px;
-`;
-const CartPlusFillIcon = styled(CartPlusFill)`
-  width: 25px;
-`;
-
-const CartButton = styled.button``;
-
-function AddToCart(props) {
+export default function AddToCart(props) {
   const dispatch = useDispatch();
   const path = window.location.pathname;
   const cartItems = props.member.cart_items;
@@ -75,5 +61,3 @@ function AddToCart(props) {
     </Add>
   );
 }
-
-export default AddToCart;

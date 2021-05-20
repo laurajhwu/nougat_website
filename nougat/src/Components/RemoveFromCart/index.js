@@ -1,18 +1,11 @@
 import React from "react";
-import styled from "styled-components";
-import Api from "../utils/Api";
-import { DeleteOutline } from "@styled-icons/typicons";
 import { useDispatch } from "react-redux";
-import { updateMember } from "../redux/actions/member";
+import { updateMember } from "../../redux/actions/member";
+import Api from "../../utils/Api";
 
-const DeleteIcon = styled(DeleteOutline)`
-  width: 25px;
-  &:hover {
-    cursor: pointer;
-  }
-`;
+import { DeleteIcon } from "./styles";
 
-function Delete(props) {
+export default function Delete(props) {
   const dispatch = useDispatch();
 
   function deleteOnClick() {
@@ -26,5 +19,3 @@ function Delete(props) {
 
   return <DeleteIcon onClick={deleteOnClick}></DeleteIcon>;
 }
-
-export default Delete;

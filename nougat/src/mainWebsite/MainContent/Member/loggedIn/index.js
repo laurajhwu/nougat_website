@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useHistory, Route, useRouteMatch } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Profile from "./profile/profile";
-import Orders from "./orders/orders";
+import Profile from "./Profile";
+import Orders from "./Orders";
 import logout from "../../../../utils/logout";
 
 const ProfilePage = styled.div``;

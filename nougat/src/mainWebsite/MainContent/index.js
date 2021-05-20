@@ -1,12 +1,12 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 import styled from "styled-components";
-import Products from "./AllProducts/products";
-import ProductDetails from "./ProductDetails/productDetails";
+import Products from "./AllProducts";
+import ProductDetails from "./ProductDetails";
 import Cart from "./Checkout";
-import LinePay from "./Checkout/payment/linepay";
-import Confirm from "./Checkout/payment/confirm";
-import Cancel from "./Checkout/payment/cancel";
+import LinePay from "./Checkout/Payment/LinePay";
+import Confirm from "./Checkout/Payment/Confirm";
+import Cancel from "./Checkout/Payment/Cancel";
 import Member from "./Member";
 
 const Main = styled.main`

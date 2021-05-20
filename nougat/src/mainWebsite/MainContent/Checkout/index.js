@@ -3,11 +3,11 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Api from "../../../utils/Api";
-import CartItems from "./purchases/cartItems";
-import Map from "./delivery/map";
-import Locations from "./delivery/renderLocations";
-import getGeoInfo from "./delivery/getGeoInfo";
-import PickDate from "./time/calendar";
+import CartItems from "./Purchases/CartItems";
+import Map from "./Delivery/Map";
+import Locations from "./Delivery/RenderLocations";
+import getGeoInfo from "./Delivery/GetGeoInfo";
+import PickDate from "./Time/Calendar";
 import uuid from "react-uuid";
 
 const Products = styled.div``;

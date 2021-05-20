@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useRouteMatch, Route } from "react-router-dom";
-import Login from "./login/login";
-import LoggedIn from "./loggedIn";
+import Login from "./Login";
+import LoggedIn from "./LoggedIn";
 import Api from "../../../utils/Api";
 import getLoginStatus from "../../../utils/loginStatus";
 

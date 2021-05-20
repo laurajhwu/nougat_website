@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import AddToCart from "../../../Components/addToCart";
-import QuantityBtn from "../../../Components/cartItemsQty";
-import DeleteIcon from "../../../Components/removeFromCart";
+import AddToCart from "../../../Components/AddToCart";
+import QuantityBtn from "../../../Components/CartItemsQty";
+import DeleteIcon from "../../../Components/RemoveFromCart";
 
 const Products = styled.div``;
 const Product = styled.div`
