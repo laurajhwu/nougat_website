@@ -1,12 +1,10 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { Modal, Button } from "react-bootstrap";
 
 const ProfilePage = styled.div``;
 const OrderPage = styled.div``;
 
-function Orders() {
-  const [page, setPage] = useState("profile");
-
+function OrderDetails() {
   return (
     <>
       <ProfilePage>order</ProfilePage>
@@ -14,4 +12,4 @@ function Orders() {
   );
 }
 
-export default Orders;
+export default OrderDetails;
