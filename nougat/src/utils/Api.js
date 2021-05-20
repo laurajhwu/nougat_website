@@ -57,7 +57,7 @@ class Api {
           window.location.href = "/";
         }
         member.cart_items = [];
-        this.updateCartItems(member);
+        this.updateMember(member.id, "cart_items", member.cart_items);
       });
   }
 
@@ -75,12 +75,6 @@ class Api {
       .doc(id)
       .get()
       .then((doc) => doc.exists);
-  }
-
-  updateCartItems(member) {
-    db.collection(this.member).doc(member.id).update({
-      cart_items: member.cart_items,
-    });
   }
 
   async updateMember(id, prop, value) {

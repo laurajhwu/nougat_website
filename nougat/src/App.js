@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { getProductsData } from "./redux/actions/products";
 import { getLocations } from "./redux/actions/locations";
@@ -12,6 +12,7 @@ import Calendar from "./utils/calendarSettings";
 
 function App() {
   const dispatch = useDispatch();
+  const products = useSelector((state) => state.products);
   const MainWebsite = () => (
     <>
       <Header />
@@ -40,12 +41,18 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <Switch>
-        <Route exact path="/admin" />
-        <Route path="/" component={MainWebsite} />
-      </Switch>
-    </Router>
+    <>
+      {products ? (
+        <Router>
+          <Switch>
+            <Route exact path="/admin" />
+            <Route path="/" component={MainWebsite} />
+          </Switch>
+        </Router>
+      ) : (
+        <></>
+      )}
+    </>
   );
 }
 

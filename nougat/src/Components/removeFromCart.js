@@ -16,12 +16,12 @@ function Delete(props) {
   const dispatch = useDispatch();
 
   function deleteOnClick() {
-    props.member.cart_items = props.member.cart_items.filter(
+    const cartItems = props.member.cart_items.filter(
       (item) => item.id !== props.productId
     );
-    Api.updateCartItems(props.member);
+    Api.updateMember(props.member.id, "cart_items", cartItems);
     alert("已從購物車移除");
-    dispatch(updateMember(props.member));
+    dispatch(updateMember("cart_items", cartItems));
   }
 
   return <DeleteIcon onClick={deleteOnClick}></DeleteIcon>;

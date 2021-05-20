@@ -32,8 +32,8 @@ function QuantityBtn(props) {
     );
     product.qty = Number(event.target.value);
     product.total = product.qty * product.price;
-    Api.updateCartItems(member);
-    dispatch(updateMember(member));
+    Api.updateMember(member.id, "cart_items", cartItems);
+    dispatch(updateMember("cart_items", cartItems));
   }
 
   return (

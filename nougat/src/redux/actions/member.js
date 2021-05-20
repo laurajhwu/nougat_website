@@ -1,6 +1,6 @@
-export const updateMember = (member) => ({
+export const updateMember = (prop, data) => ({
   type: "UPDATE_MEMBER",
-  payload: member,
+  payload: { [prop]: data },
 });
 
 export const getMember = (member) => ({

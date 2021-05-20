@@ -44,8 +44,8 @@ function AddToCart(props) {
           total: price * props.qty,
         };
         cartItems.push(newCartItem);
-        Api.updateCartItems(props.member);
-        dispatch(updateMember(props.member));
+        Api.updateMember(props.member.id, "cart_items", cartItems);
+        dispatch(updateMember("cart_items", cartItems));
         alert("已加入購物車");
       });
     } else if (
@@ -53,7 +53,10 @@ function AddToCart(props) {
       path === "/product"
     ) {
       cartObject[props.productId].qty = props.qty;
-      Api.updateCartItems(props.member);
+      cartObject[props.productId].total =
+        props.qty * cartObject[props.productId].price;
+      dispatch(updateMember("cart_items", cartItems));
+      Api.updateMember(props.member.id, "cart_items", cartItems);
       alert("已更換商品數量");
     }
   }
