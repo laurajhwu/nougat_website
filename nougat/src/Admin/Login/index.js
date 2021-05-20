@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import PasswordInput from "../../Components/Password";
+import Api from "../../utils/Api";
 
 const Main = styled.main`
   display: flex;
@@ -18,7 +19,12 @@ export default function Login(props) {
   const [password, setPassword] = useState();
 
   function handleChange(event, callback) {
-    callback(event.target.value);
+    callback(event.target.value.trim());
+  }
+
+  function handleLogin() {
+    Api.createAdmin("test", "test123");
+    Api.adminLogin();
   }
 
   return (
@@ -33,7 +39,7 @@ export default function Login(props) {
           handleChange={(event) => handleChange(event, setPassword)}
         />
       </Password>
-      <LoginBtn>登入</LoginBtn>
+      <LoginBtn onClick={handleLogin}>登入</LoginBtn>
     </Main>
   );
 }

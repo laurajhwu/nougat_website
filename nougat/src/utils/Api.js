@@ -1,4 +1,6 @@
 import { db, auth, fb, google } from "./firebase/firebase";
+import uuid from "react-uuid";
+import { encrypt, decrypt } from "./crypt";
 
 class Api {
   constructor() {
@@ -6,6 +8,7 @@ class Api {
     this.locations = "locations";
     this.orders = "orders";
     this.member = "members";
+    this.admin = "admin";
   }
 
   async getProducts() {
@@ -132,6 +135,18 @@ class Api {
   async signOut() {
     return await auth.signOut();
   }
+
+  createAdmin(username, password) {
+    const id = uuid();
+    db.collection(this.admin)
+      .doc(id)
+      .set({
+        username,
+        password_encrypt: encrypt(password, id),
+      });
+  }
+
+  adminLogin() {}
 }
 
 export default new Api();
