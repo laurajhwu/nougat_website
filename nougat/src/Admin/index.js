@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Switch, Route, useHistory, useRouteMatch } from "react-router-dom";
+import { Route, useHistory, useRouteMatch } from "react-router-dom";
 import Login from "./Login";
 import Main from "./MainPage";
 
@@ -13,7 +13,7 @@ function Admin() {
 
   useEffect(() => {
     if (isLogin) {
-      history.push(`/admin/auth`);
+      history.push(`/admin/auth/inventory`);
     } else {
       history.push(`/admin/login`);
     }

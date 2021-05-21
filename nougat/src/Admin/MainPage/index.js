@@ -1,11 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-
-export const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
+import Header from "./Header";
+import MainContent from "./MainContent";
 
 export default function MainPage() {
-  return <Container>Main</Container>;
+  return (
+    <>
+      <Header />
+      <MainContent />
+    </>
+  );
 }
