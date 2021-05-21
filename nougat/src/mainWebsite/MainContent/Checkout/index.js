@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Api from "../../../utils/Api";
-import { checkCurrentLoginStatus } from "../../../utils/loginStatus";
 import CartItems from "./Purchases/CartItems";
 import Map from "./Delivery/Map";
 import Locations from "./Delivery/RenderLocations";
@@ -111,11 +110,6 @@ function CheckOut() {
     Promise.all(promises).then((values) => {
       setLocations(values);
     });
-    checkCurrentLoginStatus();
-
-    return function clean() {
-      checkCurrentLoginStatus();
-    };
   }, []);
 
   useEffect(() => {
@@ -134,82 +128,96 @@ function CheckOut() {
     }
   }, [order]);
 
-  return (
-    <div>
-      <Products>
-        <CartItems member={member} />
-      </Products>
-      <Delivery
-        notFilled={
-          order.order_info &&
-          (order.order_info.delivery === "select" ||
-            !order.order_info.delivery_address)
-        }
-      >
-        <Label>取貨方式*</Label>
-        <Select
-          onChange={deliveryOptionChange}
-          value={member.order_info.delivery || "select"}
+  useEffect(() => {
+    if (member.order_info) {
+      setDelivery(member.order_info.delivery || "select");
+      setPayment(member.order_info.payment || "cash");
+    }
+
+    setPersonalInfo({
+      name: member.name || "",
+      line_id: member.line_id || "",
+    });
+  }, [member]);
+
+  if (Object.keys(member).length !== 0) {
+    return (
+      <div>
+        <Products>
+          <CartItems member={member} />
+        </Products>
+        <Delivery
+          notFilled={
+            order.order_info &&
+            (order.order_info.delivery === "select" ||
+              !order.order_info.delivery_address)
+          }
         >
-          <Option value="select">請選擇取貨方式</Option>
-          <Option value="face-to-face">北投區面交</Option>
-        </Select>
-        {delivery === "select" ? (
-          ""
-        ) : (
-          <>
-            <Map
-              locations={locations}
-              selectedLocation={selectedLocation}
-              setSelectedLocation={setSelectedLocation}
-            />
+          <Label>取貨方式*</Label>
+          <Select onChange={deliveryOptionChange} defaultValue={delivery}>
+            <Option value="select">請選擇取貨方式</Option>
+            <Option value="face-to-face">北投區面交</Option>
+          </Select>
+          {delivery === "select" ? (
+            ""
+          ) : (
+            <>
+              <Map
+                locations={locations}
+                selectedLocation={selectedLocation}
+                setSelectedLocation={setSelectedLocation}
+              />
 
-            <Locations
-              locations={locations}
-              selectedLocation={selectedLocation}
-              setSelectedLocation={setSelectedLocation}
+              <Locations
+                locations={locations}
+                selectedLocation={selectedLocation}
+                setSelectedLocation={setSelectedLocation}
+              />
+            </>
+          )}
+        </Delivery>
+        <Calendar>
+          <Label>取貨時間*</Label>
+          <PickDate date={date} setDate={setDate} />
+        </Calendar>
+        <PersonalInfo>
+          <Info>
+            <Label>姓名*</Label>
+            <Input
+              name="name"
+              type="text"
+              defaultValue={personalInfo.name}
+              onChange={personalInfoOnChange}
+              notFilled={order.personal_info && !order.personal_info.name}
             />
-          </>
-        )}
-      </Delivery>
-      <Calendar>
-        <Label>取貨時間*</Label>
-        <PickDate date={date} setDate={setDate} />
-      </Calendar>
-      <PersonalInfo>
-        <Info>
-          <Label>姓名*</Label>
-          <Input
-            name="name"
-            type="text"
-            onChange={personalInfoOnChange}
-            notFilled={order.personal_info && !order.personal_info.name}
-          />
-        </Info>
-        <Info>
-          <Label>Line ID*</Label>
-          <Input
-            name="line_id"
-            type="text"
-            onChange={personalInfoOnChange}
-            notFilled={order.personal_info && !order.personal_info.line_id}
-          />
-        </Info>
-        <Info>
-          <Label>備註</Label>
-          <Input name="notes" type="text" onChange={personalInfoOnChange} />
-        </Info>
-      </PersonalInfo>
-      <Payment>
-        <Label>付款方式*</Label>
-        <Select onChange={paymentOptionChange}>
-          <Option value="cash">面交現金</Option>
-          <Option value="line-pay">Line Pay</Option>
-        </Select>
-      </Payment>
-      <CheckoutBtn onClick={handleCheckout}>結帳</CheckoutBtn>
-    </div>
-  );
+          </Info>
+          <Info>
+            <Label>Line ID*</Label>
+            <Input
+              name="line_id"
+              defaultValue={personalInfo.line_id}
+              type="text"
+              onChange={personalInfoOnChange}
+              notFilled={order.personal_info && !order.personal_info.line_id}
+            />
+          </Info>
+          <Info>
+            <Label>備註</Label>
+            <Input name="notes" type="text" onChange={personalInfoOnChange} />
+          </Info>
+        </PersonalInfo>
+        <Payment>
+          <Label>付款方式*</Label>
+          <Select onChange={paymentOptionChange} defaultValue={payment}>
+            <Option value="cash">面交現金</Option>
+            <Option value="line-pay">Line Pay</Option>
+          </Select>
+        </Payment>
+        <CheckoutBtn onClick={handleCheckout}>結帳</CheckoutBtn>
+      </div>
+    );
+  } else {
+    return <>Loading...</>;
+  }
 }
-
 export default CheckOut;
