@@ -56,7 +56,9 @@ export default function AddToCart(props) {
           <CartPlusIcon className="cart-plus-icon" />
         )
       ) : (
-        <CartButton>加入購物車</CartButton>
+        <CartButton disabled={props.soldOut ? "disabled" : ""}>
+          加入購物車
+        </CartButton>
       )}
     </Add>
   );
