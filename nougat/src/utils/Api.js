@@ -34,6 +34,15 @@ class Api {
       });
   }
 
+  async updateProduct(id, prop, data) {
+    return await db
+      .collection(this.products)
+      .doc(id)
+      .update({
+        [prop]: data,
+      });
+  }
+
   async getLocations() {
     return await db
       .collection(this.locations)
@@ -48,19 +57,21 @@ class Api {
       });
   }
 
-  postCheckoutOrder(order, member) {
+  postCheckoutOrder(order, member, updateStock) {
     db.collection(this.orders)
       .doc(order.id)
       .set(order)
       .then(() => {
-        if (order.order_info.payment === "line-pay") {
-          window.localStorage.removeItem("order");
-        } else {
-          alert("已收到您的訂單!");
-          window.location.href = "/";
-        }
-        member.cart_items = [];
-        this.updateMember(member.id, "cart_items", member.cart_items);
+        Promise.all(updateStock(order)).then(() => {
+          if (order.order_info.payment === "line-pay") {
+            window.localStorage.removeItem("order");
+          } else {
+            alert("已收到您的訂單!");
+            window.location.href = "/";
+          }
+          member.cart_items = [];
+          this.updateMember(member.id, "cart_items", member.cart_items);
+        });
       });
   }
 

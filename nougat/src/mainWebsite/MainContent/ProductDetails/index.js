@@ -61,23 +61,32 @@ function AllProducts() {
           <Description>{product.description}</Description>
           <Quantity>
             <Label>數量 |</Label>
-            <QuantityBar>
-              <Select onChange={handleChange}>
-                {qtyOptions(product.stock).map((option) =>
-                  option === qty.toFixed(1) ? (
-                    <Option value={option} selected>
-                      {option}
-                    </Option>
-                  ) : (
-                    <Option value={option}>{option}</Option>
-                  )
-                )}
-              </Select>
-              斤
-            </QuantityBar>
+            {product.stock === 0 ? (
+              <QuantityBar>售完</QuantityBar>
+            ) : (
+              <QuantityBar>
+                <Select onChange={handleChange}>
+                  {qtyOptions(product.stock).map((option) =>
+                    option === qty.toFixed(1) ? (
+                      <Option value={option} selected>
+                        {option}
+                      </Option>
+                    ) : (
+                      <Option value={option}>{option}</Option>
+                    )
+                  )}
+                </Select>
+                斤
+              </QuantityBar>
+            )}
           </Quantity>
           <AddToCartIcon>
-            <AddToCart productId={product.id} qty={qty} member={member} />
+            <AddToCart
+              productId={product.id}
+              qty={qty}
+              member={member}
+              soldOut={product.stock === 0}
+            />
           </AddToCartIcon>
         </Info>
       </Product>
