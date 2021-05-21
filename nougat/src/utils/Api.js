@@ -110,6 +110,14 @@ class Api {
     return await db.collection(this.member).doc(id).set(data);
   }
 
+  async getMemberOrders(id) {
+    return await db
+      .collection(this.orders)
+      .where("member_id", "==", id)
+      .get()
+      .then((querySnapshot) => querySnapshot);
+  }
+
   async createAccount(email, password) {
     return await auth
       .createUserWithEmailAndPassword(email, password)

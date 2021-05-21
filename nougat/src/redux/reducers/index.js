@@ -8,7 +8,7 @@ import { combineReducers } from "redux";
 
 const allReducers = combineReducers({
   products: productsReducer,
-  order: orderReducer,
+  orders: orderReducer,
   locations: locationsReducer,
   member: memberReducer,
   reRender: renderPageReducer,

@@ -88,7 +88,6 @@ function CheckOut() {
             payment: payment,
           },
           personal_info: {
-            member_id: member.id,
             line_id: personalInfo.line_id,
             name: personalInfo.name,
           },
@@ -97,6 +96,7 @@ function CheckOut() {
           timestamp: new Date(),
           total: getOrderTotal(),
           id,
+          member_id: member.id,
         });
         isClicked = true;
       }

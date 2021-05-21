@@ -4,8 +4,6 @@ import { useSelector } from "react-redux";
 import { useHistory, useRouteMatch, Route } from "react-router-dom";
 import Login from "./Login";
 import LoggedIn from "./LoggedIn";
-import Api from "../../../utils/Api";
-import getLoginStatus from "../../../utils/loginStatus";
 
 function Member() {
   const match = useRouteMatch();

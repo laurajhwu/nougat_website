@@ -37,6 +37,8 @@ function App() {
         Api.getMemberInfo(user.uid).then((data) => {
           dispatch(getMember(data));
         });
+      } else {
+        dispatch(getMember({}));
       }
     });
   }, []);

@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useHistory, Route, useRouteMatch } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Profile from "./Profile";
 import Orders from "./Orders";
 import logout from "../../../../utils/logout";
+import Api from "../../../../utils/Api";
+import { getMemberOrders } from "../../../../redux/actions/order";
 
 const ProfilePage = styled.div``;
 const OrderPage = styled.div``;
@@ -13,8 +15,9 @@ const Logout = styled.a``;
 
 function LoggedIn() {
   const history = useHistory();
-  const member = useSelector((state) => state.member);
   const match = useRouteMatch();
+  const member = useSelector((state) => state.member);
+  const dispatch = useDispatch();
   const [page, setPage] = useState("profile");
 
   function handleClick(page) {
@@ -23,8 +26,24 @@ function LoggedIn() {
 
   useEffect(() => {
     history.push(`/member/logged-in/${page}`);
-    //why page does not show profile after refresh
   }, [page]);
+
+  useEffect(() => {
+    if (member.id) {
+      Api.getMemberOrders(member.id)
+        .then((querySnapshot) => {
+          const orders = [];
+          querySnapshot.forEach((order) => {
+            orders.push(order.data());
+          });
+          console.log(orders);
+          dispatch(getMemberOrders(orders));
+        })
+        .catch((error) => {
+          throw error;
+        });
+    }
+  }, []);
 
   return (
     <>
