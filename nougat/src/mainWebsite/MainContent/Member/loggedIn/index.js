@@ -7,6 +7,7 @@ import Orders from "./Orders";
 import logout from "../../../../utils/logout";
 import Api from "../../../../utils/Api";
 import { getMemberOrders } from "../../../../redux/actions/order";
+import { getOrderStatus } from "../../../../redux/actions/fixedData";
 
 const ProfilePage = styled.div``;
 const OrderPage = styled.div``;
@@ -38,6 +39,7 @@ function LoggedIn() {
           });
           console.log(orders);
           dispatch(getMemberOrders(orders));
+          dispatch(getOrderStatus());
         })
         .catch((error) => {
           throw error;

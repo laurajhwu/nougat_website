@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import { Modal, Button } from "react-bootstrap";
 
 const ProfilePage = styled.div``;

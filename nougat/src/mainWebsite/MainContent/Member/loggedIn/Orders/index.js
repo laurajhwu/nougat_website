@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import { Modal, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import convertTimestamp from "../../../../../utils/convertTimestamp";
+import OrderDetails from "./OrderDetails";
 
-import { Container, Order, Title, OrderInfo } from "./styles";
+import { Container, Order, Title, OrderInfo, OrderNumLink } from "./styles";
 
 export default function Orders() {
   const orders = useSelector((state) => state.orders).sort(
-    (earliest, latest) => latest.timestamp - earliest.timestamp
+    (earliest, latest) => latest.timestamp.seconds - earliest.timestamp.seconds
   );
+  const statusData = useSelector((state) => state.fixedData);
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -23,11 +25,15 @@ export default function Orders() {
       </Order>
       {orders.map((order) => (
         <Order>
-          <Button variant="link" onClick={handleShow}>
+          <OrderNumLink variant="link" onClick={handleShow}>
             {order.id}
-          </Button>
+          </OrderNumLink>
+          <OrderInfo>{statusData[order.status]}</OrderInfo>
+          <OrderInfo>{convertTimestamp(order.timestamp.toDate())}</OrderInfo>
+          <OrderInfo>${order.total}</OrderInfo>
         </Order>
       ))}
+      <OrderDetails />
     </Container>
   );
 }
