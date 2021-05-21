@@ -1,5 +1,5 @@
 # Test Account for Member Login
-email: test@test.com
+email: test@test.com\
 password: test123
 
 # Getting Started with Create React App
