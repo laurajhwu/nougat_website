@@ -10,6 +10,7 @@ import { ProfilePage, Logout, Picture, Info } from "./styles";
 export default function Profile() {
   const dispatch = useDispatch();
   const member = useSelector((state) => state.member);
+  const fixedData = useSelector((state) => state.fixedData);
 
   function handleFinishEdit(prop, data) {
     if (prop === "email") {
@@ -48,8 +49,18 @@ export default function Profile() {
             handleFinishEdit={(data) => handleFinishEdit("line_id", data)}
           />
         </Info>
-        <Info>運送方式 ：{member.order_info.delivery || ""}</Info>
-        <Info>付款方式 ：{member.order_info.payment || ""}</Info>
+        {Object.keys(fixedData).length === 0 ? (
+          <></>
+        ) : (
+          <>
+            <Info>
+              運送方式 ：{fixedData.delivery[member.order_info.delivery] || ""}
+            </Info>
+            <Info>
+              付款方式 ：{fixedData.payment[member.order_info.payment] || ""}
+            </Info>
+          </>
+        )}
       </ProfilePage>
 
       <Logout onClick={logout}>登出</Logout>

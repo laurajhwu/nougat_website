@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Api from "../../../utils/Api";
 import CartItems from "./Purchases/CartItems";
@@ -9,6 +9,8 @@ import Locations from "./Delivery/RenderLocations";
 import getGeoInfo from "./Delivery/GetGeoInfo";
 import PickDate from "./Time/Calendar";
 import uuid from "react-uuid";
+import RememberMe from "../../../Components/RememberMe";
+import { updateMember } from "../../../redux/actions/member";
 
 const Products = styled.div``;
 const Delivery = styled.div`
@@ -34,6 +36,7 @@ const id = uuid();
 function CheckOut() {
   const history = useHistory();
   const member = useSelector((state) => state.member);
+  const dispatch = useDispatch();
   const cartItems = member.cart_items;
   const allLocations = useSelector((state) => state.locations);
   const [delivery, setDelivery] = useState("select");
@@ -43,6 +46,7 @@ function CheckOut() {
   const [date, setDate] = useState(new Date());
   const [order, setOrder] = useState({});
   const [personalInfo, setPersonalInfo] = useState({});
+  const [remember, setRemember] = useState({ order_info: {} });
 
   function deliveryOptionChange(event) {
     setDelivery(event.target.value);
@@ -72,6 +76,19 @@ function CheckOut() {
       !order.personal_info.line_id
       ? false
       : true;
+  }
+
+  function handleRememberMe(prop, data) {
+    setRemember({ ...remember, [prop]: data });
+  }
+
+  function updateRememberedData() {
+    if (Object.keys(remember.order_info).length !== 0 || remember.line_id) {
+      Object.entries(remember).forEach(([key, value]) => {
+        Api.updateMember(member.id, key, value);
+        dispatch(updateMember(key, value));
+      });
+    }
   }
 
   function handleCheckout() {
@@ -115,6 +132,7 @@ function CheckOut() {
   useEffect(() => {
     if (Object.keys(order).length !== 0) {
       if (validateCheckoutInfo()) {
+        updateRememberedData();
         if (payment === "line-pay") {
           window.localStorage.setItem("order", JSON.stringify(order));
           history.push("/cart/line-pay");
@@ -128,79 +146,121 @@ function CheckOut() {
     }
   }, [order]);
 
-  return (
-    <div>
-      <Products>
-        <CartItems member={member} />
-      </Products>
-      <Delivery
-        notFilled={
-          order.order_info &&
-          (order.order_info.delivery === "select" ||
-            !order.order_info.delivery_address)
-        }
-      >
-        <Label>取貨方式*</Label>
-        <Select onChange={deliveryOptionChange}>
-          <Option value="select">請選擇取貨方式</Option>
-          <Option value="face-to-face">北投區面交</Option>
-        </Select>
-        {delivery === "select" ? (
-          ""
-        ) : (
-          <>
-            <Map
-              locations={locations}
-              selectedLocation={selectedLocation}
-              setSelectedLocation={setSelectedLocation}
-            />
+  useEffect(() => {
+    if (member.order_info) {
+      setDelivery(member.order_info.delivery || "select");
+      setPayment(member.order_info.payment || "cash");
+    }
 
-            <Locations
-              locations={locations}
-              selectedLocation={selectedLocation}
-              setSelectedLocation={setSelectedLocation}
+    setPersonalInfo({
+      name: member.name || "",
+      line_id: member.line_id || "",
+    });
+  }, [member]);
+
+  if (Object.keys(member).length !== 0) {
+    return (
+      <div>
+        <Products>
+          <CartItems member={member} />
+        </Products>
+        <Delivery
+          notFilled={
+            order.order_info &&
+            (order.order_info.delivery === "select" ||
+              !order.order_info.delivery_address)
+          }
+        >
+          <Label>取貨方式*</Label>
+
+          <Select onChange={deliveryOptionChange} defaultValue={delivery}>
+            <Option value="select">請選擇取貨方式</Option>
+            <Option value="face-to-face">北投區面交</Option>
+          </Select>
+          <RememberMe
+            prop={"delivery"}
+            handleRememberData={() =>
+              handleRememberMe("order_info", {
+                ...remember.order_info,
+                delivery,
+              })
+            }
+          />
+          {delivery === "select" ? (
+            ""
+          ) : (
+            <>
+              <Map
+                locations={locations}
+                selectedLocation={selectedLocation}
+                setSelectedLocation={setSelectedLocation}
+              />
+
+              <Locations
+                locations={locations}
+                selectedLocation={selectedLocation}
+                setSelectedLocation={setSelectedLocation}
+              />
+            </>
+          )}
+        </Delivery>
+        <Calendar>
+          <Label>取貨時間*</Label>
+          <PickDate date={date} setDate={setDate} />
+        </Calendar>
+        <PersonalInfo>
+          <Info>
+            <Label>姓名*</Label>
+            <Input
+              name="name"
+              type="text"
+              defaultValue={personalInfo.name}
+              onChange={personalInfoOnChange}
+              notFilled={order.personal_info && !order.personal_info.name}
             />
-          </>
-        )}
-      </Delivery>
-      <Calendar>
-        <Label>取貨時間*</Label>
-        <PickDate date={date} setDate={setDate} />
-      </Calendar>
-      <PersonalInfo>
-        <Info>
-          <Label>姓名*</Label>
-          <Input
-            name="name"
-            type="text"
-            onChange={personalInfoOnChange}
-            notFilled={order.personal_info && !order.personal_info.name}
+          </Info>
+          <Info>
+            <Label>Line ID*</Label>
+            <Input
+              name="line_id"
+              defaultValue={personalInfo.line_id}
+              type="text"
+              onChange={personalInfoOnChange}
+              notFilled={order.personal_info && !order.personal_info.line_id}
+            />
+            <RememberMe
+              prop={"line-pay"}
+              handleRememberData={() =>
+                handleRememberMe("line_id", personalInfo.line_id)
+              }
+            />
+          </Info>
+          <Info>
+            <Label>備註</Label>
+            <Input name="notes" type="text" onChange={personalInfoOnChange} />
+          </Info>
+        </PersonalInfo>
+        <Payment>
+          <Label>付款方式*</Label>
+          <Select onChange={paymentOptionChange} defaultValue={payment}>
+            <Option value="cash">面交現金</Option>
+            <Option value="line-pay">Line Pay</Option>
+          </Select>
+          <RememberMe
+            prop={"payment"}
+            handleRememberData={() =>
+              handleRememberMe("order_info", {
+                ...remember.order_info,
+                payment,
+              })
+            }
           />
-        </Info>
-        <Info>
-          <Label>Line ID*</Label>
-          <Input
-            name="line_id"
-            type="text"
-            onChange={personalInfoOnChange}
-            notFilled={order.personal_info && !order.personal_info.line_id}
-          />
-        </Info>
-        <Info>
-          <Label>備註</Label>
-          <Input name="notes" type="text" onChange={personalInfoOnChange} />
-        </Info>
-      </PersonalInfo>
-      <Payment>
-        <Label>付款方式*</Label>
-        <Select onChange={paymentOptionChange}>
-          <Option value="cash">面交現金</Option>
-          <Option value="line-pay">Line Pay</Option>
-        </Select>
-      </Payment>
-      <CheckoutBtn onClick={handleCheckout}>結帳</CheckoutBtn>
-    </div>
-  );
+        </Payment>
+        <CheckoutBtn onClick={handleCheckout}>結帳</CheckoutBtn>
+      </div>
+    );
+  } else {
+    return <>Loading...</>;
+  }
 }
-
 export default CheckOut;
