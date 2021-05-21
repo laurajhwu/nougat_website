@@ -1,8 +1,5 @@
 import React from "react";
-import { Modal, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
 import Api from "../../../../../utils/Api";
 import logout from "../../../../../utils/logout";
 import EditableInput from "../../../../../Components/EditableInput";
