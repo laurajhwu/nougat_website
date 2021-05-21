@@ -34,6 +34,14 @@ class Api {
       });
   }
 
+  updateProduct(id, prop, data) {
+    db.collection(this.products)
+      .doc(id)
+      .update({
+        [prop]: data,
+      });
+  }
+
   async getLocations() {
     return await db
       .collection(this.locations)
