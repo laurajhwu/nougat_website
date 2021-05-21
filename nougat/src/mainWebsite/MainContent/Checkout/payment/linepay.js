@@ -10,20 +10,24 @@ const Pay = styled.a``;
 function Payment() {
   const requestUri = "/v3/payments/request";
   const order = JSON.parse(window.localStorage.getItem("order"));
+  const amount = order.products.reduce(
+    (total, product) => total + product.price * product.qty,
+    0
+  );
   const data = {
-    amount: order.total,
+    amount,
     currency: "TWD",
     orderId: order.id,
     packages: [
       {
         id: `package${order.id}`,
-        amount: order.total,
+        amount,
         name: "蝸蝸牛軋糖",
         products: order.products.map((product) => {
           return {
             name: product.name,
-            quantity: product.qty,
-            price: product.price,
+            quantity: product.qty * 10,
+            price: product.price / 10,
             imageUrl: product.image,
           };
         }),
@@ -65,9 +69,10 @@ function Payment() {
       .post(requestUri, data, getConfigs())
       .then((response) => {
         setPaymentLink(response.data.info.paymentUrl.web);
-        window.localStorage.setItem("order", JSON.stringify(order));
       })
-      .catch((error) => console.log(error.message));
+      .catch((error) => {
+        throw error;
+      });
   }, []);
 
   if (paymentLink) {

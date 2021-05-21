@@ -10,7 +10,9 @@ import getGeoInfo from "./Delivery/GetGeoInfo";
 import PickDate from "./Time/Calendar";
 import uuid from "react-uuid";
 import RememberMe from "../../../Components/RememberMe";
+import updateProductStock from "../../../utils/updateProductStock";
 import { updateMember } from "../../../redux/actions/member";
+import { updateProduct } from "../../../redux/actions/products";
 
 const Products = styled.div``;
 const Delivery = styled.div`
@@ -39,6 +41,7 @@ function CheckOut() {
   const dispatch = useDispatch();
   const cartItems = member.cart_items;
   const allLocations = useSelector((state) => state.locations);
+  const allProducts = useSelector((state) => state.products);
   const [delivery, setDelivery] = useState("select");
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState();
@@ -46,7 +49,7 @@ function CheckOut() {
   const [date, setDate] = useState(new Date());
   const [order, setOrder] = useState({});
   const [personalInfo, setPersonalInfo] = useState({});
-  const [remember, setRemember] = useState({ order_info: {} });
+  const [remember, setRemember] = useState();
 
   function deliveryOptionChange(event) {
     setDelivery(event.target.value);
@@ -137,7 +140,9 @@ function CheckOut() {
           window.localStorage.setItem("order", JSON.stringify(order));
           history.push("/cart/line-pay");
         } else {
-          Api.postCheckoutOrder(order, member);
+          Api.postCheckoutOrder(order, member, (order) =>
+            updateProductStock(order, allProducts, dispatch, updateProduct)
+          );
         }
       } else {
         alert("請填入紅框資料！");
@@ -150,6 +155,12 @@ function CheckOut() {
     if (member.order_info) {
       setDelivery(member.order_info.delivery || "select");
       setPayment(member.order_info.payment || "cash");
+      setRemember({
+        order_info: {
+          delivery: member.order_info.delivery || "",
+          payment: member.order_info.payment || "",
+        },
+      });
     }
 
     setPersonalInfo({
@@ -158,7 +169,7 @@ function CheckOut() {
     });
   }, [member]);
 
-  if (Object.keys(member).length !== 0) {
+  if (Object.keys(member).length !== 0 && locations.length !== 0) {
     return (
       <div>
         <Products>
@@ -172,10 +183,19 @@ function CheckOut() {
           }
         >
           <Label>取貨方式*</Label>
-
-          <Select onChange={deliveryOptionChange} defaultValue={delivery}>
-            <Option value="select">請選擇取貨方式</Option>
-            <Option value="face-to-face">北投區面交</Option>
+          <Select onChange={deliveryOptionChange}>
+            <Option
+              value="select"
+              selected={delivery === "select" ? "selected" : ""}
+            >
+              請選擇取貨方式
+            </Option>
+            <Option
+              value="face-to-face"
+              selected={delivery === "face-to-face" ? "selected" : ""}
+            >
+              北投區面交
+            </Option>
           </Select>
           <RememberMe
             prop={"delivery"}
@@ -242,9 +262,19 @@ function CheckOut() {
         </PersonalInfo>
         <Payment>
           <Label>付款方式*</Label>
-          <Select onChange={paymentOptionChange} defaultValue={payment}>
-            <Option value="cash">面交現金</Option>
-            <Option value="line-pay">Line Pay</Option>
+          <Select onChange={paymentOptionChange}>
+            <Option
+              value="cash"
+              selected={payment === "cash" ? "selected" : ""}
+            >
+              面交現金
+            </Option>
+            <Option
+              value="line-pay"
+              selected={payment === "line-pay" ? "selected" : ""}
+            >
+              Line Pay
+            </Option>
           </Select>
           <RememberMe
             prop={"payment"}

@@ -8,7 +8,7 @@ function products(state = [], action) {
       const args = action.payload;
       const productObj = convertToObject(state, "id");
       productObj[args.id][args.prop] = args.data;
-      return [...state];
+      return [...[], ...state];
     default:
       return state;
   }

@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import Api from "../../../../utils/Api";
+import updateProductStock from "../../../../utils/updateProductStock";
+import { updateProduct } from "../../../../redux/actions/products";
 // import { useEffect, useState } from "react";
 // import axios from "axios";
 
@@ -10,12 +13,29 @@ function useQuery() {
 }
 const Order = styled.div``;
 
+let isLoading = false;
+
 function Confirm() {
   const order = JSON.parse(window.localStorage.getItem("order"));
-  if (order) {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const member = useSelector((state) => state.member);
+  const allProducts = useSelector((state) => state.products);
+
+  if (
+    order &&
+    allProducts.length !== 0 &&
+    Object.keys(member).length !== 0 &&
+    !isLoading
+  ) {
+    isLoading = true;
     order.status = 1;
-    Api.postCheckoutOrder(order);
+    Api.postCheckoutOrder(order, member, (order) =>
+      updateProductStock(order, allProducts, dispatch, updateProduct)
+    );
   }
+
+  useEffect(() => {}, []);
 
   return (
     <Order>感謝您的購物，您的訂單編號為：{useQuery().get("orderId")}</Order>
