@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Api from "../../../utils/Api";
+import { checkCurrentLoginStatus } from "../../../utils/loginStatus";
 import CartItems from "./Purchases/CartItems";
 import Map from "./Delivery/Map";
 import Locations from "./Delivery/RenderLocations";
@@ -110,6 +111,11 @@ function CheckOut() {
     Promise.all(promises).then((values) => {
       setLocations(values);
     });
+    checkCurrentLoginStatus();
+
+    return function clean() {
+      checkCurrentLoginStatus();
+    };
   }, []);
 
   useEffect(() => {
@@ -141,7 +147,10 @@ function CheckOut() {
         }
       >
         <Label>取貨方式*</Label>
-        <Select onChange={deliveryOptionChange}>
+        <Select
+          onChange={deliveryOptionChange}
+          value={member.order_info.delivery || "select"}
+        >
           <Option value="select">請選擇取貨方式</Option>
           <Option value="face-to-face">北投區面交</Option>
         </Select>

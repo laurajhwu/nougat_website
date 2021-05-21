@@ -4,4 +4,12 @@ function getLoginStatus(callback) {
   auth.onAuthStateChanged(callback);
 }
 
-export default getLoginStatus;
+function checkCurrentLoginStatus() {
+  const user = auth.currentUser;
+  if (!user) {
+    alert("請先登入！");
+    window.location.pathname = "/";
+  }
+}
+
+export { getLoginStatus as default, checkCurrentLoginStatus };
