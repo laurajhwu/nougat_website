@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import { Table } from "react-bootstrap";
-import { DeleteOff, Delete } from "@styled-icons/fluentui-system-filled";
+import {
+  DeleteOff,
+  Delete,
+  AddSquare,
+} from "@styled-icons/fluentui-system-filled";
 import { Detail, Edit } from "@styled-icons/boxicons-regular/";
 
 export const ProductsTable = styled(Table)`
@@ -31,6 +35,10 @@ export const Tr = styled.tr`
     padding: 10px 5px !important;
     vertical-align: middle;
   }
+
+  &:last-child td {
+    text-align: right;
+  }
 `;
 
 export const DisableRemove = styled(DeleteOff)`
@@ -55,6 +63,13 @@ export const Details = styled(Detail)`
 `;
 
 export const EditIcon = styled(Edit)`
+  width: 24px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+export const Add = styled(AddSquare)`
   width: 24px;
   &:hover {
     cursor: pointer;

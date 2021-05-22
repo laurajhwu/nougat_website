@@ -8,6 +8,8 @@ export const Container = styled.div`
 
 export const Input = styled.input``;
 
+export const Textarea = styled.textarea``;
+
 export const Text = styled.div``;
 
 export const Edit = styled(PencilAlt)`

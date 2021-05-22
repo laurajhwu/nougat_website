@@ -12,6 +12,7 @@ import {
   EnableRemove,
   Details,
   EditIcon,
+  Add,
 } from "./styles";
 
 export default function Products() {
@@ -82,6 +83,11 @@ export default function Products() {
               </Tr>
             );
           })}
+        <Tr>
+          <td colSpan="8">
+            <Add />
+          </td>
+        </Tr>
       </Tbody>
     </ProductsTable>
   );
