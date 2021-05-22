@@ -4,6 +4,7 @@ import locationsReducer from "./locations";
 import memberReducer from "./member";
 import renderPageReducer from "./renderPage";
 import fixedDataReducer from "./fixedData";
+import ingredientsReducer from "./ingredients";
 import { combineReducers } from "redux";
 
 const allReducers = combineReducers({
@@ -13,6 +14,7 @@ const allReducers = combineReducers({
   member: memberReducer,
   reRender: renderPageReducer,
   fixedData: fixedDataReducer,
+  ingredients: ingredientsReducer,
 });
 
 export default allReducers;

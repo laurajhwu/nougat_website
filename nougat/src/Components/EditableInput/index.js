@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Container, Input, Edit, Done, Text } from "./styles";
+
+import { Container, Input, Edit, Done, Text, Textarea } from "./styles";
 
 export default function EditableInput(props) {
   const [isEditing, setIsEditing] = useState(false);
@@ -23,11 +24,21 @@ export default function EditableInput(props) {
     <Container>
       {isEditing ? (
         <>
-          <Input
-            defaultValue={props.initValue}
-            isEditing={isEditing}
-            onChange={handleChange}
-          />
+          {props.notes ? (
+            <Textarea
+              defaultValue={props.initValue}
+              isEditing={isEditing}
+              onChange={handleChange}
+              rows="3"
+            />
+          ) : (
+            <Input
+              defaultValue={props.initValue}
+              isEditing={isEditing}
+              onChange={handleChange}
+            />
+          )}
+
           <Done onClick={handleClick} />
         </>
       ) : (

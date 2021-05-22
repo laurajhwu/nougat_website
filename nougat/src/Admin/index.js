@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Switch, Route, useHistory, useRouteMatch } from "react-router-dom";
+import { Route, useHistory, useRouteMatch } from "react-router-dom";
 import Login from "./Login";
 import Main from "./MainPage";
 
@@ -13,17 +13,17 @@ function Admin() {
 
   useEffect(() => {
     if (isLogin) {
-      history.push(`/admin/auth`);
+      history.push(`/admin/auth/inventory`);
     } else {
-      history.push(`/admin/login`);
+      // history.push(`/admin/login`);
     }
   }, [isLogin]);
 
   return (
     <Container>
-      <Route exact path={`${match.url}/login`}>
+      {/* <Route exact path={`${match.url}/login`}>
         <Login setIsLogin={setIsLogin} />
-      </Route>
+      </Route> */}
       <Route path={`${match.url}/auth`}>
         <Main setIsLogin={setIsLogin} />
       </Route>

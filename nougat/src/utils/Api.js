@@ -9,6 +9,7 @@ class Api {
     this.orders = "orders";
     this.member = "members";
     this.admin = "admin";
+    this.ingredients = "ingredients";
   }
 
   async getProducts() {
@@ -41,6 +42,20 @@ class Api {
       .update({
         [prop]: data,
       });
+  }
+
+  getIngredients(handleAdd, handleModify, handleRemove) {
+    db.collection(this.ingredients).onSnapshot((snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          handleAdd(change.doc.data());
+        } else if (change.type === "modified") {
+          handleModify(change.doc.data());
+        } else if (change.type === "removed") {
+          handleRemove(change.doc.data());
+        }
+      });
+    });
   }
 
   async getLocations() {
@@ -127,6 +142,22 @@ class Api {
       .where("member_id", "==", id)
       .get()
       .then((querySnapshot) => querySnapshot);
+  }
+
+  getAllOrders(handleAdd, handleModify) {
+    db.collection(this.orders).onSnapshot((snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          handleAdd(change.doc.data());
+        } else {
+          const orders = [];
+          snapshot.forEach((order) => {
+            orders.push(order.data());
+          });
+          handleModify(orders);
+        }
+      });
+    });
   }
 
   async createAccount(email, password) {
