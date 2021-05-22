@@ -1,5 +1,6 @@
 import React from "react";
-import { Route, useHistory, useRouteMatch } from "react-router-dom";
+import { ButtonGroup } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 
 import {
   Container,
@@ -11,7 +12,6 @@ import {
 
 export default function Header() {
   const history = useHistory();
-  const match = useRouteMatch();
 
   function handleClick(path) {
     history.push(path);
@@ -20,9 +20,11 @@ export default function Header() {
   return (
     <Container>
       <DropdownBtn
-        id="dropdown-basic-button"
+        id="dropdown-button-drop-down"
         title="庫存管理"
         variant="outline-info"
+        key="down"
+        drop="down"
       >
         <DropdownItem onClick={() => handleClick("/admin/auth/inventory")}>
           總庫存
@@ -31,12 +33,17 @@ export default function Header() {
           計算庫存
         </DropdownItem>
       </DropdownBtn>
-
       <Btn
         variant="outline-info"
         onClick={() => handleClick("/admin/auth/orders")}
       >
-        訂單
+        面交設定
+      </Btn>
+      <Btn
+        variant="outline-info"
+        onClick={() => handleClick("/admin/auth/orders")}
+      >
+        訂單管理
       </Btn>
       <Btn
         variant="outline-info"

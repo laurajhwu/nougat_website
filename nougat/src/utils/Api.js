@@ -129,6 +129,22 @@ class Api {
       .then((querySnapshot) => querySnapshot);
   }
 
+  async getAllOrders(handleAdd, handleModify) {
+    return await db.collection(this.orders).onSnapshot((snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          handleAdd(change.doc.data());
+        } else {
+          const orders = [];
+          snapshot.forEach((order) => {
+            orders.push(order.data());
+          });
+          handleModify(orders);
+        }
+      });
+    });
+  }
+
   async createAccount(email, password) {
     return await auth
       .createUserWithEmailAndPassword(email, password)
