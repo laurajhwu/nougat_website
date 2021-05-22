@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, UseSelector } from "react-redux";
+import ShowDetails from "./Details";
 
 import {
   ProductsTable,
@@ -17,6 +18,10 @@ export default function Products() {
   const products = useSelector((state) => state.products);
   const orders = useSelector((state) => state.orders);
   const [deleteItems, setDeleteItems] = useState([]);
+  const [showDetails, setShowDetails] = useState(false);
+
+  const handleCloseDetails = () => setShowDetails(false);
+  const handleShowDetails = (id) => setShowDetails(id);
 
   function getSoldAmount(orders, productId) {
     const allOrderProducts = orders.map((order) => order.products);
@@ -54,7 +59,7 @@ export default function Products() {
             const sold = getSoldAmount(orders, product.id);
             const stock = product.stock;
             return (
-              <Tr>
+              <Tr key={product.id}>
                 <td>
                   <input type="checkbox" />
                 </td>
@@ -64,7 +69,12 @@ export default function Products() {
                 <td>{sold + ` ${product.unit}`}</td>
                 <td>{stock + ` ${product.unit}`}</td>
                 <td>
-                  <Details />
+                  <Details onClick={() => handleShowDetails(product.id)} />
+                  <ShowDetails
+                    product={product}
+                    handleClose={handleCloseDetails}
+                    show={showDetails === product.id}
+                  />
                 </td>
                 <td>
                   <EditIcon />
