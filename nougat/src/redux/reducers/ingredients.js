@@ -1,5 +1,7 @@
 function ingredients(state = null, action) {
   switch (action.type) {
+    case "GET_ALL_INGREDIENTS":
+      return action.payload;
     case "ADD_INGREDIENT":
       return {
         ...(state ? state : {}),

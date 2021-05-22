@@ -44,12 +44,31 @@ class Api {
       });
   }
 
+  async initIngredients() {
+    return await db
+      .collection(this.ingredients)
+      .get()
+      .then((snapshot) => {
+        const ingredients = {};
+        snapshot.forEach((doc) => {
+          Object.assign(ingredients, { [doc.data().id]: doc.data() });
+        });
+        return ingredients;
+      });
+  }
+
   getIngredients(handleAdd, handleModify, handleRemove) {
     db.collection(this.ingredients).onSnapshot((snapshot) => {
       snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          handleAdd(change.doc.data());
-        } else if (change.type === "modified") {
+        // console.log("hi");
+        // if (change.type === "added") {
+        //   const ingredients = {};
+        //   snapshot.forEach((doc) => {
+        //     Object.assign(ingredients, { [doc.data().id]: doc.data() });
+        //   });
+        //   handleAdd(ingredients);
+        // }
+        if (change.type === "modified") {
           handleModify(change.doc.data());
         } else if (change.type === "removed") {
           handleRemove(change.doc.data());
@@ -144,17 +163,28 @@ class Api {
       .then((querySnapshot) => querySnapshot);
   }
 
-  getAllOrders(handleAdd, handleModify) {
+  async initAllOrders() {
+    return await db
+      .collection(this.orders)
+      .get()
+      .then((snapshot) => {
+        const orders = [];
+        snapshot.forEach((doc) => {
+          orders.push(doc.data());
+        });
+        return orders;
+      });
+  }
+
+  getAllOrders(handleGetOrders) {
     db.collection(this.orders).onSnapshot((snapshot) => {
       snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          handleAdd(change.doc.data());
-        } else {
+        if (change.type === "modified" || change.type === "removed") {
           const orders = [];
           snapshot.forEach((order) => {
             orders.push(order.data());
           });
-          handleModify(orders);
+          handleGetOrders(orders);
         }
       });
     });

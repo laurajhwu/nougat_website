@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Modal, Button, ListGroup } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 
 import { Img, List, Item, Description } from "./styles";
 

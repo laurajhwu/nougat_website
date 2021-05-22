@@ -3,7 +3,7 @@ import convertToObject from "../../utils/arrayToObjectConverter";
 function products(state = [], action) {
   switch (action.type) {
     case "GET_PRODUCTS":
-      return action.payload;
+      return [...action.payload];
     case "UPDATE_PRODUCT":
       const args = action.payload;
       const productObj = convertToObject(state, "id");

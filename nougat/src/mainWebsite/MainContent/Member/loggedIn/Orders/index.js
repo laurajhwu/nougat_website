@@ -30,7 +30,7 @@ export default function Orders() {
               {order.id}
             </OrderNumLink>
             <OrderInfo>{fixedData.status[order.status]}</OrderInfo>
-            <OrderInfo>{convertTimestamp(order.timestamp.toDate())}</OrderInfo>
+            <OrderInfo>{convertTimestamp(order.timestamp)}</OrderInfo>
             <OrderInfo>${order.total}</OrderInfo>
             <OrderDetails
               show={show === order.id}

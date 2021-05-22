@@ -21,9 +21,9 @@ function App() {
     </>
   );
 
-  Calendar.calendarSettings();
-
   useEffect(() => {
+    Calendar.calendarSettings();
+
     Api.getProducts().then((products) => {
       dispatch(getProductsData(products));
     });
