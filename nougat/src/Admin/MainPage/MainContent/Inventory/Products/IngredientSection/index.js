@@ -37,8 +37,13 @@ export default function IngredientSection(props) {
         ? originalIngredientsObj[newIngredientId].amount
         : 0,
     });
-
     props.setProdIngredient([...prodIngredient]);
+  }
+
+  function handleChangeAmount(event, id) {
+    prodIngredient.find((ingredient) => ingredient.id === id).amount = Number(
+      event.target.value
+    );
   }
 
   function handleClickAddNew() {
@@ -82,6 +87,7 @@ export default function IngredientSection(props) {
                 <Form.Control
                   placeholder="公克"
                   defaultValue={ingredient.amount || ""}
+                  onChange={(event) => handleChangeAmount(event, ingredient.id)}
                 />
               </div>
             </Form.Group>

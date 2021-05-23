@@ -1,4 +1,4 @@
-import { db, auth, fb, google } from "./firebase/firebase";
+import { db, auth, storage, fb, google } from "./firebase/firebase";
 import uuid from "react-uuid";
 import { encrypt, decrypt } from "./crypt";
 
@@ -12,17 +12,21 @@ class Api {
     this.ingredients = "ingredients";
   }
 
-  async getProducts() {
-    return await db
-      .collection(this.products)
-      .get()
-      .then((querySnapshot) => {
-        let products = [];
-        querySnapshot.forEach((product) => {
-          products = [...products, product.data()];
-        });
-        return products;
-      });
+  // async getProducts() {
+  //   return await db
+  //     .collection(this.products)
+  //     .get()
+  //     .then((querySnapshot) => {
+  //       let products = [];
+  //       querySnapshot.forEach((product) => {
+  //         products = [...products, product.data()];
+  //       });
+  //       return products;
+  //     });
+  // }
+
+  getProducts(callback) {
+    db.collection(this.products).onSnapshot(callback);
   }
 
   async getSpecificProduct(id) {
@@ -42,6 +46,24 @@ class Api {
       .update({
         [prop]: data,
       });
+  }
+
+  async checkSameProduct(name) {
+    return await db
+      .collection(this.products)
+      .where("name", "==", name)
+      .get()
+      .then((snapshot) => {
+        let isValid = true;
+        snapshot.forEach((doc) => {
+          isValid = false;
+        });
+        return isValid;
+      });
+  }
+
+  async submitProductEdit(id, data) {
+    return await db.collection(this.products).doc(id).update(data);
   }
 
   getIngredients(callbacks, initState) {
@@ -251,6 +273,14 @@ class Api {
       .catch((error) => {
         throw error;
       });
+  }
+
+  async getImageUrl(path, file) {
+    const imgRef = storage.ref().child(`${path}/${file.name}`);
+
+    return await imgRef.put(file).then(async () => {
+      return await imgRef.getDownloadURL().then((url) => url);
+    });
   }
 }
 
