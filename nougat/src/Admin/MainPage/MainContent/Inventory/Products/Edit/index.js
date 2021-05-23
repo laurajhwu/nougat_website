@@ -5,28 +5,58 @@ import { useSelector } from "react-redux";
 import Api from "../../../../../../utils/Api";
 
 import { Container, Img, File } from "./styles";
+import products from "../../../../../../redux/reducers/products";
 
 export default function Edit(props) {
   const product = props.product;
-  const [prodIngredient, setProdIngredient] = useState([
-    ...product.ingredients,
-  ]);
+  const [prodIngredient, setProdIngredient] = useState(copyIngredients());
+  const [invalid, setInvalid] = useState({});
   const [changes, setChanges] = useState({});
-  const [image, setImage] = useState();
+  const [image, setImage] = useState(product.image);
+
+  function copyIngredients() {
+    return product.ingredients.map((ingredient) => ({ ...ingredient }));
+  }
 
   function handleCloseModal() {
-    setProdIngredient([...product.ingredients]);
-    setImage(null);
+    setProdIngredient(copyIngredients());
+    setImage(product.image);
     setChanges({});
+    setInvalid({});
     props.handleClose();
   }
 
   function getEditData(event, prop) {
-    const value = event.target.value;
-    if (product[prop] !== value.trim()) {
-      changes[prop] = isNaN(Number(value)) ? value : Number(value);
+    const rawValue = event.target.value.trim();
+    const value = isNaN(Number(rawValue)) ? rawValue : Number(rawValue);
+
+    if (product[prop] !== value) {
+      if (value) {
+        changes[prop] = value;
+      } else {
+        changes[prop] = "empty";
+      }
     } else {
       delete changes[prop];
+    }
+  }
+
+  function ingredientChanged() {
+    if (prodIngredient.length !== product.ingredients.length) {
+      return true;
+    } else {
+      const isSame = prodIngredient.reduce((isSame, ingredient) => {
+        const match = product.ingredients.find(
+          (match) =>
+            match.id === ingredient.id && match.amount === ingredient.amount
+        );
+        if (!match) {
+          return false;
+        }
+        return isSame;
+      }, true);
+
+      return !isSame;
     }
   }
 
@@ -54,6 +84,35 @@ export default function Edit(props) {
     setChanges({ ...changes });
   }
 
+  function validateChanges() {
+    const { name, price, stock, unit, ingredients } = changes;
+    invalid.ingredients = {};
+    ingredients.forEach((ingredient) => {
+      if (isNaN(ingredient.amount)) {
+        invalid.ingredients = {
+          ...invalid.ingredients,
+          [ingredient.id]: true,
+        };
+      } else {
+        invalid.ingredients = {
+          ...invalid.ingredients,
+          [ingredient.id]: false,
+        };
+      }
+    });
+
+    setInvalid({
+      ...invalid,
+      ...{
+        name: !name ? false : name === "empty",
+        price: !price ? false : price && (price === "empty" || isNaN(price)),
+        stock: !stock ? false : stock && (stock === "empty" || isNaN(stock)),
+        unit: !unit ? false : unit && unit === "empty",
+        image: !image,
+      },
+    });
+  }
+
   function postEdit() {
     Api.submitProductEdit(product.id, changes)
       .then(() => {
@@ -67,24 +126,46 @@ export default function Edit(props) {
   }
 
   function submitEdit() {
-    if (Object.keys(changes).length !== 0) {
+    const valid = Object.values(invalid).every((input) => {
+      if (typeof input === "object") {
+        return Object.values(input).every((amount) => amount === false);
+      } else {
+        return input === false;
+      }
+    });
+
+    if (!ingredientChanged()) {
+      delete changes.ingredients;
+    }
+
+    if (Object.keys(changes).length !== 0 && valid) {
       if (changes.name) {
         Api.checkSameProduct(changes.name).then((isValid) => {
           if (isValid) {
             postEdit();
           } else {
-            alert("該產品名稱已被使用！");
+            changes.name = "empty";
+            validateChanges();
           }
         });
       } else {
         postEdit();
       }
+    } else {
     }
   }
 
   useEffect(() => {
-    submitEdit();
+    if (Object.keys(changes).length !== 0) {
+      validateChanges();
+    }
   }, [changes]);
+
+  useEffect(() => {
+    if (Object.keys(invalid).length !== 0) {
+      submitEdit();
+    }
+  }, [invalid]);
 
   return (
     <Modal
@@ -104,7 +185,11 @@ export default function Edit(props) {
             <Form.Control
               onChange={(event) => getEditData(event, "name")}
               defaultValue={product.name}
+              isInvalid={invalid.name}
             />
+            <Form.Control.Feedback type="invalid">
+              報錯：名稱已被使用過或未填
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Row>
             <Form.Group as={Col}>
@@ -112,7 +197,11 @@ export default function Edit(props) {
               <Form.Control
                 defaultValue={product.price}
                 onChange={(event) => getEditData(event, "price")}
+                isInvalid={invalid.price}
               />
+              <Form.Control.Feedback type="invalid">
+                售價為必填數字
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group as={Col}>
@@ -120,23 +209,34 @@ export default function Edit(props) {
               <Form.Control
                 defaultValue={product.stock}
                 onChange={(event) => getEditData(event, "stock")}
+                isInvalid={invalid.stock}
               />
+              <Form.Control.Feedback type="invalid">
+                庫存為必填數字
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group as={Col}>
               <Form.Label>單位</Form.Label>
               <Form.Control
-                placeholder="請以出售單位為主"
+                placeholder="以出售單位為主"
                 defaultValue={product.unit}
                 onChange={(event) => getEditData(event, "unit")}
+                isInvalid={invalid.unit}
               />
             </Form.Group>
+            <Form.Control.Feedback type="invalid">
+              請填入單位
+            </Form.Control.Feedback>
           </Form.Row>
           <div className="mb-3">
             <File id="formcheck-api-custom" custom>
               <Form.File.Input
                 accept="image/*,.pdf"
-                isValid={image ? "true" : ""}
+                isValid={
+                  image !== product.image ? (image ? true : false) : false
+                }
+                isInvalid={invalid.image}
                 onChange={handleUploadImage}
               />
               <Form.File.Label data-browse="上傳產品圖">
@@ -145,6 +245,9 @@ export default function Edit(props) {
               <Img src={image || product.image} />
               <Form.Control.Feedback type="valid">
                 上傳成功
+              </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                請上傳圖片
               </Form.Control.Feedback>
             </File>
           </div>
@@ -163,6 +266,7 @@ export default function Edit(props) {
             setProdIngredient={setProdIngredient}
             product={product}
             getEditData={getEditData}
+            invalid={invalid.ingredients}
           />
         </Modal.Body>
         <Modal.Footer>

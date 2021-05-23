@@ -41,9 +41,12 @@ export default function IngredientSection(props) {
   }
 
   function handleChangeAmount(event, id) {
-    prodIngredient.find((ingredient) => ingredient.id === id).amount = Number(
-      event.target.value
-    );
+    const value = event.target.value;
+    prodIngredient.find((ingredient) => ingredient.id === id).amount = isNaN(
+      Number(value)
+    )
+      ? value
+      : Number(value);
   }
 
   function handleClickAddNew() {
@@ -88,7 +91,13 @@ export default function IngredientSection(props) {
                   placeholder="公克"
                   defaultValue={ingredient.amount || ""}
                   onChange={(event) => handleChangeAmount(event, ingredient.id)}
+                  isInvalid={
+                    props.invalid ? props.invalid[ingredient.id] : false
+                  }
                 />
+                <Form.Control.Feedback type="invalid">
+                  請輸入數字
+                </Form.Control.Feedback>
               </div>
             </Form.Group>
             <Remove
