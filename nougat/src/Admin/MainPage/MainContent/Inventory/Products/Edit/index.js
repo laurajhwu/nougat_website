@@ -1,50 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Col } from "react-bootstrap";
+import IngredientSection from "../IngredientSection";
 import { useSelector } from "react-redux";
-import Products from "..";
-import convertToObj from "../../../../../../utils/arrayToObjectConverter";
 
 import { Container } from "./styles";
 
 export default function Edit(props) {
   const product = props.product;
-  const ingredients = useSelector((state) => state.ingredients);
   const [prodIngredient, setProdIngredient] = useState([
     ...product.ingredients,
   ]);
-  const [remaining, setRemaining] = useState(IngredientsNotUsed());
-
-  function IngredientsNotUsed() {
-    const remaining = { ...ingredients };
-    prodIngredient.forEach((ingredient) => {
-      delete remaining[ingredient.id];
-    });
-    return remaining;
-  }
-
-  function handleChangeIngredient(event, oldIngredientId) {
-    const originalIngredientsObj = convertToObj(product.ingredients, "id");
-    const newIngredientId = event.target.value;
-    const index = prodIngredient.findIndex(
-      (ingredient) => ingredient.id === oldIngredientId
-    );
-    prodIngredient.splice(index, 1, {
-      id: newIngredientId,
-      amount: originalIngredientsObj[newIngredientId]
-        ? originalIngredientsObj[newIngredientId].amount
-        : "",
-    });
-    setProdIngredient([...prodIngredient]);
-  }
-
-  useEffect(() => {
-    setRemaining(IngredientsNotUsed());
-  }, [prodIngredient]);
 
   return (
     <Modal
       show={props.show}
-      onHide={props.handleClose}
+      onHide={() => {
+        props.handleClose();
+        setProdIngredient([...product.ingredients]);
+        console.log("hi");
+      }}
       backdrop="static"
       keyboard={false}
     >
@@ -58,7 +32,6 @@ export default function Edit(props) {
             <Form.Label>產品名稱</Form.Label>
             <Form.Control defaultValue={product.name} />
           </Form.Group>
-
           <Form.Row>
             <Form.Group as={Col}>
               <Form.Label>售價</Form.Label>
@@ -78,7 +51,6 @@ export default function Edit(props) {
               />
             </Form.Group>
           </Form.Row>
-
           <div className="mb-3">
             <Form.File id="formcheck-api-custom" custom>
               <Form.File.Input accept="image/*,.pdf" isValid="" />
@@ -90,7 +62,6 @@ export default function Edit(props) {
               </Form.Control.Feedback>
             </Form.File>
           </div>
-
           <Form.Group controlId="exampleForm.ControlTextarea1">
             <Form.Label>產品簡述</Form.Label>
             <Form.Control
@@ -99,41 +70,12 @@ export default function Edit(props) {
               defaultValue={product.description}
             />
           </Form.Group>
-          {prodIngredient.map((ingredient) => {
-            return (
-              <Form.Row>
-                <Form.Group as={Col} controlId="formGridState">
-                  <Form.Label>食材</Form.Label>
-                  <Form.Control
-                    as="select"
-                    defaultValue={ingredient.id}
-                    onChange={(event) =>
-                      handleChangeIngredient(event, ingredient.id)
-                    }
-                  >
-                    <option key={ingredient.id} value={ingredient.id}>
-                      {ingredients[ingredient.id].name}
-                    </option>
-                    {Object.values(remaining).map((remain) => {
-                      return (
-                        <option key={remain.id} value={remain.id}>
-                          {remain.name}
-                        </option>
-                      );
-                    })}
-                  </Form.Control>
-                </Form.Group>
 
-                <Form.Group as={Col} xs={8} controlId="formGridZip">
-                  <Form.Label>{`每${product.unit}所需公克數`}</Form.Label>
-                  <Form.Control
-                    placeholder="公克"
-                    defaultValue={ingredient.amount}
-                  />
-                </Form.Group>
-              </Form.Row>
-            );
-          })}
+          <IngredientSection
+            prodIngredient={prodIngredient}
+            setProdIngredient={setProdIngredient}
+            product={product}
+          />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" type="submit" onClick={props.handleClose}>
