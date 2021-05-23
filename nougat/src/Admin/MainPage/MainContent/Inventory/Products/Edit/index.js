@@ -1,27 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import Products from "..";
+import convertToObj from "../../../../../../utils/arrayToObjectConverter";
 
 import { Container } from "./styles";
 
 export default function Edit(props) {
   const product = props.product;
   const ingredients = useSelector((state) => state.ingredients);
+  const [prodIngredient, setProdIngredient] = useState([
+    ...product.ingredients,
+  ]);
   const [remaining, setRemaining] = useState(IngredientsNotUsed());
 
   function IngredientsNotUsed() {
     const remaining = { ...ingredients };
-    console.log(remaining);
-    product.ingredients.forEach((ingredient) => {
+    prodIngredient.forEach((ingredient) => {
       delete remaining[ingredient.id];
     });
-    console.log(product.ingredients);
     return remaining;
   }
 
+  function handleChangeIngredient(event, oldIngredientId) {
+    const originalIngredientsObj = convertToObj(product.ingredients, "id");
+    const newIngredientId = event.target.value;
+    const index = prodIngredient.findIndex(
+      (ingredient) => ingredient.id === oldIngredientId
+    );
+    prodIngredient.splice(index, 1, {
+      id: newIngredientId,
+      amount: originalIngredientsObj[newIngredientId]
+        ? originalIngredientsObj[newIngredientId].amount
+        : "",
+    });
+    setProdIngredient([...prodIngredient]);
+  }
+
   useEffect(() => {
-    console.log(remaining);
-  }, []);
+    setRemaining(IngredientsNotUsed());
+  }, [prodIngredient]);
 
   return (
     <Modal
@@ -81,12 +99,18 @@ export default function Edit(props) {
               defaultValue={product.description}
             />
           </Form.Group>
-          {product.ingredients.map((ingredient) => {
+          {prodIngredient.map((ingredient) => {
             return (
               <Form.Row>
                 <Form.Group as={Col} controlId="formGridState">
                   <Form.Label>食材</Form.Label>
-                  <Form.Control as="select" defaultValue={ingredient.id}>
+                  <Form.Control
+                    as="select"
+                    defaultValue={ingredient.id}
+                    onChange={(event) =>
+                      handleChangeIngredient(event, ingredient.id)
+                    }
+                  >
                     <option key={ingredient.id} value={ingredient.id}>
                       {ingredients[ingredient.id].name}
                     </option>

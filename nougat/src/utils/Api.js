@@ -44,36 +44,26 @@ class Api {
       });
   }
 
-  async initIngredients() {
-    return await db
-      .collection(this.ingredients)
-      .get()
-      .then((snapshot) => {
+  getIngredients(callbacks, initState) {
+    db.collection(this.ingredients).onSnapshot((snapshot) => {
+      if (initState) {
         const ingredients = {};
         snapshot.forEach((doc) => {
           Object.assign(ingredients, { [doc.data().id]: doc.data() });
         });
-        return ingredients;
-      });
-  }
-
-  getIngredients(handleAdd, handleModify, handleRemove) {
-    db.collection(this.ingredients).onSnapshot((snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        // console.log("hi");
-        // if (change.type === "added") {
-        //   const ingredients = {};
-        //   snapshot.forEach((doc) => {
-        //     Object.assign(ingredients, { [doc.data().id]: doc.data() });
-        //   });
-        //   handleAdd(ingredients);
-        // }
-        if (change.type === "modified") {
-          handleModify(change.doc.data());
-        } else if (change.type === "removed") {
-          handleRemove(change.doc.data());
-        }
-      });
+        callbacks.handleInit(ingredients);
+      } else {
+        snapshot.docChanges().forEach((change) => {
+          if (change.type === "added") {
+            callbacks.handleAdd(change.doc.data());
+          }
+          if (change.type === "modified") {
+            callbacks.handleModify(change.doc.data());
+          } else if (change.type === "removed") {
+            callbacks.handleRemove(change.doc.data());
+          }
+        });
+      }
     });
   }
 
@@ -163,30 +153,27 @@ class Api {
       .then((querySnapshot) => querySnapshot);
   }
 
-  async initAllOrders() {
-    return await db
-      .collection(this.orders)
-      .get()
-      .then((snapshot) => {
-        const orders = [];
-        snapshot.forEach((doc) => {
-          orders.push(doc.data());
-        });
-        return orders;
-      });
-  }
-
-  getAllOrders(handleGetOrders) {
+  getAllOrders(callbacks, initState) {
     db.collection(this.orders).onSnapshot((snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "modified" || change.type === "removed") {
-          const orders = [];
-          snapshot.forEach((order) => {
-            orders.push(order.data());
-          });
-          handleGetOrders(orders);
-        }
-      });
+      if (initState) {
+        const orders = [];
+        snapshot.forEach((order) => {
+          orders.push(order.data());
+        });
+        callbacks.handleInit(orders);
+      } else {
+        snapshot.docChanges().forEach((change) => {
+          if (change.type === "added") {
+            callbacks.handleAdd(change.doc.data());
+          }
+          if (change.type === "modified") {
+            callbacks.handleModify(change.doc.data());
+          }
+          if (change.type === "removed") {
+            callbacks.handleRemove(change.doc.data());
+          }
+        });
+      }
     });
   }
 
