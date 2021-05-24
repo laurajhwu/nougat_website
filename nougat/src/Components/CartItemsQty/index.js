@@ -9,12 +9,10 @@ import { QuantityBar, Select, Option } from "./styles";
 export default function QuantityBtn(props) {
   const dispatch = useDispatch();
   const member = useSelector((state) => state.member);
+  const cartItems = member.cart_items;
+  const product = cartItems.find((cartItem) => cartItem.id === props.productId);
 
   function handleChange(event) {
-    const cartItems = member.cart_items;
-    const product = cartItems.find(
-      (cartItem) => cartItem.id === props.productId
-    );
     product.qty = Number(event.target.value);
     product.total = product.qty * product.price;
     Api.updateMember(member.id, "cart_items", cartItems);
@@ -34,7 +32,7 @@ export default function QuantityBtn(props) {
           )
         )}
       </Select>
-      斤
+      {product.unit}
     </QuantityBar>
   );
 }

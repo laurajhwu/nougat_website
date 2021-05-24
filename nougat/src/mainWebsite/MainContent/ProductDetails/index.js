@@ -76,7 +76,7 @@ function AllProducts() {
                     )
                   )}
                 </Select>
-                斤
+                {product.unit}
               </QuantityBar>
             )}
           </Quantity>

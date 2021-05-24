@@ -33,7 +33,9 @@ const Delete = styled.div``;
 const Total = styled.div``;
 
 function AllProducts() {
-  const allProducts = useSelector((state) => state.products);
+  const allProducts = useSelector((state) => state.products).sort(
+    (first, last) => first.display_order - last.display_order
+  );
   const member = useSelector((state) => state.member);
   const cartItems = member.cart_items;
   const qty = 1;
