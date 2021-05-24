@@ -37,7 +37,6 @@ function LoggedIn() {
           querySnapshot.forEach((order) => {
             orders.push(order.data());
           });
-          console.log(orders);
           dispatch(getMemberOrders(orders));
           dispatch(getOrderFixedData());
         })

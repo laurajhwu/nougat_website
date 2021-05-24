@@ -22,7 +22,7 @@ function SocialLogin(props) {
     api()
       .then((result) => {
         const user = result.user;
-        Api.isMember().then((isMember) => {
+        Api.isMember(user.uid).then((isMember) => {
           if (isMember) {
             props.initMemberState(user.uid);
           } else {

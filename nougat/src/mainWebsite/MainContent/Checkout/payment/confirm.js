@@ -30,6 +30,8 @@ function Confirm() {
   ) {
     isLoading = true;
     order.status = 1;
+    order.order_info.delivery_time = new Date(order.order_info.delivery_time);
+    order.timestamp = new Date(order.timestamp);
     Api.postCheckoutOrder(order, member, (order) =>
       updateProductStock(order, allProducts, dispatch, updateProduct)
     );

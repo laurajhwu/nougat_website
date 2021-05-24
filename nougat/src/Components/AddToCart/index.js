@@ -5,7 +5,13 @@ import convertArrToObj from "../../utils/arrayToObjectConverter";
 
 import { useDispatch } from "react-redux";
 
-import { Add, CartPlusFillIcon, CartPlusIcon, CartButton } from "./styles";
+import {
+  Add,
+  CartPlusFillIcon,
+  CartPlusIcon,
+  CartButton,
+  CartDisableIcon,
+} from "./styles";
 
 export default function AddToCart(props) {
   const dispatch = useDispatch();
@@ -48,10 +54,12 @@ export default function AddToCart(props) {
   }
 
   return (
-    <Add onClick={addOnClick}>
+    <Add onClick={addOnClick} disabled={props.soldOut}>
       {path === "/products" ? (
         isInCart ? (
           <CartPlusFillIcon />
+        ) : props.soldOut ? (
+          <CartDisableIcon />
         ) : (
           <CartPlusIcon className="cart-plus-icon" />
         )

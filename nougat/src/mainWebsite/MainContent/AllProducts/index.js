@@ -45,7 +45,12 @@ function AllProducts() {
           {allProducts.map((product) => (
             <>
               <AddToCartIcon>
-                <AddToCart productId={product.id} qty={qty} member={member} />
+                <AddToCart
+                  productId={product.id}
+                  qty={qty}
+                  member={member}
+                  soldOut={product.stock === 0}
+                />
               </AddToCartIcon>
               <Link
                 to={`/product?id=${product.id}`}
