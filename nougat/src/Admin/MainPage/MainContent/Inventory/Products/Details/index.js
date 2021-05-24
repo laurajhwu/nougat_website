@@ -1,18 +1,52 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Alert, Fade } from "react-bootstrap";
+import Api from "../../../../../../utils/Api";
 
-import { Img, List, Item, Description } from "./styles";
+import { Img, List, Item, Description, CameraIcon, FileInput } from "./styles";
 
 export default function Details(props) {
   const product = props.product;
   const ingredients = useSelector((state) => state.ingredients);
+  const [show, setShow] = useState(false);
+
+  function uploadImage(event, id) {
+    const file = event.target.files[0];
+    if (file) {
+      Api.getImageUrl("product_image", file).then((url) => {
+        if (url) {
+          Api.updateProduct(id, { image: url });
+          setShow(true);
+          window.setTimeout(() => {
+            setShow(false);
+          }, 2000);
+        } else {
+          alert("上傳失敗");
+        }
+      });
+    } else {
+      alert("檔案有誤");
+    }
+  }
+
   return (
     <Modal show={props.show} onHide={props.handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>{product.name}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <Fade in={true} show={show}>
+          <Alert variant="success">上傳成功</Alert>
+        </Fade>
+        <label htmlFor="upload-image">
+          <CameraIcon />
+          <FileInput
+            type="file"
+            accept="image/*"
+            id="upload-image"
+            onChange={(event) => uploadImage(event, product.id)}
+          />
+        </label>
         <Img src={product.image} />
         <List horizontal>
           <div> 成分：</div>

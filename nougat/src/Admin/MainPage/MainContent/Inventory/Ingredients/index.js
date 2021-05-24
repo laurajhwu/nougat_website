@@ -21,7 +21,6 @@ import {
 
 export default function Ingredients() {
   const ingredients = useSelector((state) => state.ingredients);
-  const orders = useSelector((state) => state.orders);
   const [deleteItems, setDeleteItems] = useState([]);
   const [show, setShow] = useState(false);
 
