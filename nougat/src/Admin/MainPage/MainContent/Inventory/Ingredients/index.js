@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useSelector, UseSelector } from "react-redux";
 import { OverlayTrigger, Popover } from "react-bootstrap";
+import Api from "../../../../../utils/Api";
 import EditableInput from "../../../../../Components/EditableInput";
+import Edit from "./Edit";
 
 import {
   ProductsTable,
@@ -26,8 +28,8 @@ export default function Ingredients() {
   const handleClose = () => setShow(false);
   const handleShow = (id) => setShow(id);
 
-  function handleNoteEdit(data, ingredient) {
-    ingredient.notes = data;
+  function handleNoteEdit(id, data) {
+    Api.updateIngredients(id, { notes: data });
   }
 
   if (ingredients) {
@@ -42,7 +44,7 @@ export default function Ingredients() {
             <Th>總購買量</Th>
             <Th>已使用</Th>
             <Th>剩餘庫存</Th>
-            <Th>筆記</Th>
+            <Th>備註</Th>
             <Th>編輯</Th>
           </Tr>
         </Thead>
@@ -67,14 +69,14 @@ export default function Ingredients() {
                       key="top"
                       placement="top"
                       overlay={
-                        <Popover id={`popover-positioned-$"top"`}>
-                          <Popover.Title as="h4">{`筆記`}</Popover.Title>
+                        <Popover id={`popover-positioned-top`}>
+                          <Popover.Title as="h4">{`備註`}</Popover.Title>
                           <PopoverContent>
                             <EditableInput
                               notes={true}
                               initValue={ingredient.notes}
                               handleFinishEdit={(data) =>
-                                handleNoteEdit(data, ingredient)
+                                handleNoteEdit(ingredient.id, data)
                               }
                             />
                           </PopoverContent>
@@ -85,7 +87,12 @@ export default function Ingredients() {
                     </OverlayTrigger>
                   </td>
                   <td>
-                    <EditIcon />
+                    <EditIcon onClick={() => handleShow(ingredient.id)} />
+                    <Edit
+                      ingredient={ingredient}
+                      handleClose={handleClose}
+                      show={show === ingredient.id}
+                    />
                   </td>
                 </Tr>
               );

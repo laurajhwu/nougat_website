@@ -68,6 +68,24 @@ class Api {
     // }
   }
 
+  async updateIngredients(id, data) {
+    return await db.collection(this.ingredients).doc(id).update(data);
+  }
+
+  async checkSameIngredient(name) {
+    return await db
+      .collection(this.ingredients)
+      .where("name", "==", name)
+      .get()
+      .then((snapshot) => {
+        let isValid = true;
+        snapshot.forEach((doc) => {
+          isValid = false;
+        });
+        return isValid;
+      });
+  }
+
   async getLocations() {
     return await db
       .collection(this.locations)

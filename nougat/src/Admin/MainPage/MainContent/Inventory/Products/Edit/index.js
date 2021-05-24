@@ -4,8 +4,7 @@ import IngredientSection from "../IngredientSection";
 import { useSelector } from "react-redux";
 import Api from "../../../../../../utils/Api";
 
-import { Container, Img, File } from "./styles";
-import products from "../../../../../../redux/reducers/products";
+import { Img, File } from "./styles";
 
 export default function Edit(props) {
   const product = props.product;
@@ -105,9 +104,9 @@ export default function Edit(props) {
       ...invalid,
       ...{
         name: !name ? false : name === "empty",
-        price: !price ? false : price && (price === "empty" || isNaN(price)),
-        stock: !stock ? false : stock && (stock === "empty" || isNaN(stock)),
-        unit: !unit ? false : unit && unit === "empty",
+        price: !price ? false : price === "empty" || isNaN(price),
+        stock: !stock ? false : stock === "empty" || isNaN(stock),
+        unit: !unit ? false : unit === "empty",
         image: !image,
       },
     });
@@ -151,7 +150,6 @@ export default function Edit(props) {
       } else {
         postEdit();
       }
-    } else {
     }
   }
 
