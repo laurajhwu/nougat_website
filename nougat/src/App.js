@@ -46,6 +46,10 @@ function App() {
         }
         if (change.type === "removed") {
           dispatch(removeProduct(change.doc.data()));
+          console.log(
+            "🚀 ~ file: App.js ~ line 49 ~ snapshot.docChanges ~ change.doc.data()",
+            change.doc.data()
+          );
         }
       });
     }

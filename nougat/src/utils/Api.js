@@ -40,6 +40,18 @@ class Api {
       });
   }
 
+  async addProduct(data) {
+    return await db
+      .collection(this.products)
+      .add(data)
+      .then(async (product) => {
+        return await db
+          .collection(this.products)
+          .doc(product.id)
+          .update({ id: product.id });
+      });
+  }
+
   async updateProduct(id, data) {
     return await db.collection(this.products).doc(id).update(data);
   }
@@ -83,6 +95,18 @@ class Api {
           isValid = false;
         });
         return isValid;
+      });
+  }
+
+  async addIngredient(data) {
+    return await db
+      .collection(this.ingredients)
+      .add(data)
+      .then(async (ingredient) => {
+        return await db
+          .collection(this.ingredients)
+          .doc(ingredient.id)
+          .update({ id: ingredient.id });
       });
   }
 

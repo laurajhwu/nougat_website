@@ -11,7 +11,7 @@ export default function IngredientSection(props) {
   const prodIngredient = props.prodIngredient;
   const ingredients = useSelector((state) => state.ingredients);
   const [remaining, setRemaining] = useState(IngredientsNotUsed());
-  const [addNew, setAddeNew] = useState(false);
+  const [addNew, setAddeNew] = useState(!props.product);
 
   function IngredientsNotUsed() {
     const remaining = { ...ingredients };
@@ -38,6 +38,11 @@ export default function IngredientSection(props) {
         : 0,
     });
     props.setProdIngredient([...prodIngredient]);
+  }
+
+  function handleNewProductIngredient(event) {
+    const id = event.target.value;
+    props.setProdIngredient([...prodIngredient, { id, amount: 0 }]);
   }
 
   function handleChangeAmount(event, id) {
@@ -67,8 +72,10 @@ export default function IngredientSection(props) {
               <Form.Control
                 as="select"
                 defaultValue={ingredient.id}
-                onChange={(event) =>
-                  handleChangeIngredient(event, ingredient.id)
+                onChange={
+                  props.product
+                    ? (event) => handleChangeIngredient(event, ingredient.id)
+                    : handleNewProductIngredient
                 }
               >
                 <option key={ingredient.id} value={ingredient.id}>
@@ -85,7 +92,9 @@ export default function IngredientSection(props) {
             </Form.Group>
 
             <Form.Group as={Col} xs={7} controlId="formGridZip">
-              <Form.Label>{`每${props.product.unit}所需公克數`}</Form.Label>
+              <Form.Label>{`每${
+                props.product ? props.product.unit : "單位"
+              }所需公克數`}</Form.Label>
               <div key={ingredient.amount}>
                 <Form.Control
                   placeholder="公克"
@@ -100,11 +109,15 @@ export default function IngredientSection(props) {
                 </Form.Control.Feedback>
               </div>
             </Form.Group>
-            <Remove
-              prodIngredient={prodIngredient}
-              setProdIngredient={props.setProdIngredient}
-              ingredientId={ingredient.id}
-            />
+            {props.prodIngredient.length > 1 ? (
+              <Remove
+                prodIngredient={prodIngredient}
+                setProdIngredient={props.setProdIngredient}
+                ingredientId={ingredient.id}
+              />
+            ) : (
+              <></>
+            )}
           </Form.Row>
         );
       })}
@@ -115,6 +128,7 @@ export default function IngredientSection(props) {
           remaining={remaining}
           prodIngredient={prodIngredient}
           setAddeNew={setAddeNew}
+          invalid={props.invalid}
         />
       ) : (
         <></>

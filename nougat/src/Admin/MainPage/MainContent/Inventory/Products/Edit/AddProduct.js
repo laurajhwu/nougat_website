@@ -1,25 +1,21 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Modal, Button, Form, Col } from "react-bootstrap";
 import IngredientSection from "../IngredientSection";
-import { useSelector } from "react-redux";
 import Api from "../../../../../../utils/Api";
 
 import { Img, File } from "./styles";
 
 export default function Edit(props) {
-  const product = props.product;
-  const [prodIngredient, setProdIngredient] = useState(copyIngredients());
+  const products = useSelector((state) => state.products);
+  const [prodIngredient, setProdIngredient] = useState([]);
   const [invalid, setInvalid] = useState({});
   const [changes, setChanges] = useState({});
-  const [image, setImage] = useState(product.image);
-
-  function copyIngredients() {
-    return product.ingredients.map((ingredient) => ({ ...ingredient }));
-  }
+  const [image, setImage] = useState();
 
   function handleCloseModal() {
-    setProdIngredient(copyIngredients());
-    setImage(product.image);
+    setProdIngredient([]);
+    setImage("");
     setChanges({});
     setInvalid({});
     props.handleClose();
@@ -29,34 +25,7 @@ export default function Edit(props) {
     const rawValue = event.target.value.trim();
     const value = isNaN(Number(rawValue)) ? rawValue : Number(rawValue);
 
-    if (product[prop] !== value) {
-      if (value) {
-        changes[prop] = value;
-      } else {
-        changes[prop] = "empty";
-      }
-    } else {
-      delete changes[prop];
-    }
-  }
-
-  function ingredientChanged() {
-    if (prodIngredient.length !== product.ingredients.length) {
-      return true;
-    } else {
-      const isSame = prodIngredient.reduce((isSame, ingredient) => {
-        const match = product.ingredients.find(
-          (match) =>
-            match.id === ingredient.id && match.amount === ingredient.amount
-        );
-        if (!match) {
-          return false;
-        }
-        return isSame;
-      }, true);
-
-      return !isSame;
-    }
+    changes[prop] = value;
   }
 
   function handleUploadImage(event) {
@@ -79,13 +48,20 @@ export default function Edit(props) {
 
   function handOnSubmit(event) {
     event.preventDefault();
-    changes.ingredients = prodIngredient;
-    setChanges({ ...changes });
+    setChanges({
+      ...changes,
+      ...{
+        ingredients: prodIngredient,
+        created_time: new Date(),
+        display_order: products.length + 1,
+        description: changes.description ? changes.description : "",
+      },
+    });
   }
 
   function validateChanges() {
     const { name, price, stock, unit, ingredients } = changes;
-    invalid.ingredients = {};
+    invalid.ingredients = ingredients.length === 0 ? true : {};
     ingredients.forEach((ingredient) => {
       if (isNaN(ingredient.amount)) {
         invalid.ingredients = {
@@ -103,23 +79,23 @@ export default function Edit(props) {
     setInvalid({
       ...invalid,
       ...{
-        name: !name ? false : name === "empty",
-        price: !price ? false : price === "empty" || isNaN(price),
-        stock: !stock ? false : stock === "empty" || isNaN(stock),
-        unit: !unit ? false : unit === "empty",
+        name: !name,
+        price: (!price && price !== 0) || isNaN(price),
+        stock: (!stock && stock !== 0) || isNaN(stock),
+        unit: !unit,
         image: !image,
       },
     });
   }
 
   function postEdit() {
-    Api.updateProduct(product.id, changes)
+    Api.addProduct(changes)
       .then(() => {
-        alert("已修改");
+        alert("已新增產品！");
         handleCloseModal();
       })
       .catch((error) => {
-        alert("修改失敗！");
+        alert("新增失敗！");
         throw error;
       });
   }
@@ -133,17 +109,13 @@ export default function Edit(props) {
       }
     });
 
-    if (!ingredientChanged()) {
-      delete changes.ingredients;
-    }
-
     if (Object.keys(changes).length !== 0 && valid) {
       if (changes.name) {
         Api.checkSameProduct(changes.name).then((isValid) => {
           if (isValid) {
             postEdit();
           } else {
-            changes.name = "empty";
+            changes.name = "";
             validateChanges();
           }
         });
@@ -173,8 +145,7 @@ export default function Edit(props) {
       keyboard={false}
     >
       <Modal.Header closeButton>
-        <Modal.Title>{product.name}</Modal.Title>
-        <small>{product.id}</small>
+        <Modal.Title>新增產品</Modal.Title>
       </Modal.Header>
       <Form onSubmit={handOnSubmit}>
         <Modal.Body>
@@ -182,7 +153,6 @@ export default function Edit(props) {
             <Form.Label>產品名稱</Form.Label>
             <Form.Control
               onChange={(event) => getEditData(event, "name")}
-              defaultValue={product.name}
               isInvalid={invalid.name}
             />
             <Form.Control.Feedback type="invalid">
@@ -193,7 +163,6 @@ export default function Edit(props) {
             <Form.Group as={Col}>
               <Form.Label>售價</Form.Label>
               <Form.Control
-                defaultValue={product.price}
                 onChange={(event) => getEditData(event, "price")}
                 isInvalid={invalid.price}
               />
@@ -205,7 +174,6 @@ export default function Edit(props) {
             <Form.Group as={Col}>
               <Form.Label>剩餘庫存</Form.Label>
               <Form.Control
-                defaultValue={product.stock}
                 onChange={(event) => getEditData(event, "stock")}
                 isInvalid={invalid.stock}
               />
@@ -218,29 +186,26 @@ export default function Edit(props) {
               <Form.Label>單位</Form.Label>
               <Form.Control
                 placeholder="以出售單位為主"
-                defaultValue={product.unit}
                 onChange={(event) => getEditData(event, "unit")}
                 isInvalid={invalid.unit}
               />
+              <Form.Control.Feedback type="invalid">
+                請填入單位
+              </Form.Control.Feedback>
             </Form.Group>
-            <Form.Control.Feedback type="invalid">
-              請填入單位
-            </Form.Control.Feedback>
           </Form.Row>
           <div className="mb-3">
             <File id="formcheck-api-custom" custom>
               <Form.File.Input
                 accept="image/*,.pdf"
-                isValid={
-                  image !== product.image ? (image ? true : false) : false
-                }
+                isValid={image ? true : false}
                 isInvalid={invalid.image}
                 onChange={handleUploadImage}
               />
               <Form.File.Label data-browse="上傳產品圖">
-                {image || product.image}
+                {image || ""}
               </Form.File.Label>
-              <Img src={image || product.image} />
+              <Img src={image || ""} />
               <Form.Control.Feedback type="valid">
                 上傳成功
               </Form.Control.Feedback>
@@ -254,7 +219,7 @@ export default function Edit(props) {
             <Form.Control
               as="textarea"
               rows={3}
-              defaultValue={product.description}
+              placeholder="成分、注意事項等"
               onChange={(event) => getEditData(event, "description")}
             />
           </Form.Group>
@@ -262,14 +227,13 @@ export default function Edit(props) {
           <IngredientSection
             prodIngredient={prodIngredient}
             setProdIngredient={setProdIngredient}
-            product={product}
             getEditData={getEditData}
             invalid={invalid.ingredients}
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" type="submit">
-            修改
+          <Button variant="warning" type="submit">
+            新增
           </Button>
         </Modal.Footer>
       </Form>

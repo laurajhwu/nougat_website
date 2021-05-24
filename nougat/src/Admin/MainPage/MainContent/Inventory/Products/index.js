@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import Ingredients from "../Ingredients";
 import ShowDetails from "./Details";
-import Edit from "./Edit";
+import Update from "./Edit/UpdateProduct";
+import AddNewProduct from "./Edit/AddProduct";
 
 import {
   ProductsTable,
@@ -13,7 +13,7 @@ import {
   DisableRemove,
   EnableRemove,
   Details,
-  EditIcon,
+  UpdateIcon,
   Add,
 } from "./styles";
 
@@ -21,13 +21,16 @@ export default function Products() {
   const products = useSelector((state) => state.products);
   const orders = useSelector((state) => state.orders);
   const [deleteItems, setDeleteItems] = useState([]);
-  const [showDetails, setShowDetails] = useState(false);
-  const [edit, setEdit] = useState(false);
+  const [details, setDetails] = useState(false);
+  const [update, setUpdate] = useState(false);
+  const [add, setAdd] = useState(false);
 
-  const handleCloseDetails = () => setShowDetails(false);
-  const handleShowDetails = (id) => setShowDetails(id);
-  const handleCloseEdit = () => setEdit(false);
-  const handleShowEdit = (id) => setEdit(id);
+  const handleCloseDetails = () => setDetails(false);
+  const handleShowDetails = (id) => setDetails(id);
+  const handleCloseEdit = () => setUpdate(false);
+  const handleShowEdit = (id) => setUpdate(id);
+  const handleCloseAdd = () => setAdd(false);
+  const handleShowAdd = () => setAdd(true);
 
   function getSoldAmount(orders, productId) {
     const allOrderProducts = orders.map((order) => order.products);
@@ -80,15 +83,15 @@ export default function Products() {
                     <ShowDetails
                       product={product}
                       handleClose={handleCloseDetails}
-                      show={showDetails === product.id}
+                      show={details === product.id}
                     />
                   </td>
                   <td>
-                    <EditIcon onClick={() => handleShowEdit(product.id)} />
-                    <Edit
+                    <UpdateIcon onClick={() => handleShowEdit(product.id)} />
+                    <Update
                       product={product}
                       handleClose={handleCloseEdit}
-                      show={edit === product.id}
+                      show={update === product.id}
                     />
                   </td>
                 </Tr>
@@ -96,7 +99,8 @@ export default function Products() {
             })}
           <Tr>
             <td colSpan="8">
-              <Add />
+              <Add onClick={handleShowAdd} />
+              <AddNewProduct handleClose={handleCloseAdd} show={add} />
             </td>
           </Tr>
         </Tbody>

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { useSelector, UseSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import Api from "../../../../../utils/Api";
 import EditableInput from "../../../../../Components/EditableInput";
-import Edit from "./Edit";
+import Update from "./Edit/UpdateIngredient";
+import AddIngredient from "./Edit/AddIngredient";
 
 import {
   ProductsTable,
@@ -14,7 +15,7 @@ import {
   Notes,
   DisableRemove,
   EnableRemove,
-  EditIcon,
+  UpdateIcon,
   PopoverContent,
   Add,
 } from "./styles";
@@ -22,10 +23,13 @@ import {
 export default function Ingredients() {
   const ingredients = useSelector((state) => state.ingredients);
   const [deleteItems, setDeleteItems] = useState([]);
-  const [show, setShow] = useState(false);
+  const [showUpdate, setShowUpdate] = useState(false);
+  const [showAdd, setShowAdd] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = (id) => setShow(id);
+  const handleCloseUpdate = () => setShowUpdate(false);
+  const handleShowUpdate = (id) => setShowUpdate(id);
+  const handleCloseAdd = () => setShowAdd(false);
+  const handleShowAdd = () => setShowAdd(true);
 
   function handleNoteEdit(id, data) {
     Api.updateIngredients(id, { notes: data });
@@ -86,11 +90,13 @@ export default function Ingredients() {
                     </OverlayTrigger>
                   </td>
                   <td>
-                    <EditIcon onClick={() => handleShow(ingredient.id)} />
-                    <Edit
+                    <UpdateIcon
+                      onClick={() => handleShowUpdate(ingredient.id)}
+                    />
+                    <Update
                       ingredient={ingredient}
-                      handleClose={handleClose}
-                      show={show === ingredient.id}
+                      handleClose={handleCloseUpdate}
+                      show={showUpdate === ingredient.id}
                     />
                   </td>
                 </Tr>
@@ -98,7 +104,8 @@ export default function Ingredients() {
             })}
           <Tr>
             <td colSpan="7">
-              <Add />
+              <Add onClick={handleShowAdd} />
+              <AddIngredient handleClose={handleCloseAdd} show={showAdd} />
             </td>
           </Tr>
         </Tbody>

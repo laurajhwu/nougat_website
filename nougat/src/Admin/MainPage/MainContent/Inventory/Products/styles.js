@@ -62,7 +62,7 @@ export const Details = styled(Detail)`
   }
 `;
 
-export const EditIcon = styled(Edit)`
+export const UpdateIcon = styled(Edit)`
   width: 24px;
   &:hover {
     cursor: pointer;

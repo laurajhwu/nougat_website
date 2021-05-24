@@ -14,7 +14,9 @@ const Img = styled.img`
 const Info = styled.div``;
 const Name = styled.div``;
 const Price = styled.div``;
-const Description = styled.p``;
+const Description = styled.p`
+  white-space: pre-wrap;
+`;
 
 const Label = styled.label`
   font-size: 20px;
