@@ -1,4 +1,4 @@
-import { db, auth, fb, google } from "./firebase/firebase";
+import { db, auth, storage, fb, google } from "./firebase/firebase";
 import uuid from "react-uuid";
 import { encrypt, decrypt } from "./crypt";
 
@@ -12,17 +12,8 @@ class Api {
     this.ingredients = "ingredients";
   }
 
-  async getProducts() {
-    return await db
-      .collection(this.products)
-      .get()
-      .then((querySnapshot) => {
-        let products = [];
-        querySnapshot.forEach((product) => {
-          products = [...products, product.data()];
-        });
-        return products;
-      });
+  getProducts(callback) {
+    db.collection(this.products).onSnapshot(callback);
   }
 
   async getSpecificProduct(id) {
@@ -35,27 +26,64 @@ class Api {
       });
   }
 
-  async updateProduct(id, prop, data) {
+  async checkSameProduct(name) {
     return await db
       .collection(this.products)
-      .doc(id)
-      .update({
-        [prop]: data,
+      .where("name", "==", name)
+      .get()
+      .then((snapshot) => {
+        let isValid = true;
+        snapshot.forEach((doc) => {
+          isValid = false;
+        });
+        return isValid;
       });
   }
 
-  getIngredients(handleAdd, handleModify, handleRemove) {
-    db.collection(this.ingredients).onSnapshot((snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          handleAdd(change.doc.data());
-        } else if (change.type === "modified") {
-          handleModify(change.doc.data());
-        } else if (change.type === "removed") {
-          handleRemove(change.doc.data());
-        }
+  async updateProduct(id, data) {
+    return await db.collection(this.products).doc(id).update(data);
+  }
+
+  getIngredients(callback) {
+    db.collection(this.ingredients).onSnapshot(callback);
+    //   (snapshot) => {
+    //   if (initState) {
+    //     const ingredients = {};
+    //     snapshot.forEach((doc) => {
+    //       Object.assign(ingredients, { [doc.data().id]: doc.data() });
+    //     });
+    //     callbacks.handleInit(ingredients);
+    //   } else {
+    //     snapshot.docChanges().forEach((change) => {
+    //       if (change.type === "added") {
+    //         callbacks.handleAdd(change.doc.data());
+    //       }
+    //       if (change.type === "modified") {
+    //         callbacks.handleModify(change.doc.data());
+    //       } else if (change.type === "removed") {
+    //         callbacks.handleRemove(change.doc.data());
+    //       }
+    //     });
+    //   }
+    // }
+  }
+
+  async updateIngredients(id, data) {
+    return await db.collection(this.ingredients).doc(id).update(data);
+  }
+
+  async checkSameIngredient(name) {
+    return await db
+      .collection(this.ingredients)
+      .where("name", "==", name)
+      .get()
+      .then((snapshot) => {
+        let isValid = true;
+        snapshot.forEach((doc) => {
+          isValid = false;
+        });
+        return isValid;
       });
-    });
   }
 
   async getLocations() {
@@ -144,20 +172,29 @@ class Api {
       .then((querySnapshot) => querySnapshot);
   }
 
-  getAllOrders(handleAdd, handleModify) {
-    db.collection(this.orders).onSnapshot((snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          handleAdd(change.doc.data());
-        } else {
-          const orders = [];
-          snapshot.forEach((order) => {
-            orders.push(order.data());
-          });
-          handleModify(orders);
-        }
-      });
-    });
+  getAllOrders(callback) {
+    db.collection(this.orders).onSnapshot(callback);
+    //   (snapshot) => {
+    //   if (initState) {
+    //     const orders = [];
+    //     snapshot.forEach((order) => {
+    //       orders.push(order.data());
+    //     });
+    //     callbacks.handleInit(orders);
+    //   } else {
+    //     snapshot.docChanges().forEach((change) => {
+    //       if (change.type === "added") {
+    //         callbacks.handleAdd(change.doc.data());
+    //       }
+    //       if (change.type === "modified") {
+    //         callbacks.handleModify(change.doc.data());
+    //       }
+    //       if (change.type === "removed") {
+    //         callbacks.handleRemove(change.doc.data());
+    //       }
+    //     });
+    //   }
+    // }
   }
 
   async createAccount(email, password) {
@@ -234,6 +271,14 @@ class Api {
       .catch((error) => {
         throw error;
       });
+  }
+
+  async getImageUrl(path, file) {
+    const imgRef = storage.ref().child(`${path}/${file.name}`);
+
+    return await imgRef.put(file).then(async () => {
+      return await imgRef.getDownloadURL().then((url) => url);
+    });
   }
 }
 

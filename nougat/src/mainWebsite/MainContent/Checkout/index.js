@@ -12,7 +12,6 @@ import uuid from "react-uuid";
 import RememberMe from "../../../Components/RememberMe";
 import updateProductStock from "../../../utils/updateProductStock";
 import { updateMember } from "../../../redux/actions/member";
-import { updateProduct } from "../../../redux/actions/products";
 
 const Products = styled.div``;
 const Delivery = styled.div`
@@ -141,7 +140,7 @@ function CheckOut() {
           history.push("/cart/line-pay");
         } else {
           Api.postCheckoutOrder(order, member, (order) =>
-            updateProductStock(order, allProducts, dispatch, updateProduct)
+            updateProductStock(order, allProducts)
           );
         }
       } else {

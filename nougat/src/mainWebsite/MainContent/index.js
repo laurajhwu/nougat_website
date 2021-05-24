@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Products from "./AllProducts";
 import ProductDetails from "./ProductDetails";
 import Cart from "./Checkout";
-import LinePay from "./Checkout/Payment/LinePay";
+import LinePay from "./Checkout/Payment/Linepay";
 import Confirm from "./Checkout/Payment/Confirm";
 import Cancel from "./Checkout/Payment/Cancel";
 import Member from "./Member";

@@ -3,7 +3,17 @@ export const getProductsData = (products) => ({
   payload: products,
 });
 
-export const updateProduct = (productId, prop, data) => ({
-  type: "UPDATE_PRODUCT",
-  payload: { id: productId, prop, data },
+export const modifyProduct = (product) => ({
+  type: "MODIFY_PRODUCT",
+  payload: product,
+});
+
+export const addProduct = (product) => ({
+  type: "ADD_PRODUCT",
+  payload: product,
+});
+
+export const removeProduct = (product) => ({
+  type: "REMOVE_PRODUCT",
+  payload: product,
 });
