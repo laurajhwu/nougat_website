@@ -12,19 +12,6 @@ class Api {
     this.ingredients = "ingredients";
   }
 
-  // async getProducts() {
-  //   return await db
-  //     .collection(this.products)
-  //     .get()
-  //     .then((querySnapshot) => {
-  //       let products = [];
-  //       querySnapshot.forEach((product) => {
-  //         products = [...products, product.data()];
-  //       });
-  //       return products;
-  //     });
-  // }
-
   getProducts(callback) {
     db.collection(this.products).onSnapshot(callback);
   }
@@ -36,15 +23,6 @@ class Api {
       .get()
       .then((product) => {
         return product.data();
-      });
-  }
-
-  async updateProduct(id, prop, data) {
-    return await db
-      .collection(this.products)
-      .doc(id)
-      .update({
-        [prop]: data,
       });
   }
 
@@ -62,7 +40,7 @@ class Api {
       });
   }
 
-  async submitProductEdit(id, data) {
+  async updateProduct(id, data) {
     return await db.collection(this.products).doc(id).update(data);
   }
 

@@ -114,7 +114,7 @@ export default function Edit(props) {
   }
 
   function postEdit() {
-    Api.submitProductEdit(product.id, changes)
+    Api.updateProduct(product.id, changes)
       .then(() => {
         alert("已修改");
         handleCloseModal();
