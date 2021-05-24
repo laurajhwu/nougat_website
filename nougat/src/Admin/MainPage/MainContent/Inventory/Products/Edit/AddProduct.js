@@ -54,6 +54,7 @@ export default function Edit(props) {
         ingredients: prodIngredient,
         created_time: new Date(),
         display_order: products.length + 1,
+        description: changes.description ? changes.description : "",
       },
     });
   }
@@ -79,8 +80,8 @@ export default function Edit(props) {
       ...invalid,
       ...{
         name: !name,
-        price: !price || isNaN(price),
-        stock: !stock || isNaN(stock),
+        price: (!price && price !== 0) || isNaN(price),
+        stock: (!stock && stock !== 0) || isNaN(stock),
         unit: !unit,
         image: !image,
       },

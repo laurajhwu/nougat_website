@@ -5,7 +5,6 @@ import Api from "../../../../../../utils/Api";
 import {} from "./styles";
 
 export default function Edit(props) {
-  const ingredient = props.ingredient;
   const [invalid, setInvalid] = useState({});
   const [changes, setChanges] = useState({});
 
@@ -18,20 +17,12 @@ export default function Edit(props) {
   function getEditData(event, prop) {
     const rawValue = event.target.value.trim();
     const value = isNaN(Number(rawValue)) ? rawValue : Number(rawValue);
-
-    if (ingredient[prop] !== value) {
-      if (value) {
-        changes[prop] = value;
-      } else {
-        changes[prop] = "empty";
-      }
-    } else {
-      delete changes[prop];
-    }
+    changes[prop] = value;
   }
 
   function handOnSubmit(event) {
     event.preventDefault();
+    changes.notes = changes.notes ? changes.notes : "";
     setChanges({ ...changes });
   }
 
@@ -41,21 +32,21 @@ export default function Edit(props) {
     setInvalid({
       ...invalid,
       ...{
-        name: !name ? false : name === "empty",
-        used: !used ? false : used === "empty" || isNaN(used),
-        stock: !stock ? false : stock === "empty" || isNaN(stock),
+        name: !name,
+        used: (!used && used !== 0) || isNaN(used),
+        stock: (!stock && stock !== 0) || isNaN(stock),
       },
     });
   }
 
   function postEdit() {
-    Api.updateIngredients(ingredient.id, changes)
+    Api.addIngredient(changes)
       .then(() => {
-        alert("已修改");
+        alert("已新增");
         handleCloseModal();
       })
       .catch((error) => {
-        alert("修改失敗！");
+        alert("新增失敗！");
         throw error;
       });
   }
@@ -69,7 +60,7 @@ export default function Edit(props) {
           if (isValid) {
             postEdit();
           } else {
-            changes.name = "empty";
+            changes.name = "";
             validateChanges();
           }
         });
@@ -99,8 +90,7 @@ export default function Edit(props) {
       keyboard={false}
     >
       <Modal.Header closeButton>
-        <Modal.Title>{ingredient.name}</Modal.Title>
-        <small>{ingredient.id}</small>
+        <Modal.Title>新增食材</Modal.Title>
       </Modal.Header>
       <Form onSubmit={handOnSubmit}>
         <Modal.Body>
@@ -108,7 +98,6 @@ export default function Edit(props) {
             <Form.Label>材料名稱</Form.Label>
             <Form.Control
               onChange={(event) => getEditData(event, "name")}
-              defaultValue={ingredient.name}
               isInvalid={invalid.name}
             />
             <Form.Control.Feedback type="invalid">
@@ -119,7 +108,6 @@ export default function Edit(props) {
             <Form.Group as={Col}>
               <Form.Label>已使用</Form.Label>
               <Form.Control
-                defaultValue={ingredient.used}
                 onChange={(event) => getEditData(event, "used")}
                 isInvalid={invalid.used}
               />
@@ -131,7 +119,6 @@ export default function Edit(props) {
             <Form.Group as={Col}>
               <Form.Label>剩餘庫存</Form.Label>
               <Form.Control
-                defaultValue={ingredient.stock}
                 onChange={(event) => getEditData(event, "stock")}
                 isInvalid={invalid.stock}
               />
@@ -146,14 +133,13 @@ export default function Edit(props) {
             <Form.Control
               as="textarea"
               rows={3}
-              defaultValue={ingredient.notes}
               onChange={(event) => getEditData(event, "notes")}
             />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" type="submit">
-            修改
+          <Button variant="warning" type="submit">
+            新增
           </Button>
         </Modal.Footer>
       </Form>

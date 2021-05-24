@@ -3,10 +3,12 @@ function ingredients(state = null, action) {
     case "GET_ALL_INGREDIENTS":
       return action.payload;
     case "ADD_INGREDIENT":
-      return {
-        ...(state ? state : {}),
-        ...{ [action.payload.id]: action.payload },
-      };
+      return action.payload.id
+        ? {
+            ...(state ? state : {}),
+            ...{ [action.payload.id]: action.payload },
+          }
+        : { ...(state ? state : {}) };
     case "MODIFY_INGREDIENT":
       return {
         ...state,

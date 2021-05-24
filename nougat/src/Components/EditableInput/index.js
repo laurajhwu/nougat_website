@@ -11,7 +11,7 @@ export default function EditableInput(props) {
   }
 
   function handleChange(event) {
-    setData(event.target.value);
+    setData(event.target.value.trim());
   }
 
   useEffect(() => {

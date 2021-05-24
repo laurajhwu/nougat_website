@@ -104,8 +104,10 @@ export default function Edit(props) {
       ...invalid,
       ...{
         name: !name ? false : name === "empty",
-        price: !price ? false : price === "empty" || isNaN(price),
-        stock: !stock ? false : stock === "empty" || isNaN(stock),
+        price:
+          !price && price !== 0 ? false : price === "empty" || isNaN(price),
+        stock:
+          !stock && stock !== 0 ? false : stock === "empty" || isNaN(stock),
         unit: !unit ? false : unit === "empty",
         image: !image,
       },

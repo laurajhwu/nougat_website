@@ -10,7 +10,9 @@ export const Input = styled.input``;
 
 export const Textarea = styled.textarea``;
 
-export const Text = styled.div``;
+export const Text = styled.div`
+  white-space: pre-wrap;
+`;
 
 export const Edit = styled(PencilAlt)`
   width: 15px;

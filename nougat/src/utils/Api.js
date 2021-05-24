@@ -98,6 +98,18 @@ class Api {
       });
   }
 
+  async addIngredient(data) {
+    return await db
+      .collection(this.ingredients)
+      .add(data)
+      .then(async (ingredient) => {
+        return await db
+          .collection(this.ingredients)
+          .doc(ingredient.id)
+          .update({ id: ingredient.id });
+      });
+  }
+
   async getLocations() {
     return await db
       .collection(this.locations)
