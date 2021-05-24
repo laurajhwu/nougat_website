@@ -56,6 +56,15 @@ class Api {
     return await db.collection(this.products).doc(id).update(data);
   }
 
+  async removeMultipleProducts(idArray) {
+    const batch = db.batch();
+    idArray.forEach((id) => {
+      const ref = db.collection(this.products).doc(id);
+      batch.delete(ref);
+    });
+    return await batch.commit();
+  }
+
   getIngredients(callback) {
     db.collection(this.ingredients).onSnapshot(callback);
     //   (snapshot) => {

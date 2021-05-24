@@ -42,7 +42,6 @@ export default function Edit(props) {
   function postEdit() {
     Api.addIngredient(changes)
       .then(() => {
-        alert("已新增");
         handleCloseModal();
       })
       .catch((error) => {

@@ -14,7 +14,8 @@ function products(state = [], action) {
       const index = state.findIndex(
         (product) => product.id === action.payload.id
       );
-      return [...state.splice(index, 1)];
+      state.splice(index, 1);
+      return [...state];
     default:
       return state;
   }
