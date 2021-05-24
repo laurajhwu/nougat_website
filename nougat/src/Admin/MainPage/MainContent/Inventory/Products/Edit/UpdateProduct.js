@@ -222,10 +222,10 @@ export default function Edit(props) {
                 onChange={(event) => getEditData(event, "unit")}
                 isInvalid={invalid.unit}
               />
+              <Form.Control.Feedback type="invalid">
+                請填入單位
+              </Form.Control.Feedback>
             </Form.Group>
-            <Form.Control.Feedback type="invalid">
-              請填入單位
-            </Form.Control.Feedback>
           </Form.Row>
           <div className="mb-3">
             <File id="formcheck-api-custom" custom>

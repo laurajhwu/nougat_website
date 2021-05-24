@@ -23,6 +23,20 @@ export default function NewRow(props) {
     }
   }
 
+  function addNewProductIngredient(event) {
+    if (event.target.value !== "choose") {
+      props.setAddeNew(false);
+
+      props.setProdIngredient([
+        ...props.prodIngredient,
+        {
+          id: event.target.value,
+          amount: 0,
+        },
+      ]);
+    }
+  }
+
   return (
     <Form.Row>
       <Form.Group as={Col} controlId="formGridState">
@@ -30,7 +44,8 @@ export default function NewRow(props) {
         <Form.Control
           as="select"
           defaultValue="choose"
-          onChange={addNewIngredient}
+          onChange={props.product ? addNewIngredient : addNewProductIngredient}
+          isInvalid={props.invalid ? props.invalid : false}
         >
           <option key="choose" value="choose">
             選取食材
@@ -43,18 +58,27 @@ export default function NewRow(props) {
             );
           })}
         </Form.Control>
+        <Form.Control.Feedback type="invalid">
+          請至少選取一樣食材
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group as={Col} xs={7} controlId="formGridZip">
-        <Form.Label>{`每${props.product.unit}所需公克數`}</Form.Label>
+        <Form.Label>{`每${
+          props.product ? props.product.unit : "單位"
+        }所需公克數`}</Form.Label>
         <Form.Control placeholder="公克" />
       </Form.Group>
-      <Remove
-        prodIngredient={props.prodIngredient}
-        setProdIngredient={props.setProdIngredient}
-        noValue={true}
-        setAddeNew={props.setAddeNew}
-      />
+      {props.prodIngredient.length > 1 ? (
+        <Remove
+          prodIngredient={props.prodIngredient}
+          setProdIngredient={props.setProdIngredient}
+          setAddeNew={props.setAddeNew}
+          noValue={true}
+        />
+      ) : (
+        <></>
+      )}
     </Form.Row>
   );
 }

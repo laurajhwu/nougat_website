@@ -3,7 +3,15 @@ import { useSelector } from "react-redux";
 import { Modal, Button, Alert, Fade } from "react-bootstrap";
 import Api from "../../../../../../utils/Api";
 
-import { Img, List, Item, Description, CameraIcon, FileInput } from "./styles";
+import {
+  Img,
+  List,
+  Item,
+  Description,
+  CameraIcon,
+  FileInput,
+  Title,
+} from "./styles";
 
 export default function Details(props) {
   const product = props.product;
@@ -68,7 +76,8 @@ export default function Details(props) {
         </List>
         <List>
           <Description variant="light" key={product.id}>
-            {`簡述：${product.description}`}
+            <Title>簡述</Title>
+            {product.description}
           </Description>
         </List>
       </Modal.Body>

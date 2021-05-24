@@ -40,6 +40,18 @@ class Api {
       });
   }
 
+  async addProduct(data) {
+    return await db
+      .collection(this.products)
+      .add(data)
+      .then(async (product) => {
+        return await db
+          .collection(this.products)
+          .doc(product.id)
+          .update({ id: product.id });
+      });
+  }
+
   async updateProduct(id, data) {
     return await db.collection(this.products).doc(id).update(data);
   }

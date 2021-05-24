@@ -18,8 +18,16 @@ export const Item = styled(ListGroup.Item)`
   width: 100px;
 `;
 
+export const Title = styled.div`
+  font-weight: bold;
+  margin: 0 auto 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid;
+`;
+
 export const Description = styled(ListGroup.Item)`
   width: 100% !important;
+  white-space: pre-wrap;
 `;
 
 export const CameraIcon = styled(Camera)`
