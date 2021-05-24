@@ -44,27 +44,28 @@ class Api {
     return await db.collection(this.products).doc(id).update(data);
   }
 
-  getIngredients(callbacks, initState) {
-    db.collection(this.ingredients).onSnapshot((snapshot) => {
-      if (initState) {
-        const ingredients = {};
-        snapshot.forEach((doc) => {
-          Object.assign(ingredients, { [doc.data().id]: doc.data() });
-        });
-        callbacks.handleInit(ingredients);
-      } else {
-        snapshot.docChanges().forEach((change) => {
-          if (change.type === "added") {
-            callbacks.handleAdd(change.doc.data());
-          }
-          if (change.type === "modified") {
-            callbacks.handleModify(change.doc.data());
-          } else if (change.type === "removed") {
-            callbacks.handleRemove(change.doc.data());
-          }
-        });
-      }
-    });
+  getIngredients(callback) {
+    db.collection(this.ingredients).onSnapshot(callback);
+    //   (snapshot) => {
+    //   if (initState) {
+    //     const ingredients = {};
+    //     snapshot.forEach((doc) => {
+    //       Object.assign(ingredients, { [doc.data().id]: doc.data() });
+    //     });
+    //     callbacks.handleInit(ingredients);
+    //   } else {
+    //     snapshot.docChanges().forEach((change) => {
+    //       if (change.type === "added") {
+    //         callbacks.handleAdd(change.doc.data());
+    //       }
+    //       if (change.type === "modified") {
+    //         callbacks.handleModify(change.doc.data());
+    //       } else if (change.type === "removed") {
+    //         callbacks.handleRemove(change.doc.data());
+    //       }
+    //     });
+    //   }
+    // }
   }
 
   async getLocations() {
@@ -153,28 +154,29 @@ class Api {
       .then((querySnapshot) => querySnapshot);
   }
 
-  getAllOrders(callbacks, initState) {
-    db.collection(this.orders).onSnapshot((snapshot) => {
-      if (initState) {
-        const orders = [];
-        snapshot.forEach((order) => {
-          orders.push(order.data());
-        });
-        callbacks.handleInit(orders);
-      } else {
-        snapshot.docChanges().forEach((change) => {
-          if (change.type === "added") {
-            callbacks.handleAdd(change.doc.data());
-          }
-          if (change.type === "modified") {
-            callbacks.handleModify(change.doc.data());
-          }
-          if (change.type === "removed") {
-            callbacks.handleRemove(change.doc.data());
-          }
-        });
-      }
-    });
+  getAllOrders(callback) {
+    db.collection(this.orders).onSnapshot(callback);
+    //   (snapshot) => {
+    //   if (initState) {
+    //     const orders = [];
+    //     snapshot.forEach((order) => {
+    //       orders.push(order.data());
+    //     });
+    //     callbacks.handleInit(orders);
+    //   } else {
+    //     snapshot.docChanges().forEach((change) => {
+    //       if (change.type === "added") {
+    //         callbacks.handleAdd(change.doc.data());
+    //       }
+    //       if (change.type === "modified") {
+    //         callbacks.handleModify(change.doc.data());
+    //       }
+    //       if (change.type === "removed") {
+    //         callbacks.handleRemove(change.doc.data());
+    //       }
+    //     });
+    //   }
+    // }
   }
 
   async createAccount(email, password) {

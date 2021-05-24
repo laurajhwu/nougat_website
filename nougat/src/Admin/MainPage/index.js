@@ -17,71 +17,116 @@ import {
   removeIngredient,
 } from "../../redux/actions/ingredients";
 
+let initIngredients = true;
+let initOrders = true;
+
 export default function MainPage() {
   const dispatch = useDispatch();
-  const [initState, setInitState] = useState(true);
-  const orders = useSelector((state) => state.orders);
-  const ingredients = useSelector((state) => state.orders);
 
-  function handleAddOrder(order) {
-    dispatch(addNewOrder(order));
+  // function handleAddOrder(order) {
+  //   dispatch(addNewOrder(order));
+  // }
+
+  // function handleGetOrders(orders) {
+  //   dispatch(getAllOrders(orders));
+  // }
+
+  // function handleModifyOrder(order) {
+  //   dispatch(getModifiedOrder(order));
+  // }
+
+  // function handleRemoveOrder(order) {
+  //   dispatch(getRemovedOrder(order));
+  // }
+
+  // function handleGetAllIngredients(ingredients) {
+  //   dispatch(getAllIngredients(ingredients));
+  // }
+
+  // function handleAddIngredient(ingredient) {
+  //   dispatch(addIngredient(ingredient));
+  // }
+
+  // function handleModifyIngredient(ingredient) {
+  //   dispatch(modifyIngredient(ingredient));
+  // }
+
+  // function handleRemoveIngredient(ingredient) {
+  //   dispatch(removeIngredient(ingredient));
+  // }
+
+  function handleOrdersOnSnapshot(snapshot) {
+    if (initOrders) {
+      const orders = [];
+      snapshot.forEach((order) => {
+        orders.push(order.data());
+      });
+      dispatch(getAllOrders(orders));
+      initOrders = false;
+    } else {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          dispatch(addNewOrder(change.doc.data()));
+        }
+        if (change.type === "modified") {
+          dispatch(getModifiedOrder(change.doc.data()));
+        }
+        if (change.type === "removed") {
+          dispatch(getRemovedOrder(change.doc.data()));
+        }
+      });
+    }
   }
 
-  function handleGetOrders(orders) {
-    dispatch(getAllOrders(orders));
-  }
-
-  function handleModifyOrder(order) {
-    dispatch(getModifiedOrder(order));
-  }
-
-  function handleRemoveOrder(order) {
-    dispatch(getRemovedOrder(order));
-  }
-
-  function handleGetAllIngredients(ingredients) {
-    dispatch(getAllIngredients(ingredients));
-  }
-
-  function handleAddIngredient(ingredient) {
-    dispatch(addIngredient(ingredient));
-  }
-
-  function handleModifyIngredient(ingredient) {
-    dispatch(modifyIngredient(ingredient));
-  }
-
-  function handleRemoveIngredient(ingredient) {
-    dispatch(removeIngredient(ingredient));
+  function handleIngredientsOnSnapshot(snapshot) {
+    if (initIngredients) {
+      const ingredients = {};
+      snapshot.forEach((doc) => {
+        Object.assign(ingredients, { [doc.data().id]: doc.data() });
+      });
+      dispatch(getAllIngredients(ingredients));
+      initIngredients = false;
+    } else {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          dispatch(addIngredient(change.doc.data()));
+        }
+        if (change.type === "modified") {
+          dispatch(modifyIngredient(change.doc.data()));
+        }
+        if (change.type === "removed") {
+          dispatch(removeIngredient(change.doc.data()));
+        }
+      });
+    }
   }
 
   useEffect(() => {
-    if (orders && ingredients) {
-      setInitState(false);
-    }
+    Api.getIngredients(handleIngredientsOnSnapshot);
+
+    Api.getAllOrders(handleOrdersOnSnapshot);
   }, []);
 
   useEffect(() => {
-    Api.getAllOrders(
-      {
-        handleInit: handleGetOrders,
-        handleAdd: handleAddOrder,
-        handleModify: handleModifyOrder,
-        handleRemove: handleRemoveOrder,
-      },
-      initState
-    );
-
-    Api.getIngredients(
-      {
-        handleInit: handleGetAllIngredients,
-        handleAdd: handleAddIngredient,
-        handleModify: handleModifyIngredient,
-        handleRemove: handleRemoveIngredient,
-      },
-      initState
-    );
-  }, [initState]);
+    // Api.getAllOrders(
+    //   {
+    //     handleInit: handleGetOrders,
+    //     handleAdd: handleAddOrder,
+    //     handleModify: handleModifyOrder,
+    //     handleRemove: handleRemoveOrder,
+    //   },
+    //   initState
+    // );
+    // Api.getIngredients(
+    //   {
+    //     handleInit: handleGetAllIngredients,
+    //     handleAdd: handleAddIngredient,
+    //     handleModify: handleModifyIngredient,
+    //     handleRemove: handleRemoveIngredient,
+    //   },
+    //   initState
+    // );
+  }, []);
 
   return (
     <>
