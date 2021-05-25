@@ -16,4 +16,6 @@ export const CardContainer = styled(Card)``;
 export const CardBody = styled(Card.Body)`
   height: 70vh;
   overflow: scroll;
+  min-height: 600px;
+  max-height: 1000px;
 `;
