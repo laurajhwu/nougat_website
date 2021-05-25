@@ -91,7 +91,6 @@ export default function Edit(props) {
   function postEdit() {
     Api.addProduct(changes)
       .then(() => {
-        alert("已新增產品！");
         handleCloseModal();
       })
       .catch((error) => {

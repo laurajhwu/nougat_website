@@ -1,6 +1,7 @@
 import { db, auth, storage, fb, google } from "./firebase/firebase";
 import uuid from "react-uuid";
 import { encrypt, decrypt } from "./crypt";
+import convertToObj from "./arrayToObjectConverter";
 
 class Api {
   constructor() {
@@ -56,6 +57,15 @@ class Api {
     return await db.collection(this.products).doc(id).update(data);
   }
 
+  async removeMultipleProducts(idArray) {
+    const batch = db.batch();
+    idArray.forEach((id) => {
+      const ref = db.collection(this.products).doc(id);
+      batch.delete(ref);
+    });
+    return await batch.commit();
+  }
+
   getIngredients(callback) {
     db.collection(this.ingredients).onSnapshot(callback);
     //   (snapshot) => {
@@ -108,6 +118,55 @@ class Api {
           .doc(ingredient.id)
           .update({ id: ingredient.id });
       });
+  }
+
+  async removeMultipleIngredients(idArray, products) {
+    const productsIngredientsObj = products.reduce(
+      (obj, product) => ({
+        ...obj,
+        [product.id]: convertToObj(product.ingredients, "id"),
+      }),
+      {}
+    );
+    console.log(
+      "🚀 ~ file: Api.js ~ line 131 ~ Api ~ removeMultipleIngredients ~ productsIngredientsObj",
+      productsIngredientsObj
+    );
+    const updatedProducts = {};
+
+    const batch = db.batch();
+
+    idArray.forEach((ingredientId) => {
+      const ingredientRef = db.collection(this.ingredients).doc(ingredientId);
+
+      Object.keys(productsIngredientsObj).forEach((productId) => {
+        const product = productsIngredientsObj[productId];
+        if (product[ingredientId]) {
+          delete product[ingredientId];
+          Object.assign(updatedProducts, { [productId]: product });
+        }
+      });
+
+      console.log(
+        "🚀 ~ file: Api.js ~ line 133 ~ Api ~ removeMultipleIngredients ~ updatedProducts",
+        updatedProducts
+      );
+
+      batch.delete(ingredientRef);
+    });
+
+    Object.entries(updatedProducts).forEach(([productId, ingredients]) => {
+      const productRef = db.collection(this.products).doc(productId);
+      batch.update(productRef, {
+        ingredients: Object.values(ingredients),
+      });
+      console.log(
+        "🚀 ~ file: Api.js ~ line 162 ~ Api ~ removeMultipleIngredients ~ data",
+        Object.values(ingredients)
+      );
+    });
+
+    return await batch.commit();
   }
 
   async getLocations() {

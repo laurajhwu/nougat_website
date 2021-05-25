@@ -69,7 +69,7 @@ export default function NewRow(props) {
         }所需公克數`}</Form.Label>
         <Form.Control placeholder="公克" />
       </Form.Group>
-      {props.prodIngredient.length > 1 ? (
+      {props.prodIngredient.length > 0 ? (
         <Remove
           prodIngredient={props.prodIngredient}
           setProdIngredient={props.setProdIngredient}

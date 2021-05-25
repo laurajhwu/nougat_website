@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import Api from "../../../../../utils/Api";
 import ShowDetails from "./Details";
 import Update from "./Edit/UpdateProduct";
 import AddNewProduct from "./Edit/AddProduct";
+import Delete from "../DeleteIventory";
 
 import {
   ProductsTable,
@@ -10,8 +12,6 @@ import {
   Tbody,
   Tr,
   Th,
-  DisableRemove,
-  EnableRemove,
   Details,
   UpdateIcon,
   Add,
@@ -45,13 +45,37 @@ export default function Products() {
     return totalSold;
   }
 
+  function handleChecked(event, id) {
+    setDeleteItems(
+      event.target.checked
+        ? [...deleteItems, id]
+        : deleteItems.filter((item) => item !== id)
+    );
+  }
+
+  function handleDeleteProduct() {
+    if (window.confirm("刪除後資料無法復原，確認刪除？")) {
+      Api.removeMultipleProducts(deleteItems)
+        .then(() => {
+          alert("刪除完畢");
+          setDeleteItems([]);
+        })
+        .catch((error) => {
+          throw error;
+        });
+    }
+  }
+
   if (orders && products.length !== 0) {
     return (
       <ProductsTable striped bordered hover responsive>
         <Thead>
           <Tr>
             <Th>
-              {deleteItems.length === 0 ? <DisableRemove /> : <EnableRemove />}
+              <Delete
+                deleteItems={deleteItems}
+                handleDelete={handleDeleteProduct}
+              />
             </Th>
             <Th>產品名</Th>
             <Th>售價</Th>
@@ -71,7 +95,10 @@ export default function Products() {
               return (
                 <Tr key={product.id}>
                   <td>
-                    <input type="checkbox" />
+                    <input
+                      type="checkbox"
+                      onChange={(event) => handleChecked(event, product.id)}
+                    />
                   </td>
                   <td>{product.name}</td>
                   <td>{`$${product.price} /${product.unit}`}</td>
