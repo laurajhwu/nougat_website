@@ -1,6 +1,7 @@
 import React from "react";
 import { Accordion, Card, Button } from "react-bootstrap";
 import TabsBS from "./TabsBS";
+import DragAndDropOrders from "./OrderProducts";
 
 import {
   Container,
@@ -28,11 +29,13 @@ export default function Inventory() {
         <CardContainer>
           <Card.Header>
             <Accordion.Toggle as={Button} variant="link" eventKey="1">
-              Click me!
+              產品首頁排列
             </Accordion.Toggle>
           </Card.Header>
           <Accordion.Collapse eventKey="1">
-            <CardBody>Hello! I'm another body</CardBody>
+            <CardBody>
+              <DragAndDropOrders />
+            </CardBody>
           </Accordion.Collapse>
         </CardContainer>
       </AccordionContainer>
