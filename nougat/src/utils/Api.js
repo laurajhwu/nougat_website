@@ -66,6 +66,15 @@ class Api {
     return await batch.commit();
   }
 
+  async updateProductOrder(products) {
+    const batch = db.batch();
+    products.forEach((product) => {
+      const ref = db.collection(this.products).doc(product.id);
+      batch.update(ref, { display_order: product.display_order });
+    });
+    return await batch.commit();
+  }
+
   getIngredients(callback) {
     db.collection(this.ingredients).onSnapshot(callback);
     //   (snapshot) => {
@@ -128,10 +137,6 @@ class Api {
       }),
       {}
     );
-    console.log(
-      "🚀 ~ file: Api.js ~ line 131 ~ Api ~ removeMultipleIngredients ~ productsIngredientsObj",
-      productsIngredientsObj
-    );
     const updatedProducts = {};
 
     const batch = db.batch();
@@ -147,11 +152,6 @@ class Api {
         }
       });
 
-      console.log(
-        "🚀 ~ file: Api.js ~ line 133 ~ Api ~ removeMultipleIngredients ~ updatedProducts",
-        updatedProducts
-      );
-
       batch.delete(ingredientRef);
     });
 
@@ -160,10 +160,6 @@ class Api {
       batch.update(productRef, {
         ingredients: Object.values(ingredients),
       });
-      console.log(
-        "🚀 ~ file: Api.js ~ line 162 ~ Api ~ removeMultipleIngredients ~ data",
-        Object.values(ingredients)
-      );
     });
 
     return await batch.commit();
