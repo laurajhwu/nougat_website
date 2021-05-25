@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import Api from "../../../../../utils/Api";
 import EditableInput from "../../../../../Components/EditableInput";
 import Update from "./Edit/UpdateIngredient";
 import AddIngredient from "./Edit/AddIngredient";
+import Delete from "../DeleteIventory";
 
 import {
   ProductsTable,
@@ -22,6 +23,7 @@ import {
 
 export default function Ingredients() {
   const ingredients = useSelector((state) => state.ingredients);
+  const products = useSelector((state) => state.products);
   const [deleteItems, setDeleteItems] = useState([]);
   const [showUpdate, setShowUpdate] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
@@ -35,13 +37,46 @@ export default function Ingredients() {
     Api.updateIngredients(id, { notes: data });
   }
 
+  function handleChecked(event, id) {
+    setDeleteItems(
+      event.target.checked
+        ? [...deleteItems, id]
+        : deleteItems.filter((item) => item !== id)
+    );
+  }
+
+  function handleDeleteIngredients() {
+    if (
+      window.confirm("刪除後資料無法復原，並會從相關產品中移除，確認刪除？")
+    ) {
+      Api.removeMultipleIngredients(deleteItems, products)
+        .then(() => {
+          alert("刪除完畢");
+          setDeleteItems([]);
+        })
+        .catch((error) => {
+          throw error;
+        });
+    }
+  }
+
+  useEffect(() => {
+    console.log(
+      "🚀 ~ file: index.js ~ line 66 ~ Ingredients ~ deleteItems",
+      deleteItems
+    );
+  }, [deleteItems]);
+
   if (ingredients) {
     return (
       <ProductsTable striped bordered hover responsive variant="dark">
         <Thead>
           <Tr>
             <Th>
-              {deleteItems.length === 0 ? <DisableRemove /> : <EnableRemove />}
+              <Delete
+                deleteItems={deleteItems}
+                handleDelete={handleDeleteIngredients}
+              />
             </Th>
             <Th>食材</Th>
             <Th>總購買量</Th>
@@ -60,7 +95,10 @@ export default function Ingredients() {
               return (
                 <Tr key={ingredient.id}>
                   <td>
-                    <input type="checkbox" />
+                    <input
+                      type="checkbox"
+                      onChange={(event) => handleChecked(event, ingredient.id)}
+                    />
                   </td>
                   <td>{ingredient.name}</td>
                   <td>{`${stock + used} 克`}</td>

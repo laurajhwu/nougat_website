@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import Api from "../../../../../utils/Api";
 import ShowDetails from "./Details";
@@ -46,10 +46,6 @@ export default function Products() {
   }
 
   function handleChecked(event, id) {
-    console.log(
-      "🚀 ~ file: index.js ~ line 55 ~ handleChecked ~ event.target.checked",
-      event.target.checked
-    );
     setDeleteItems(
       event.target.checked
         ? [...deleteItems, id]
@@ -59,19 +55,16 @@ export default function Products() {
 
   function handleDeleteProduct() {
     if (window.confirm("刪除後資料無法復原，確認刪除？")) {
-      Api.removeMultipleProducts(deleteItems).then(() => {
-        alert("刪除完畢");
-        setDeleteItems([]);
-      });
+      Api.removeMultipleProducts(deleteItems)
+        .then(() => {
+          alert("刪除完畢");
+          setDeleteItems([]);
+        })
+        .catch((error) => {
+          throw error;
+        });
     }
   }
-
-  useEffect(() => {
-    console.log(
-      "🚀 ~ file: index.js ~ line 59 ~ handleChecked ~ deleteItems",
-      deleteItems
-    );
-  }, [deleteItems]);
 
   if (orders && products.length !== 0) {
     return (
