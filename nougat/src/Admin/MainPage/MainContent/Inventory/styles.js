@@ -6,11 +6,7 @@ export const Container = styled.div`
   flex-direction: row;
 `;
 
-export const AccordionContainer = styled(Accordion)`
-  margin-left: 160px;
-  width: 80%;
-  max-width: 1000px;
-`;
+export const AccordionContainer = styled(Accordion)``;
 
 export const CardContainer = styled(Card)``;
 export const CardBody = styled(Card.Body)`

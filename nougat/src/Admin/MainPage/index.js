@@ -23,38 +23,6 @@ let initOrders = true;
 export default function MainPage() {
   const dispatch = useDispatch();
 
-  // function handleAddOrder(order) {
-  //   dispatch(addNewOrder(order));
-  // }
-
-  // function handleGetOrders(orders) {
-  //   dispatch(getAllOrders(orders));
-  // }
-
-  // function handleModifyOrder(order) {
-  //   dispatch(getModifiedOrder(order));
-  // }
-
-  // function handleRemoveOrder(order) {
-  //   dispatch(getRemovedOrder(order));
-  // }
-
-  // function handleGetAllIngredients(ingredients) {
-  //   dispatch(getAllIngredients(ingredients));
-  // }
-
-  // function handleAddIngredient(ingredient) {
-  //   dispatch(addIngredient(ingredient));
-  // }
-
-  // function handleModifyIngredient(ingredient) {
-  //   dispatch(modifyIngredient(ingredient));
-  // }
-
-  // function handleRemoveIngredient(ingredient) {
-  //   dispatch(removeIngredient(ingredient));
-  // }
-
   function handleOrdersOnSnapshot(snapshot) {
     if (initOrders) {
       const orders = [];
@@ -102,30 +70,16 @@ export default function MainPage() {
   }
 
   useEffect(() => {
-    Api.getIngredients(handleIngredientsOnSnapshot);
+    const unsubscribeIngredients = Api.getIngredients(
+      handleIngredientsOnSnapshot
+    );
 
-    Api.getAllOrders(handleOrdersOnSnapshot);
-  }, []);
+    const unsubscribeOrders = Api.getAllOrders(handleOrdersOnSnapshot);
 
-  useEffect(() => {
-    // Api.getAllOrders(
-    //   {
-    //     handleInit: handleGetOrders,
-    //     handleAdd: handleAddOrder,
-    //     handleModify: handleModifyOrder,
-    //     handleRemove: handleRemoveOrder,
-    //   },
-    //   initState
-    // );
-    // Api.getIngredients(
-    //   {
-    //     handleInit: handleGetAllIngredients,
-    //     handleAdd: handleAddIngredient,
-    //     handleModify: handleModifyIngredient,
-    //     handleRemove: handleRemoveIngredient,
-    //   },
-    //   initState
-    // );
+    return () => {
+      unsubscribeIngredients();
+      unsubscribeOrders();
+    };
   }, []);
 
   return (

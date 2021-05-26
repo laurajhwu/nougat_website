@@ -35,7 +35,7 @@ export default function Header() {
       </DropdownBtn>
       <Btn
         variant="outline-info"
-        onClick={() => handleClick("/admin/auth/orders")}
+        onClick={() => handleClick("/admin/auth/face-to-face")}
       >
         面交設定
       </Btn>
