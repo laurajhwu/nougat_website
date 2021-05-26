@@ -14,11 +14,12 @@ class Api {
   }
 
   getProducts(callback) {
-    db.collection(this.products).onSnapshot(callback);
+    const unsubscribe = db.collection(this.products).onSnapshot(callback);
+    return unsubscribe;
   }
 
-  async getSpecificProduct(id) {
-    return await db
+  getSpecificProduct(id) {
+    return db
       .collection(this.products)
       .doc(id)
       .get()
@@ -27,8 +28,8 @@ class Api {
       });
   }
 
-  async checkSameProduct(name) {
-    return await db
+  checkSameProduct(name) {
+    return db
       .collection(this.products)
       .where("name", "==", name)
       .get()
@@ -41,70 +42,51 @@ class Api {
       });
   }
 
-  async addProduct(data) {
-    return await db
+  addProduct(data) {
+    return db
       .collection(this.products)
       .add(data)
-      .then(async (product) => {
-        return await db
+      .then((product) => {
+        return db
           .collection(this.products)
           .doc(product.id)
           .update({ id: product.id });
       });
   }
 
-  async updateProduct(id, data) {
-    return await db.collection(this.products).doc(id).update(data);
+  updateProduct(id, data) {
+    return db.collection(this.products).doc(id).update(data);
   }
 
-  async removeMultipleProducts(idArray) {
+  removeMultipleProducts(idArray) {
     const batch = db.batch();
     idArray.forEach((id) => {
       const ref = db.collection(this.products).doc(id);
       batch.delete(ref);
     });
-    return await batch.commit();
+    return batch.commit();
   }
 
-  async updateProductOrder(products) {
+  updateProductOrder(products) {
     const batch = db.batch();
     products.forEach((product) => {
       const ref = db.collection(this.products).doc(product.id);
       batch.update(ref, { display_order: product.display_order });
     });
-    return await batch.commit();
+    return batch.commit();
   }
 
   getIngredients(callback) {
-    db.collection(this.ingredients).onSnapshot(callback);
-    //   (snapshot) => {
-    //   if (initState) {
-    //     const ingredients = {};
-    //     snapshot.forEach((doc) => {
-    //       Object.assign(ingredients, { [doc.data().id]: doc.data() });
-    //     });
-    //     callbacks.handleInit(ingredients);
-    //   } else {
-    //     snapshot.docChanges().forEach((change) => {
-    //       if (change.type === "added") {
-    //         callbacks.handleAdd(change.doc.data());
-    //       }
-    //       if (change.type === "modified") {
-    //         callbacks.handleModify(change.doc.data());
-    //       } else if (change.type === "removed") {
-    //         callbacks.handleRemove(change.doc.data());
-    //       }
-    //     });
-    //   }
-    // }
+    const unsubscribe = db.collection(this.ingredients).onSnapshot(callback);
+    return unsubscribe;
   }
 
-  async updateIngredients(id, data) {
-    return await db.collection(this.ingredients).doc(id).update(data);
+  updateIngredients(id, data) {
+    return db.collection(this.ingredients).doc(id).update(data);
   }
 
-  async checkSameIngredient(name) {
-    return await db
+  checkSameIngredient(name) {
+    return db
       .collection(this.ingredients)
       .where("name", "==", name)
       .get()
@@ -117,19 +99,19 @@ class Api {
       });
   }
 
-  async addIngredient(data) {
-    return await db
+  addIngredient(data) {
+    return db
       .collection(this.ingredients)
       .add(data)
-      .then(async (ingredient) => {
-        return await db
+      .then((ingredient) => {
+        return db
           .collection(this.ingredients)
           .doc(ingredient.id)
           .update({ id: ingredient.id });
       });
   }
 
-  async removeMultipleIngredients(idArray, products) {
+  removeMultipleIngredients(idArray, products) {
     const productsIngredientsObj = products.reduce(
       (obj, product) => ({
         ...obj,
@@ -162,11 +144,11 @@ class Api {
       });
     });
 
-    return await batch.commit();
+    return batch.commit();
   }
 
-  async getLocations() {
-    return await db
+  getLocations() {
+    return db
       .collection(this.locations)
       .get()
       .then((querySnapshot) => {
@@ -197,24 +179,24 @@ class Api {
       });
   }
 
-  async getMemberInfo(id) {
-    return await db
+  getMemberInfo(id) {
+    return db
       .collection(this.member)
       .doc(id)
       .get()
       .then((doc) => doc.data());
   }
 
-  async isMember(id) {
-    return await db
+  isMember(id) {
+    return db
       .collection(this.member)
       .doc(id)
       .get()
       .then((doc) => doc.exists);
   }
 
-  async updateMember(id, prop, value) {
-    return await db
+  updateMember(id, prop, value) {
+    return db
       .collection(this.member)
       .doc(id)
       .update({
@@ -239,12 +221,12 @@ class Api {
       });
   }
 
-  async addNewMember(id, data) {
-    return await db.collection(this.member).doc(id).set(data);
+  addNewMember(id, data) {
+    return db.collection(this.member).doc(id).set(data);
   }
 
-  async getMemberOrders(id) {
-    return await db
+  getMemberOrders(id) {
+    return db
       .collection(this.orders)
       .where("member_id", "==", id)
       .get()
@@ -252,71 +234,56 @@ class Api {
   }
 
   getAllOrders(callback) {
-    db.collection(this.orders).onSnapshot(callback);
-    //   (snapshot) => {
-    //   if (initState) {
-    //     const orders = [];
-    //     snapshot.forEach((order) => {
-    //       orders.push(order.data());
-    //     });
-    //     callbacks.handleInit(orders);
-    //   } else {
-    //     snapshot.docChanges().forEach((change) => {
-    //       if (change.type === "added") {
-    //         callbacks.handleAdd(change.doc.data());
-    //       }
-    //       if (change.type === "modified") {
-    //         callbacks.handleModify(change.doc.data());
-    //       }
-    //       if (change.type === "removed") {
-    //         callbacks.handleRemove(change.doc.data());
-    //       }
-    //     });
-    //   }
-    // }
+    const unsubscribe = db.collection(this.orders).onSnapshot(callback);
+    return unsubscribe;
   }
 
-  async createAccount(email, password) {
-    return await auth
+  createAccount(email, password) {
+    return auth
       .createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         return userCredential.user;
       });
   }
 
-  async sendVerificationEmail(email, actionCodeSettings) {
-    return await auth.sendSignInLinkToEmail(email, actionCodeSettings);
+  sendVerificationEmail(email, actionCodeSettings) {
+    return auth.sendSignInLinkToEmail(email, actionCodeSettings);
   }
 
-  async verifyEmail() {
+  verifyEmail() {
     if (auth.isSignInWithEmailLink(window.location.href)) {
       let email = window.localStorage.getItem("emailForSignIn");
       if (!email) {
         email = window.prompt("請輸入您的信箱進行驗證");
       }
-      return await auth.signInWithEmailLink(email, window.location.href);
+      return auth.signInWithEmailLink(email, window.location.href);
     }
     return new Promise((resolve) => resolve(false));
   }
 
-  async signIn(email, password) {
-    return await auth.signInWithEmailAndPassword(email, password);
+  signIn(email, password) {
+    return auth.signInWithEmailAndPassword(email, password);
   }
 
-  async facebookLogin() {
+  facebookLogin() {
     fb.addScope("email");
     auth.languageCode = "zh-TW";
-    return await auth.signInWithPopup(fb);
+    return auth.signInWithPopup(fb);
   }
 
-  async googleLogin() {
+  googleLogin() {
     google.addScope("https://www.googleapis.com/auth/contacts.readonly");
     auth.languageCode = "zh-TW";
-    return await auth.signInWithPopup(google);
+    return auth.signInWithPopup(google);
   }
 
-  async signOut() {
-    return await auth.signOut();
+  getLoginStatus(callback) {
+    const unsubscribe = auth.onAuthStateChanged(callback);
+    return unsubscribe;
+  }
+
+  signOut() {
+    return auth.signOut();
   }
 
   createAdmin(username, password) {
@@ -330,8 +297,8 @@ class Api {
       });
   }
 
-  async adminLogin(username, password) {
-    return await db
+  adminLogin(username, password) {
+    return db
       .collection(this.admin)
       .where("username", "==", username)
       .get()
@@ -352,11 +319,11 @@ class Api {
       });
   }
 
-  async getImageUrl(path, file) {
+  getImageUrl(path, file) {
     const imgRef = storage.ref().child(`${path}/${file.name}`);
 
-    return await imgRef.put(file).then(async () => {
-      return await imgRef.getDownloadURL().then((url) => url);
+    return imgRef.put(file).then(() => {
+      return imgRef.getDownloadURL().then((url) => url);
     });
   }
 }

@@ -12,7 +12,6 @@ import { getMember } from "./redux/actions/member";
 import MainContent from "./MainWebsite/MainContent";
 import Header from "./MainWebsite/Header";
 import Api from "./utils/Api";
-import getLoginStatus from "./utils/loginStatus";
 import Calendar from "./utils/calendarSettings";
 import Admin from "./Admin";
 
@@ -28,7 +27,7 @@ function App() {
     </>
   );
 
-  function orderOnSnapshot(snapshot) {
+  function productsOnSnapshot(snapshot) {
     if (initState) {
       const products = [];
       snapshot.forEach((order) => {
@@ -55,24 +54,31 @@ function App() {
     }
   }
 
+  function onLoginStatusChange(user) {
+    if (user) {
+      Api.getMemberInfo(user.uid).then((data) => {
+        dispatch(getMember(data));
+      });
+    } else {
+      dispatch(getMember({}));
+    }
+  }
+
   useEffect(() => {
     Calendar.calendarSettings();
 
-    Api.getProducts(orderOnSnapshot);
+    const unsubscribeProducts = Api.getProducts(productsOnSnapshot);
 
     Api.getLocations().then((allLocations) => {
       dispatch(getLocations(allLocations));
     });
 
-    getLoginStatus((user) => {
-      if (user) {
-        Api.getMemberInfo(user.uid).then((data) => {
-          dispatch(getMember(data));
-        });
-      } else {
-        dispatch(getMember({}));
-      }
-    });
+    const unsubscribeLogin = Api.getLoginStatus(onLoginStatusChange);
+
+    return () => {
+      unsubscribeLogin();
+      unsubscribeProducts();
+    };
   }, []);
 
   return (

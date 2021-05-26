@@ -17,9 +17,11 @@ export default function Edit(props) {
     return product.ingredients.map((ingredient) => ({ ...ingredient }));
   }
 
-  function handleCloseModal() {
-    setProdIngredient(copyIngredients());
-    setImage(product.image);
+  function handleCloseModal(submit = false) {
+    if (!submit) {
+      setProdIngredient(copyIngredients());
+      setImage(product.image);
+    }
     setChanges({});
     setInvalid({});
     props.handleClose();
@@ -117,7 +119,7 @@ export default function Edit(props) {
   function postEdit() {
     Api.updateProduct(product.id, changes)
       .then(() => {
-        handleCloseModal();
+        handleCloseModal(true);
       })
       .catch((error) => {
         alert("修改失敗！");
@@ -166,114 +168,118 @@ export default function Edit(props) {
     }
   }, [invalid]);
 
-  return (
-    <Modal
-      show={props.show}
-      onHide={handleCloseModal}
-      backdrop="static"
-      keyboard={false}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>{product.name}</Modal.Title>
-        <small>{product.id}</small>
-      </Modal.Header>
-      <Form onSubmit={handOnSubmit}>
-        <Modal.Body>
-          <Form.Group>
-            <Form.Label>產品名稱</Form.Label>
-            <Form.Control
-              onChange={(event) => getEditData(event, "name")}
-              defaultValue={product.name}
-              isInvalid={invalid.name}
+  if (prodIngredient) {
+    return (
+      <Modal
+        show={props.show}
+        onHide={handleCloseModal}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>{product.name}</Modal.Title>
+          <small>{product.id}</small>
+        </Modal.Header>
+        <Form onSubmit={handOnSubmit}>
+          <Modal.Body>
+            <Form.Group>
+              <Form.Label>產品名稱</Form.Label>
+              <Form.Control
+                onChange={(event) => getEditData(event, "name")}
+                defaultValue={product.name}
+                isInvalid={invalid.name}
+              />
+              <Form.Control.Feedback type="invalid">
+                報錯：名稱已被使用過或未填
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Row>
+              <Form.Group as={Col}>
+                <Form.Label>售價</Form.Label>
+                <Form.Control
+                  defaultValue={product.price}
+                  onChange={(event) => getEditData(event, "price")}
+                  isInvalid={invalid.price}
+                />
+                <Form.Control.Feedback type="invalid">
+                  售價為必填數字
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group as={Col}>
+                <Form.Label>剩餘庫存</Form.Label>
+                <Form.Control
+                  defaultValue={product.stock}
+                  onChange={(event) => getEditData(event, "stock")}
+                  isInvalid={invalid.stock}
+                />
+                <Form.Control.Feedback type="invalid">
+                  庫存為必填數字
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group as={Col}>
+                <Form.Label>單位</Form.Label>
+                <Form.Control
+                  placeholder="以出售單位為主"
+                  defaultValue={product.unit}
+                  onChange={(event) => getEditData(event, "unit")}
+                  isInvalid={invalid.unit}
+                />
+                <Form.Control.Feedback type="invalid">
+                  請填入單位
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Form.Row>
+            <div className="mb-3">
+              <File id="formcheck-api-custom" custom>
+                <Form.File.Input
+                  accept="image/*,.pdf"
+                  isValid={
+                    image !== product.image ? (image ? true : false) : false
+                  }
+                  isInvalid={invalid.image}
+                  onChange={handleUploadImage}
+                />
+                <Form.File.Label data-browse="上傳產品圖">
+                  {image || product.image}
+                </Form.File.Label>
+                <Img src={image || product.image} />
+                <Form.Control.Feedback type="valid">
+                  上傳成功
+                </Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">
+                  請上傳圖片
+                </Form.Control.Feedback>
+              </File>
+            </div>
+            <Form.Group controlId="exampleForm.ControlTextarea1">
+              <Form.Label>產品簡述</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                defaultValue={product.description}
+                onChange={(event) => getEditData(event, "description")}
+              />
+            </Form.Group>
+
+            <IngredientSection
+              prodIngredient={prodIngredient}
+              setProdIngredient={setProdIngredient}
+              product={product}
+              getEditData={getEditData}
+              invalid={invalid.ingredients}
             />
-            <Form.Control.Feedback type="invalid">
-              報錯：名稱已被使用過或未填
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Row>
-            <Form.Group as={Col}>
-              <Form.Label>售價</Form.Label>
-              <Form.Control
-                defaultValue={product.price}
-                onChange={(event) => getEditData(event, "price")}
-                isInvalid={invalid.price}
-              />
-              <Form.Control.Feedback type="invalid">
-                售價為必填數字
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group as={Col}>
-              <Form.Label>剩餘庫存</Form.Label>
-              <Form.Control
-                defaultValue={product.stock}
-                onChange={(event) => getEditData(event, "stock")}
-                isInvalid={invalid.stock}
-              />
-              <Form.Control.Feedback type="invalid">
-                庫存為必填數字
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group as={Col}>
-              <Form.Label>單位</Form.Label>
-              <Form.Control
-                placeholder="以出售單位為主"
-                defaultValue={product.unit}
-                onChange={(event) => getEditData(event, "unit")}
-                isInvalid={invalid.unit}
-              />
-              <Form.Control.Feedback type="invalid">
-                請填入單位
-              </Form.Control.Feedback>
-            </Form.Group>
-          </Form.Row>
-          <div className="mb-3">
-            <File id="formcheck-api-custom" custom>
-              <Form.File.Input
-                accept="image/*,.pdf"
-                isValid={
-                  image !== product.image ? (image ? true : false) : false
-                }
-                isInvalid={invalid.image}
-                onChange={handleUploadImage}
-              />
-              <Form.File.Label data-browse="上傳產品圖">
-                {image || product.image}
-              </Form.File.Label>
-              <Img src={image || product.image} />
-              <Form.Control.Feedback type="valid">
-                上傳成功
-              </Form.Control.Feedback>
-              <Form.Control.Feedback type="invalid">
-                請上傳圖片
-              </Form.Control.Feedback>
-            </File>
-          </div>
-          <Form.Group controlId="exampleForm.ControlTextarea1">
-            <Form.Label>產品簡述</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              defaultValue={product.description}
-              onChange={(event) => getEditData(event, "description")}
-            />
-          </Form.Group>
-
-          <IngredientSection
-            prodIngredient={prodIngredient}
-            setProdIngredient={setProdIngredient}
-            product={product}
-            getEditData={getEditData}
-            invalid={invalid.ingredients}
-          />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="danger" type="submit">
-            修改
-          </Button>
-        </Modal.Footer>
-      </Form>
-    </Modal>
-  );
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="danger" type="submit">
+              修改
+            </Button>
+          </Modal.Footer>
+        </Form>
+      </Modal>
+    );
+  } else {
+    return <>Loading...</>;
+  }
 }
