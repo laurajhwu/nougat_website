@@ -4,14 +4,16 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemSecondaryAction,
+  TextField,
+  Button,
 } from "@material-ui/core";
 
 export const Container = styled.div`
-  padding: 40px 50px;
+  margin: 0 50px;
+  padding-top: 40px;
   height: 100vh;
   width: 100vw;
-  max-width: 960px;
+  max-width: 600px;
   display: flex;
   flex-flow: column nowrap;
 `;
@@ -36,9 +38,8 @@ export const Title = styled.div`
 `;
 
 export const Ingredients = styled(List)`
-  padding-top: 100px;
-  width: 400px;
-  padding-top: 40px;
+  width: 500px;
+  align-self: center;
 `;
 
 export const Ingredient = styled(ListItem)`
@@ -58,4 +59,23 @@ export const ControlArea = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
+
+export const Btn = styled(Button)`
+  height: 40px;
+`;
+
+export const Result = styled.div`
+  display: flex;
+  align-items: center;
+  width: 200px;
+  justify-content: space-between;
+`;
+
+export const ProduceAmount = styled(TextField)`
+  width: 100px;
+  margin-left: 10px;
+`;
+
+export const Reset = styled(Btn)``;
