@@ -6,6 +6,7 @@ import {
   ListItemText,
   TextField,
   Button,
+  Chip,
 } from "@material-ui/core";
 
 export const Container = styled.div`
@@ -79,3 +80,23 @@ export const ProduceAmount = styled(TextField)`
 `;
 
 export const Reset = styled(Btn)``;
+
+export const UpdateSection = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  &:first-child {
+    margin-bottom: 20px;
+  }
+`;
+
+export const UpdateContent = styled.div`
+  margin-bottom: 10px;
+`;
+
+export const UpdateOptions = styled.div``;
+
+export const UpdateOption = styled(Chip)`
+  & + ${".MuiChip-root"} {
+    margin: 0 5px;
+  }
+`;

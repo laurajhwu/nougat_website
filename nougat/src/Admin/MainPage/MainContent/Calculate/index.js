@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import convertToObj from "../../../../utils/arrayToObjectConverter";
+import Dialog from "./Dialog";
 import {
   Select,
   MenuItem,
@@ -28,11 +29,20 @@ export default function Calculate() {
   const ingredients = useSelector((state) => state.ingredients);
   const productsObj = convertToObj(products, "id");
   const formRef = useRef();
+  const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const [error, setError] = useState();
   const [isValid, setIsValid] = useState(false);
   const [data, setData] = useState();
   const [result, setResult] = useState();
+
+  function handleOpen() {
+    setOpen(true);
+  }
+
+  function handleClose() {
+    setOpen(false);
+  }
 
   function handleSelect(event) {
     setValue(event.target.value);
@@ -160,6 +170,7 @@ export default function Calculate() {
                 variant="contained"
                 color="secondary"
                 disabled={result ? false : true}
+                onClick={handleOpen}
               >
                 更新庫存
               </Btn>
@@ -194,6 +205,7 @@ export default function Calculate() {
           ""
         )}
       </form>
+      <Dialog open={open} handleClose={handleClose} />
     </Container>
   );
 }
