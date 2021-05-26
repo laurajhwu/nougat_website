@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Jumbotron } from "react-bootstrap";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import Alert from "@material-ui/lab/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
 
 export const Container = styled(Jumbotron)`
   margin: 10px 0;
@@ -8,14 +9,12 @@ export const Container = styled(Jumbotron)`
   width: 100%;
   height: 95%;
   min-width: 800px;
-  /* overflow-y: scroll; */
   display: grid;
   grid-template-columns: repeat(1);
   grid-auto-rows: minmax(120px, 200px);
 `;
 
 export const DropArea = styled.section`
-  /* outline: 1px solid black;  */
   display: grid;
   column-gap: 10px;
   grid-template-columns: repeat(4, 1fr);
@@ -43,4 +42,18 @@ export const Name = styled.div`
   display: flex;
   justify-content: center;
   margin: 10px 0 auto;
+`;
+
+export const Success = styled(Alert)`
+  height: 25px;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 57px;
+  left: 30px;
+`;
+
+export const Message = styled(Snackbar)`
+  width: 200px;
+  opacity: 0.8;
 `;

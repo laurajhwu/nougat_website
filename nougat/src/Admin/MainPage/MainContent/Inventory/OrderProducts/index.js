@@ -3,14 +3,24 @@ import { useSelector } from "react-redux";
 import Api from "../../../../../utils/Api";
 import ReactDOM from "react-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import Fade from "@material-ui/core/Fade";
 
-import { Container, DropArea, Product, Img, Name } from "./styles";
+import {
+  Container,
+  DropArea,
+  Product,
+  Img,
+  Name,
+  Success,
+  Message,
+} from "./styles";
 
 export default function OrderProduct() {
   const products = useSelector((state) => state.products).sort(
     (first, last) => first.display_order - last.display_order
   );
   const [orderedProducts, setOrderedProducts] = useState();
+  const [isUpdate, setIsUpdate] = useState(false);
 
   function splitProducts(products) {
     const productsClone = [...products];
@@ -100,6 +110,7 @@ export default function OrderProduct() {
     });
     Api.updateProductOrder(products).then(() => {
       console.info("已更新產品頁！");
+      setIsUpdate(true);
     });
   }
 
@@ -116,6 +127,18 @@ export default function OrderProduct() {
   if (orderedProducts) {
     return (
       <Container>
+        <Message
+          open={isUpdate}
+          autoHideDuration={2000}
+          onClose={() => setIsUpdate(false)}
+          TransitionComponent={Fade}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Success severity="success" color="success">
+            產品頁更新成功
+          </Success>
+        </Message>
+
         <DragDropContext onDragEnd={onDragEnd}>
           {orderedProducts.map((productGroup, index) => (
             <Droppable
