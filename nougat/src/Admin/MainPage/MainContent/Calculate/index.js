@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import convertToObj from "../../../../utils/arrayToObjectConverter";
 import Dialog from "./Dialog";
+import { SnackbarProvider } from "notistack";
 import {
   Select,
   MenuItem,
@@ -29,6 +30,7 @@ export default function Calculate() {
   const ingredients = useSelector((state) => state.ingredients);
   const productsObj = convertToObj(products, "id");
   const formRef = useRef();
+  const providerRef = useRef();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const [error, setError] = useState();
@@ -44,10 +46,19 @@ export default function Calculate() {
     setOpen(false);
   }
 
+  function setInit() {
+    setError({});
+    setData({});
+    formRef.current.reset();
+    setResult("");
+    setIsValid(false);
+  }
+
   function handleSelect(event) {
     setValue(event.target.value);
     setError({});
     setData({});
+    setResult("");
     formRef.current.reset();
   }
 
@@ -100,11 +111,10 @@ export default function Calculate() {
     }
   }
 
-  function onClickReset() {
+  function handleReset() {
     setError({});
-    setData({});
+    // setData({});
     setResult("");
-    formRef.current.reset();
     setIsValid(false);
   }
 
@@ -121,91 +131,109 @@ export default function Calculate() {
   }, [isValid]);
 
   return (
-    <Container>
-      <Form>
-        <Select
-          value={value}
-          onChange={handleSelect}
-          displayEmpty
-          inputProps={{ "aria-label": "Without label" }}
-        >
-          <MenuItem value="" disabled>
-            請選擇產品
-          </MenuItem>
-          {products.map((product) => (
-            <MenuItem value={product.id}>{product.name}</MenuItem>
-          ))}
-        </Select>
-        <FormHelperText>產品</FormHelperText>
-      </Form>
-      <form ref={formRef}>
-        {productsObj[value] ? (
-          <Ingredients
-            dense
-            subheader={
-              <Title>
-                食材 <span>*若未填或值為0，則不列入計算</span>
-              </Title>
-            }
+    <SnackbarProvider
+      maxSnack={2}
+      autoHideDuration={3000}
+      anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+      ref={providerRef}
+    >
+      <Container>
+        <Form>
+          <Select
+            value={value}
+            onChange={handleSelect}
+            displayEmpty
+            inputProps={{ "aria-label": "Without label" }}
           >
-            {productsObj[value].ingredients.map((ingredient) => (
-              <Ingredient>
-                <Text
-                  id={ingredient.id}
-                  primary={ingredients[ingredient.id].name}
-                />
-                <ListItemSecondaryAction>
-                  <TextField
-                    label="欲使用克數"
-                    id="standard-size-small"
-                    size="small"
-                    onChange={(event) => onAmountChange(event, ingredient.id)}
-                    error={error[ingredient.id]}
-                  />
-                </ListItemSecondaryAction>
-              </Ingredient>
+            <MenuItem value="" disabled>
+              請選擇產品
+            </MenuItem>
+            {products.map((product) => (
+              <MenuItem value={product.id}>{product.name}</MenuItem>
             ))}
-            <ControlArea>
-              <Btn
-                variant="contained"
-                color="secondary"
-                disabled={result ? false : true}
-                onClick={handleOpen}
-              >
-                更新庫存
-              </Btn>
-              {result ? (
-                <Result>
-                  <ProduceAmount
-                    disabled
-                    id="standard-disabled"
-                    label="總計"
-                    defaultValue={`${result} ${productsObj[value].unit}`}
+          </Select>
+          <FormHelperText>產品</FormHelperText>
+        </Form>
+        <form ref={formRef}>
+          {productsObj[value] ? (
+            <Ingredients
+              dense
+              subheader={
+                <Title>
+                  食材 <span>*若未填或值為0，則不列入計算</span>
+                </Title>
+              }
+            >
+              {productsObj[value].ingredients.map((ingredient) => (
+                <Ingredient>
+                  <Text
+                    id={ingredient.id}
+                    primary={ingredients[ingredient.id].name}
                   />
-                  <Reset
-                    variant="outlined"
-                    color="primary"
-                    onClick={onClickReset}
-                  >
-                    重新計算
-                  </Reset>
-                </Result>
-              ) : (
+                  <ListItemSecondaryAction>
+                    <TextField
+                      label="欲使用克數"
+                      id="standard-size-small"
+                      size="small"
+                      onChange={(event) => onAmountChange(event, ingredient.id)}
+                      error={error[ingredient.id]}
+                    />
+                  </ListItemSecondaryAction>
+                </Ingredient>
+              ))}
+              <ControlArea>
                 <Btn
                   variant="contained"
-                  color="primary"
-                  onClick={onClickCalculate}
+                  color="secondary"
+                  disabled={result ? false : true}
+                  onClick={handleOpen}
                 >
-                  計算
+                  更新庫存
                 </Btn>
-              )}
-            </ControlArea>
-          </Ingredients>
-        ) : (
-          ""
-        )}
-      </form>
-      <Dialog open={open} handleClose={handleClose} />
-    </Container>
+                {result || result === 0 ? (
+                  <Result>
+                    <ProduceAmount
+                      disabled
+                      id="standard-disabled"
+                      label="總計"
+                      defaultValue={`${result} ${productsObj[value].unit}`}
+                    />
+                    <Reset
+                      variant="outlined"
+                      color="primary"
+                      onClick={handleReset}
+                    >
+                      重新計算
+                    </Reset>
+                  </Result>
+                ) : (
+                  <Btn
+                    variant="contained"
+                    color="primary"
+                    onClick={onClickCalculate}
+                  >
+                    計算
+                  </Btn>
+                )}
+              </ControlArea>
+            </Ingredients>
+          ) : (
+            ""
+          )}
+        </form>
+
+        <Dialog
+          open={open}
+          handleClose={handleClose}
+          productId={value}
+          ingredients={ingredients}
+          data={data}
+          productAmount={result}
+          productsObj={productsObj}
+          reset={setInit}
+          providerRef={providerRef}
+        />
+      </Container>
+    </SnackbarProvider>
   );
 }

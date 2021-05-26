@@ -54,8 +54,19 @@ class Api {
       });
   }
 
-  updateProduct(id, data) {
-    return db.collection(this.products).doc(id).update(data);
+  updateProduct(id, data, obj = null) {
+    if (!obj) {
+      return db.collection(this.products).doc(id).update(data);
+    } else {
+      const batch = db.batch();
+
+      Object.entries(obj).forEach(([id, value]) => {
+        const ref = db.collection(this.products).doc(id);
+        batch.update(ref, value);
+      });
+
+      return batch.commit();
+    }
   }
 
   removeMultipleProducts(idArray) {
@@ -81,8 +92,19 @@ class Api {
     return unsubscribe;
   }
 
-  updateIngredients(id, data) {
-    return db.collection(this.ingredients).doc(id).update(data);
+  updateIngredients(id, data, obj = null) {
+    if (!obj) {
+      return db.collection(this.ingredients).doc(id).update(data);
+    } else {
+      const batch = db.batch();
+
+      Object.entries(obj).forEach(([id, value]) => {
+        const ref = db.collection(this.ingredients).doc(id);
+        batch.update(ref, value);
+      });
+
+      return batch.commit();
+    }
   }
 
   checkSameIngredient(name) {
