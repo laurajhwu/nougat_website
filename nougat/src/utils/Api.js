@@ -169,17 +169,20 @@ class Api {
     return batch.commit();
   }
 
-  getLocations() {
+  getLocations(callback) {
+    const unsubscribe = db.collection(this.locations).onSnapshot(callback);
+    return unsubscribe;
+  }
+
+  addLocation(data) {
     return db
       .collection(this.locations)
-      .get()
-      .then((querySnapshot) => {
-        let locations = [];
-        querySnapshot.forEach((location) => {
-          locations.push(location.data());
-        });
-
-        return locations;
+      .add(data)
+      .then((location) => {
+        return db
+          .collection(this.locations)
+          .doc(location.id)
+          .update({ id: location.id });
       });
   }
 

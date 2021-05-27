@@ -10,6 +10,10 @@ import { Container, Label } from "./styles";
 export default function DeliverySettings() {
   const theme = useTheme();
   const [value, setValue] = useState(0);
+  const transitionDuration = {
+    enter: theme.transitions.duration.enteringScreen,
+    exit: theme.transitions.duration.leavingScreen,
+  };
 
   function handleChange(event, newValue) {
     setValue(newValue);
@@ -48,7 +52,10 @@ export default function DeliverySettings() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <Locations />
+          <Locations
+            transitionDuration={transitionDuration}
+            isIn={value === 0}
+          />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
           Item Two

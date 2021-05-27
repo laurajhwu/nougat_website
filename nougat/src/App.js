@@ -7,7 +7,12 @@ import {
   modifyProduct,
   removeProduct,
 } from "./redux/actions/products";
-import { getLocations } from "./redux/actions/locations";
+import {
+  addLocation,
+  getLocations,
+  modifyLocation,
+  removeLocation,
+} from "./redux/actions/locations";
 import { getMember } from "./redux/actions/member";
 import MainContent from "./MainWebsite/MainContent";
 import Header from "./MainWebsite/Header";
@@ -15,7 +20,8 @@ import Api from "./utils/Api";
 import Calendar from "./utils/calendarSettings";
 import Admin from "./Admin";
 
-let initState = true;
+let initProducts = true;
+let initLocations = true;
 
 function App() {
   const dispatch = useDispatch();
@@ -28,13 +34,13 @@ function App() {
   );
 
   function productsOnSnapshot(snapshot) {
-    if (initState) {
+    if (initProducts) {
       const products = [];
-      snapshot.forEach((order) => {
-        products.push(order.data());
+      snapshot.forEach((product) => {
+        products.push(product.data());
       });
       dispatch(getProductsData(products));
-      initState = false;
+      initProducts = false;
     } else {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
@@ -45,10 +51,29 @@ function App() {
         }
         if (change.type === "removed") {
           dispatch(removeProduct(change.doc.data()));
-          console.log(
-            "🚀 ~ file: App.js ~ line 49 ~ snapshot.docChanges ~ change.doc.data()",
-            change.doc.data()
-          );
+        }
+      });
+    }
+  }
+
+  function locationsOnSnapshot(snapshot) {
+    if (initLocations) {
+      const locations = [];
+      snapshot.forEach((location) => {
+        locations.push(location.data());
+      });
+      dispatch(getLocations(locations));
+      initLocations = false;
+    } else {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          dispatch(addLocation(change.doc.data()));
+        }
+        if (change.type === "modified") {
+          dispatch(modifyLocation(change.doc.data()));
+        }
+        if (change.type === "removed") {
+          dispatch(removeLocation(change.doc.data()));
         }
       });
     }
@@ -69,15 +94,14 @@ function App() {
 
     const unsubscribeProducts = Api.getProducts(productsOnSnapshot);
 
-    Api.getLocations().then((allLocations) => {
-      dispatch(getLocations(allLocations));
-    });
+    const unsubscribeLocations = Api.getLocations(locationsOnSnapshot);
 
     const unsubscribeLogin = Api.getLoginStatus(onLoginStatusChange);
 
     return () => {
       unsubscribeLogin();
       unsubscribeProducts();
+      unsubscribeLocations();
     };
   }, []);
 
