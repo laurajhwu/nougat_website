@@ -20,6 +20,12 @@ export default function DisplayAll() {
     Api.updateLocation(id, { active: !active });
   }
 
+  function removeLocation(id, address) {
+    if (window.confirm(`確定刪除地點'${address}'?`)) {
+      Api.removeLocation(id);
+    }
+  }
+
   return (
     <Container>
       <List>
@@ -46,7 +52,9 @@ export default function DisplayAll() {
                     checked={active}
                   />
                   <IconButton edge="end" aria-label="delete">
-                    <DeleteIcon />
+                    <DeleteIcon
+                      onClick={() => removeLocation(id, fullAddress)}
+                    />
                   </IconButton>
                 </Action>
               </ListItem>

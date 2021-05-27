@@ -190,6 +190,10 @@ class Api {
     return db.collection(this.locations).doc(id).update(data);
   }
 
+  removeLocation(id) {
+    return db.collection(this.locations).doc(id).delete();
+  }
+
   postCheckoutOrder(order, member, updateStock) {
     db.collection(this.orders)
       .doc(order.id)
