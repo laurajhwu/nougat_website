@@ -39,7 +39,9 @@ function CheckOut() {
   const member = useSelector((state) => state.member);
   const dispatch = useDispatch();
   const cartItems = member.cart_items;
-  const allLocations = useSelector((state) => state.locations);
+  const allLocations = useSelector((state) => state.locations).filter(
+    (location) => location.active
+  );
   const allProducts = useSelector((state) => state.products);
   const [delivery, setDelivery] = useState("select");
   const [locations, setLocations] = useState([]);

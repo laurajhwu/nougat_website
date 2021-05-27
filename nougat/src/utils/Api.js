@@ -186,6 +186,10 @@ class Api {
       });
   }
 
+  updateLocation(id, data) {
+    return db.collection(this.locations).doc(id).update(data);
+  }
+
   postCheckoutOrder(order, member, updateStock) {
     db.collection(this.orders)
       .doc(order.id)

@@ -16,7 +16,7 @@ export default function Map(props) {
   return (
     <GoogleMap
       mapContainerStyle={{
-        width: "50%",
+        width: "100%",
         height: "40vh",
         "margin-top": "40px",
         "max-height": "500px",

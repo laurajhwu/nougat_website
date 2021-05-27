@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import Api from "../../../../../../utils/Api";
 import PlacesAutocomplete, {
@@ -10,7 +10,6 @@ import Geocode from "react-geocode";
 import { InputAdornment, Zoom, Fab } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import {
-  SearchContainer,
   SearchIcon,
   Search,
   SearchInput,
@@ -26,12 +25,30 @@ export default function SearchLocations(props) {
   const { transitionDuration, isIn } = props.add;
   const { coordinates, setCoordinates, API_KEY } = props;
   const [address, setAddress] = useState("");
+  const [mainText, setMainText] = useState("");
 
-  async function handleSelect(value) {
-    const results = await geocodeByAddress(value);
-    const latLng = await getLatLng(results[0]);
-    setAddress(value);
-    setCoordinates(latLng);
+  async function handleSelect(address, placeId, suggestion) {
+    if (placeId) {
+      const results = await geocodeByAddress(address);
+      const latLng = await getLatLng(results[0]);
+      setAddress(address);
+      setCoordinates(latLng);
+      setMainText(suggestion.formattedSuggestion.mainText);
+    } else {
+      setCoordinates({
+        lat: null,
+        lng: null,
+      });
+    }
+  }
+
+  function handleError(status, clearSuggestions) {
+    setCoordinates({
+      lat: null,
+      lng: null,
+    });
+    clearSuggestions();
+    throw status;
   }
 
   function AddNewLocation() {
@@ -45,6 +62,7 @@ export default function SearchLocations(props) {
       let city,
         district,
         address = "";
+      const description = mainText;
 
       response.results[0].address_components.forEach((component) => {
         component.types.forEach((type) => {
@@ -75,25 +93,29 @@ export default function SearchLocations(props) {
       ) {
         alert(`'${city + district + address}' 已存在！`);
       } else {
-        Api.addLocation({ city, district, address }).then(() => {
+        Api.addLocation({
+          city,
+          district,
+          address,
+          description,
+          active: true,
+        }).then(() => {
           setCoordinates({
-            ...{
-              lat: null,
-              lng: null,
-            },
+            lat: null,
+            lng: null,
           });
-          console.log("end");
         });
       }
     });
   }
 
   return (
-    <SearchContainer>
+    <>
       <PlacesAutocomplete
         value={address}
         onChange={setAddress}
         onSelect={handleSelect}
+        onError={handleError}
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => {
           return (
@@ -111,9 +133,6 @@ export default function SearchLocations(props) {
                     ),
                   }}
                   placeholder="請輸入地址"
-                  onChange={() => {
-                    console.log("hi", address);
-                  }}
                   {...getInputProps()}
                 />
                 <Zoom
@@ -128,7 +147,11 @@ export default function SearchLocations(props) {
                     size="small"
                     color="secondary"
                     aria-label="add"
-                    disabled={coordinates.lat && coordinates.lng ? false : true}
+                    disabled={
+                      coordinates.lat && coordinates.lng && mainText
+                        ? false
+                        : true
+                    }
                     onClick={AddNewLocation}
                   >
                     <AddIcon />
@@ -157,6 +180,6 @@ export default function SearchLocations(props) {
           );
         }}
       </PlacesAutocomplete>
-    </SearchContainer>
+    </>
   );
 }

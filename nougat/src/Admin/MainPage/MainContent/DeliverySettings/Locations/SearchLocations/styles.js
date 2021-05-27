@@ -2,10 +2,6 @@ import styled from "styled-components";
 import { GlobeSearch } from "@styled-icons/fluentui-system-regular";
 import { TextField } from "@material-ui/core";
 
-export const SearchContainer = styled.div`
-  width: 50%;
-`;
-
 export const Search = styled.div`
   width: 100%;
   display: flex;

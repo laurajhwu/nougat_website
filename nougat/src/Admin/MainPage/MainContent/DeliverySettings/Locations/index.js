@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import SearchLocations from "./SearchLocations";
 import { useLoadScript } from "@react-google-maps/api";
 import Map from "./Map";
+import DisplayAllLocations from "./DisplayAll";
 
-import { Container } from "./styles";
+import { Container, SearchContainer, DisplayContainer } from "./styles";
 
 export default function Locations(props) {
   const { transitionDuration, isIn } = props;
@@ -24,13 +25,18 @@ export default function Locations(props) {
     <Container>
       {isLoaded ? (
         <>
-          <SearchLocations
-            setCoordinates={setCoordinates}
-            coordinates={coordinates}
-            add={{ transitionDuration, isIn }}
-            API_KEY={API_KEY}
-          />
-          <Map coordinates={coordinates} />
+          <SearchContainer>
+            <SearchLocations
+              setCoordinates={setCoordinates}
+              coordinates={coordinates}
+              add={{ transitionDuration, isIn }}
+              API_KEY={API_KEY}
+            />
+            <Map coordinates={coordinates} />
+          </SearchContainer>
+          <DisplayContainer>
+            <DisplayAllLocations />
+          </DisplayContainer>
         </>
       ) : (
         "Loading..."
