@@ -3,6 +3,7 @@ import SwipeableViews from "react-swipeable-views";
 import { AppBar, Tabs, Tab } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import TabPanel from "./TabPanel";
+import Locations from "./Locations";
 
 import { Container, Label } from "./styles";
 
@@ -47,7 +48,7 @@ export default function DeliverySettings() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          123
+          <Locations />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
           Item Two
