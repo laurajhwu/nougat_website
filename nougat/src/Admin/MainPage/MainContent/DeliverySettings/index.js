@@ -4,6 +4,7 @@ import { AppBar, Tabs, Tab } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import TabPanel from "./TabPanel";
 import Locations from "./Locations";
+import DateTime from "./DateTime";
 
 import { Container, Label } from "./styles";
 
@@ -58,7 +59,7 @@ export default function DeliverySettings() {
           />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          Item Two
+          <DateTime />
         </TabPanel>
       </SwipeableViews>
     </Container>
