@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import DateSettings from "./DateSettings";
+import TimeSettings from "./TimeSettings";
 
-import { Container, DateSection } from "./styles";
+import { Container, DateSection, TimeSection } from "./styles";
 
 export default function DateTime() {
   const dateData = useSelector((state) => state.dateTime).date;
@@ -23,6 +24,9 @@ export default function DateTime() {
           initDate={initDate}
         />
       </DateSection>
+      <TimeSection>
+        <TimeSettings selectedDate={selectedDate} />
+      </TimeSection>
     </Container>
   );
 }

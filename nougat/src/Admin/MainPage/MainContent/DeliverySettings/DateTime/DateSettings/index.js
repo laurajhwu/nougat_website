@@ -202,7 +202,7 @@ export default function DateSettings(props) {
           <div>
             <TextField
               id="range"
-              label="預留時間"
+              label="預留天數"
               type="number"
               InputLabelProps={{
                 shrink: true,
