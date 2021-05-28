@@ -5,6 +5,7 @@ import memberReducer from "./member";
 import renderPageReducer from "./renderPage";
 import fixedDataReducer from "./fixedData";
 import ingredientsReducer from "./ingredients";
+import dateTimeReducer from "./dateTime";
 import { combineReducers } from "redux";
 
 const allReducers = combineReducers({
@@ -15,6 +16,7 @@ const allReducers = combineReducers({
   reRender: renderPageReducer,
   fixedData: fixedDataReducer,
   ingredients: ingredientsReducer,
+  dateTime: dateTimeReducer,
 });
 
 export default allReducers;

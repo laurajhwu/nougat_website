@@ -11,6 +11,7 @@ class Api {
     this.member = "members";
     this.admin = "admin";
     this.ingredients = "ingredients";
+    this.dateTime = "date_time";
   }
 
   getProducts(callback) {
@@ -192,6 +193,21 @@ class Api {
 
   removeLocation(id) {
     return db.collection(this.locations).doc(id).delete();
+  }
+
+  getDate(callback) {
+    const unsubscribe = db
+      .collection(this.dateTime)
+      .doc("date")
+      .onSnapshot((doc) => {
+        callback(doc.data());
+      });
+
+    return unsubscribe;
+  }
+
+  updateDate(data) {
+    return db.collection(this.dateTime).doc("date").update(data);
   }
 
   postCheckoutOrder(order, member, updateStock) {

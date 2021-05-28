@@ -13,6 +13,7 @@ import {
   modifyLocation,
   removeLocation,
 } from "./redux/actions/locations";
+import { getDate, getTime } from "./redux/actions/dateTime";
 import { getMember } from "./redux/actions/member";
 import MainContent from "./MainWebsite/MainContent";
 import Header from "./MainWebsite/Header";
@@ -79,6 +80,10 @@ function App() {
     }
   }
 
+  function dateOnSnapshot(data) {
+    dispatch(getDate(data));
+  }
+
   function onLoginStatusChange(user) {
     if (user) {
       Api.getMemberInfo(user.uid).then((data) => {
@@ -96,12 +101,15 @@ function App() {
 
     const unsubscribeLocations = Api.getLocations(locationsOnSnapshot);
 
+    const unsubscribeDate = Api.getDate(dateOnSnapshot);
+
     const unsubscribeLogin = Api.getLoginStatus(onLoginStatusChange);
 
     return () => {
       unsubscribeLogin();
       unsubscribeProducts();
       unsubscribeLocations();
+      unsubscribeDate();
     };
   }, []);
 
