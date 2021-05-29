@@ -3,6 +3,7 @@ import { Route, useRouteMatch } from "react-router-dom";
 import Inventory from "./Inventory";
 import Calculate from "./Calculate";
 import DeliverySettings from "./DeliverySettings";
+import OrdersSettings from "./OrdersSettings";
 
 import { Container } from "./styles";
 
@@ -19,6 +20,9 @@ export default function MainContent() {
       </Route>
       <Route path={`${match.url}/delivery`}>
         <DeliverySettings />
+      </Route>
+      <Route path={`${match.url}/orders`}>
+        <OrdersSettings />
       </Route>
     </Container>
   );
