@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { addMinutes } from "date-fns";
 import Api from "../../../../../../utils/Api";
 import {
   stringDate,
   stringTime,
   dbFormatTime,
 } from "../../../../../../utils/dateTimeFormat";
+import getTimeRange from "../../../../../../utils/getTimeRange";
 
 import {
   Input,
@@ -93,21 +93,6 @@ export default function TimeSettings(props) {
     setEndTime(value);
   }
 
-  function getTimeRange() {
-    const range = [];
-    const endingTime = new Date(`${stringDate(selectedDate)} ${endTime}`);
-    let time = new Date(`${stringDate(selectedDate)} ${startTime}`);
-
-    while (
-      time.getHours() + time.getMinutes() <=
-      endingTime.getHours() + endingTime.getMinutes()
-    ) {
-      range.push(time);
-      time = addMinutes(time, interval);
-    }
-    setTimeRange(range);
-  }
-
   function getSortedTimes() {
     const availableTimes = timeRange.reduce(
       (obj, time) => ({ ...obj, [stringTime(time)]: "available" }),
@@ -180,7 +165,13 @@ export default function TimeSettings(props) {
 
   useEffect(() => {
     if (Object.values(isValid).every((value) => value)) {
-      getTimeRange();
+      setTimeRange(
+        getTimeRange(stringDate(selectedDate), {
+          end_time: endTime,
+          start_time: startTime,
+          interval,
+        })
+      );
     }
   }, [isValid, selectedDate]);
 
