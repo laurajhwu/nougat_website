@@ -1,4 +1,4 @@
-import { db, auth, storage, fb, google } from "./firebase/firebase";
+import { db, firestore, auth, storage, fb, google } from "./firebase/firebase";
 import uuid from "react-uuid";
 import { encrypt, decrypt } from "./crypt";
 import convertToObj from "./arrayToObjectConverter";
@@ -11,6 +11,8 @@ class Api {
     this.member = "members";
     this.admin = "admin";
     this.ingredients = "ingredients";
+    this.dateTime = "date_time";
+    this.excludedTimes = "excluded_times";
   }
 
   getProducts(callback) {
@@ -169,17 +171,84 @@ class Api {
     return batch.commit();
   }
 
-  getLocations() {
+  getLocations(callback) {
+    const unsubscribe = db.collection(this.locations).onSnapshot(callback);
+    return unsubscribe;
+  }
+
+  addLocation(data) {
     return db
       .collection(this.locations)
-      .get()
-      .then((querySnapshot) => {
-        let locations = [];
-        querySnapshot.forEach((location) => {
-          locations.push(location.data());
-        });
+      .add(data)
+      .then((location) => {
+        return db
+          .collection(this.locations)
+          .doc(location.id)
+          .update({ id: location.id });
+      });
+  }
 
-        return locations;
+  updateLocation(id, data) {
+    return db.collection(this.locations).doc(id).update(data);
+  }
+
+  removeLocation(id) {
+    return db.collection(this.locations).doc(id).delete();
+  }
+
+  getDate(callback) {
+    const unsubscribe = db
+      .collection(this.dateTime)
+      .doc("date")
+      .onSnapshot((doc) => {
+        callback(doc.data());
+      });
+
+    return unsubscribe;
+  }
+
+  updateDate(data) {
+    return db.collection(this.dateTime).doc("date").update(data);
+  }
+
+  getTime(callback) {
+    const unsubscribe = db
+      .collection(this.dateTime)
+      .doc("time")
+      .onSnapshot((doc) => {
+        callback(doc.data());
+      });
+
+    return unsubscribe;
+  }
+
+  updateTime(data) {
+    return db.collection(this.dateTime).doc("time").update(data);
+  }
+
+  getExcludedTimes(callback) {
+    const unsubscribe = db.collection(this.excludedTimes).onSnapshot(callback);
+
+    return unsubscribe;
+  }
+
+  addExcludedTimes(dateTime, data) {
+    const ref = db.collection(this.excludedTimes).doc(dateTime);
+    return ref.get().then((doc) => {
+      if (doc.exists) {
+        return ref.update(data);
+      } else {
+        return ref.set(data);
+      }
+    });
+  }
+
+  removeExcludedTimes(dateTime, time) {
+    return db
+      .collection(this.excludedTimes)
+      .doc(dateTime)
+      .update({
+        [time]: firestore.FieldValue.delete(),
       });
   }
 

@@ -9,6 +9,7 @@ import {
   FormHelperText,
   TextField,
   ListItemSecondaryAction,
+  InputAdornment,
 } from "@material-ui/core";
 
 import {
@@ -172,12 +173,19 @@ export default function Calculate() {
                   />
                   <ListItemSecondaryAction>
                     <TextField
-                      label="欲使用克數"
                       id="standard-size-small"
                       size="small"
                       onChange={(event) => onAmountChange(event, ingredient.id)}
                       error={error[ingredient.id]}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">克</InputAdornment>
+                        ),
+                      }}
                     />
+                    <FormHelperText id="standard-helper-text">
+                      欲使用克數
+                    </FormHelperText>
                   </ListItemSecondaryAction>
                 </Ingredient>
               ))}
