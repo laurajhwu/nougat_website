@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Api from "../../utils/Api";
 import Header from "./Header";
 import MainContent from "./MainContent";
-import {
-  addNewOrder,
-  getAllOrders,
-  getModifiedOrder,
-  getRemovedOrder,
-} from "../../redux/actions/order";
+
 import {
   addIngredient,
   getAllIngredients,
@@ -18,33 +13,9 @@ import {
 } from "../../redux/actions/ingredients";
 
 let initIngredients = true;
-let initOrders = true;
 
 export default function MainPage() {
   const dispatch = useDispatch();
-
-  function handleOrdersOnSnapshot(snapshot) {
-    if (initOrders) {
-      const orders = [];
-      snapshot.forEach((order) => {
-        orders.push(order.data());
-      });
-      dispatch(getAllOrders(orders));
-      initOrders = false;
-    } else {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          dispatch(addNewOrder(change.doc.data()));
-        }
-        if (change.type === "modified") {
-          dispatch(getModifiedOrder(change.doc.data()));
-        }
-        if (change.type === "removed") {
-          dispatch(getRemovedOrder(change.doc.data()));
-        }
-      });
-    }
-  }
 
   function handleIngredientsOnSnapshot(snapshot) {
     if (initIngredients) {
@@ -74,11 +45,8 @@ export default function MainPage() {
       handleIngredientsOnSnapshot
     );
 
-    const unsubscribeOrders = Api.getAllOrders(handleOrdersOnSnapshot);
-
     return () => {
       unsubscribeIngredients();
-      unsubscribeOrders();
     };
   }, []);
 

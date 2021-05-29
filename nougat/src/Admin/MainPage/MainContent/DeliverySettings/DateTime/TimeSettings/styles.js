@@ -69,3 +69,8 @@ export const Time = styled.div`
 `;
 
 export const TimeLabel = styled.label``;
+
+export const Save = styled(Button)`
+  height: 60%;
+  align-self: center;
+`;

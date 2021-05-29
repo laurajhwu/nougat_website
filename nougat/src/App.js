@@ -8,12 +8,24 @@ import {
   removeProduct,
 } from "./redux/actions/products";
 import {
+  addNewOrder,
+  getAllOrders,
+  getModifiedOrder,
+  getRemovedOrder,
+} from "./redux/actions/order";
+import {
   addLocation,
   getLocations,
   modifyLocation,
   removeLocation,
 } from "./redux/actions/locations";
-import { getDate, getTime } from "./redux/actions/dateTime";
+import {
+  getDate,
+  getTime,
+  getExcludedTimes,
+  addExcludedTimes,
+  modifyExcludedTimes,
+} from "./redux/actions/dateTime";
 import { getMember } from "./redux/actions/member";
 import MainContent from "./MainWebsite/MainContent";
 import Header from "./MainWebsite/Header";
@@ -23,6 +35,8 @@ import Admin from "./Admin";
 
 let initProducts = true;
 let initLocations = true;
+let initExcludedTimes = true;
+let initOrders = true;
 
 function App() {
   const dispatch = useDispatch();
@@ -57,6 +71,29 @@ function App() {
     }
   }
 
+  function ordersOnSnapshot(snapshot) {
+    if (initOrders) {
+      const orders = [];
+      snapshot.forEach((order) => {
+        orders.push(order.data());
+      });
+      dispatch(getAllOrders(orders));
+      initOrders = false;
+    } else {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          dispatch(addNewOrder(change.doc.data()));
+        }
+        if (change.type === "modified") {
+          dispatch(getModifiedOrder(change.doc.data()));
+        }
+        if (change.type === "removed") {
+          dispatch(getRemovedOrder(change.doc.data()));
+        }
+      });
+    }
+  }
+
   function locationsOnSnapshot(snapshot) {
     if (initLocations) {
       const locations = [];
@@ -84,6 +121,38 @@ function App() {
     dispatch(getDate(data));
   }
 
+  function timeOnSnapshot(data) {
+    dispatch(getTime(data));
+  }
+
+  function excludedTimesOnSnapshot(snapshot) {
+    const convertData = (data) =>
+      Object.values(data).map((time) => time.toDate());
+
+    if (initExcludedTimes) {
+      const times = {};
+      snapshot.forEach((time) => {
+        times[time.id] = convertData(time.data());
+      });
+      dispatch(getExcludedTimes(times));
+      initExcludedTimes = false;
+    } else {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          dispatch(
+            addExcludedTimes(change.doc.id, convertData(change.doc.data()))
+          );
+        }
+        if (change.type === "modified") {
+          dispatch(
+            modifyExcludedTimes(change.doc.id, convertData(change.doc.data()))
+          );
+          console.log(change.doc.id, convertData(change.doc.data()));
+        }
+      });
+    }
+  }
+
   function onLoginStatusChange(user) {
     if (user) {
       Api.getMemberInfo(user.uid).then((data) => {
@@ -99,17 +168,28 @@ function App() {
 
     const unsubscribeProducts = Api.getProducts(productsOnSnapshot);
 
+    const unsubscribeOrders = Api.getAllOrders(ordersOnSnapshot);
+
     const unsubscribeLocations = Api.getLocations(locationsOnSnapshot);
 
     const unsubscribeDate = Api.getDate(dateOnSnapshot);
+
+    const unsubscribeTime = Api.getTime(timeOnSnapshot);
+
+    const unsubscribeExcludedTimes = Api.getExcludedTimes(
+      excludedTimesOnSnapshot
+    );
 
     const unsubscribeLogin = Api.getLoginStatus(onLoginStatusChange);
 
     return () => {
       unsubscribeLogin();
       unsubscribeProducts();
+      unsubscribeOrders();
       unsubscribeLocations();
       unsubscribeDate();
+      unsubscribeTime();
+      unsubscribeExcludedTimes();
     };
   }, []);
 

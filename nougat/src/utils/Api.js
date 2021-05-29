@@ -1,4 +1,4 @@
-import { db, auth, storage, fb, google } from "./firebase/firebase";
+import { db, firestore, auth, storage, fb, google } from "./firebase/firebase";
 import uuid from "react-uuid";
 import { encrypt, decrypt } from "./crypt";
 import convertToObj from "./arrayToObjectConverter";
@@ -12,6 +12,7 @@ class Api {
     this.admin = "admin";
     this.ingredients = "ingredients";
     this.dateTime = "date_time";
+    this.excludedTimes = "excluded_times";
   }
 
   getProducts(callback) {
@@ -208,6 +209,47 @@ class Api {
 
   updateDate(data) {
     return db.collection(this.dateTime).doc("date").update(data);
+  }
+
+  getTime(callback) {
+    const unsubscribe = db
+      .collection(this.dateTime)
+      .doc("time")
+      .onSnapshot((doc) => {
+        callback(doc.data());
+      });
+
+    return unsubscribe;
+  }
+
+  updateTime(data) {
+    return db.collection(this.dateTime).doc("time").update(data);
+  }
+
+  getExcludedTimes(callback) {
+    const unsubscribe = db.collection(this.excludedTimes).onSnapshot(callback);
+
+    return unsubscribe;
+  }
+
+  addExcludedTimes(dateTime, data) {
+    const ref = db.collection(this.excludedTimes).doc(dateTime);
+    return ref.get().then((doc) => {
+      if (doc.exists) {
+        return ref.update(data);
+      } else {
+        return ref.set(data);
+      }
+    });
+  }
+
+  removeExcludedTimes(dateTime, time) {
+    return db
+      .collection(this.excludedTimes)
+      .doc(dateTime)
+      .update({
+        [time]: firestore.FieldValue.delete(),
+      });
   }
 
   postCheckoutOrder(order, member, updateStock) {
