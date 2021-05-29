@@ -37,6 +37,7 @@ const id = uuid();
 function CheckOut() {
   const history = useHistory();
   const member = useSelector((state) => state.member);
+  const dateSettings = useSelector((state) => state.dateTime).date;
   const dispatch = useDispatch();
   const cartItems = member.cart_items;
   const allLocations = useSelector((state) => state.locations).filter(
@@ -47,10 +48,16 @@ function CheckOut() {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState();
   const [payment, setPayment] = useState("cash");
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(addDays(dateSettings.buffer));
   const [order, setOrder] = useState({});
   const [personalInfo, setPersonalInfo] = useState({});
   const [remember, setRemember] = useState();
+
+  function addDays(days) {
+    const initDate = new Date();
+    initDate.setDate(initDate.getDate() + days);
+    return initDate;
+  }
 
   function deliveryOptionChange(event) {
     setDelivery(event.target.value);
@@ -227,7 +234,12 @@ function CheckOut() {
         </Delivery>
         <Calendar>
           <Label>取貨時間*</Label>
-          <PickDate date={date} setDate={setDate} />
+          <PickDate
+            date={date}
+            setDate={setDate}
+            dateSettings={dateSettings}
+            addDays={addDays}
+          />
         </Calendar>
         <PersonalInfo>
           <Info>

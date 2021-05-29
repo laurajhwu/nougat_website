@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { addMinutes } from "date-fns";
 import Api from "../../../../../../utils/Api";
+import {
+  stringDate,
+  stringTime,
+  dbFormatTime,
+} from "../../../../../../utils/dateTimeFormat";
 
 import {
   Input,
@@ -45,20 +50,6 @@ export default function TimeSettings(props) {
   });
   const [timeRange, setTimeRange] = useState();
   const [sortedTimes, setSortedTimes] = useState();
-
-  function stringDate(date) {
-    return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
-  }
-
-  function stringTime(time) {
-    return `${time.getHours()}:${
-      time.getMinutes() < 10 ? `0${time.getMinutes()}` : time.getMinutes()
-    }`;
-  }
-
-  function dbFormatTime(time) {
-    return time.split(":").reduce((combine, num) => combine + num, "");
-  }
 
   function validateTime(value, prop) {
     const valid = value.split(":").every((time, index) => {

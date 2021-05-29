@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import DateSettings from "./DateSettings";
 import TimeSettings from "./TimeSettings";
 import Api from "../../../../../utils/Api";
+import { dbFormatDate } from "../../../../../utils/dateTimeFormat";
 
 import { Container, DateSection, TimeSection } from "./styles";
 import { getExcludedTimes } from "../../../../../redux/actions/dateTime";
@@ -17,10 +18,6 @@ export default function DateTime() {
   })();
   const [selectedDate, setSelectedDate] = useState(initDate);
   const [excludedTimes, setExcludedTimes] = useState();
-
-  function dbFormatDate(date) {
-    return `${date.getFullYear()}${date.getMonth() + 1}${date.getDate()}`;
-  }
 
   useEffect(() => {
     const times = timeData.excluded_times[dbFormatDate(selectedDate)];
