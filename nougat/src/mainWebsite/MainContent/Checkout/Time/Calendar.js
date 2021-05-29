@@ -1,28 +1,32 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import DatePicker from "react-datepicker";
 import {
   stringDate,
   dbFormatDate,
-  dbFormatTime,
   stringTime,
 } from "../../../../utils/dateTimeFormat";
-
+import getTimeRange from "../../../../utils/getTimeRange";
 import "react-datepicker/dist/react-datepicker.css";
-import setDate from "date-fns/esm/fp/setDate/index.js";
 
 function Calendar(props) {
   const { dateSettings, addDays } = props;
   const timeSettings = useSelector((state) => state.dateTime).time;
-  const orderTimes = useSelector((state) => state.orders)
-    .filter((order) => order.status <= 1)
-    .filter(
-      (order) =>
-        stringDate(order.order_info.delivery_time.toDate()) ===
-        stringDate(props.date)
-    )
-    .map((order) => order.order_info.delivery_time.toDate());
+  const orderTimes = useSelector((state) => state.orders).filter(
+    (order) => order.status <= 1
+  );
+
+  const timesToExclude = [
+    ...orderTimes
+      .filter(
+        (order) =>
+          stringDate(order.order_info.delivery_time.toDate()) ===
+          stringDate(props.date)
+      )
+      .map((order) => order.order_info.delivery_time.toDate()),
+    ...(timeSettings.excluded_times[dbFormatDate(props.date)] || []),
+  ];
 
   function filterDates(date) {
     const { include } = dateSettings;
@@ -41,11 +45,6 @@ function Calendar(props) {
   }
 
   function filterTimes(time) {
-    const timesToExclude = [
-      ...orderTimes,
-      ...(timeSettings.excluded_times[dbFormatDate(props.date)] || []),
-    ];
-
     return !timesToExclude.some(
       (excludeTime) =>
         `${stringDate(excludeTime)} ${stringTime(excludeTime)}` ===
@@ -61,6 +60,39 @@ function Calendar(props) {
     props.setDate(date);
   }
 
+  function noAvailableTime(date, timesToExclude) {
+    const range = getTimeRange(stringDate(date), timeSettings);
+
+    return range.every((time) =>
+      timesToExclude.map((val) => stringTime(val)).includes(stringTime(time))
+    );
+  }
+
+  function getUnavailableDates() {
+    const range = [];
+    let count = dateSettings.buffer;
+    const endingDate = addDays(dateSettings.buffer + dateSettings.range + 1);
+
+    while (stringDate(addDays(count)) !== stringDate(endingDate)) {
+      range.push(addDays(count));
+      count += 1;
+    }
+
+    return range.filter((day) => {
+      const timesToExclude = [
+        ...orderTimes
+          .filter(
+            (order) =>
+              stringDate(order.order_info.delivery_time.toDate()) ===
+              stringDate(day)
+          )
+          .map((order) => order.order_info.delivery_time.toDate()),
+        ...(timeSettings.excluded_times[dbFormatDate(day)] || []),
+      ];
+      return noAvailableTime(day, timesToExclude);
+    });
+  }
+
   return (
     <DatePicker
       onChange={handleChange}
@@ -73,7 +105,8 @@ function Calendar(props) {
       minDate={addDays(dateSettings.buffer)}
       maxDate={addDays(dateSettings.buffer + dateSettings.range)}
       filterDate={filterDates}
-      interval={timeSettings.interval}
+      excludeDates={getUnavailableDates()}
+      timeIntervals={timeSettings.interval}
       minTime={getTimestamp(timeSettings.start_time)}
       maxTime={getTimestamp(timeSettings.end_time)}
       filterTime={filterTimes}

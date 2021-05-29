@@ -95,8 +95,8 @@ export default function TimeSettings(props) {
 
   function getTimeRange() {
     const range = [];
-    const endingTime = new Date(`${stringDate(selectedDate)} ${"18:00"}`);
-    let time = new Date(`${stringDate(selectedDate)} ${"9:00"}`);
+    const endingTime = new Date(`${stringDate(selectedDate)} ${endTime}`);
+    let time = new Date(`${stringDate(selectedDate)} ${startTime}`);
 
     while (
       time.getHours() + time.getMinutes() <=

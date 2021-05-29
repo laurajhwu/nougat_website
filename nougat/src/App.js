@@ -147,7 +147,6 @@ function App() {
           dispatch(
             modifyExcludedTimes(change.doc.id, convertData(change.doc.data()))
           );
-          console.log(change.doc.id, convertData(change.doc.data()));
         }
       });
     }

@@ -53,8 +53,8 @@ function CheckOut() {
   const [personalInfo, setPersonalInfo] = useState({});
   const [remember, setRemember] = useState();
 
-  function addDays(days) {
-    const initDate = new Date();
+  function addDays(days, date = null) {
+    const initDate = date || new Date();
     initDate.setDate(initDate.getDate() + days);
     return initDate;
   }
