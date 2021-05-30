@@ -5,6 +5,7 @@ import Status from "./Status";
 import Time from "./Time";
 import Location from "./Location";
 import Details from "./Details";
+import Filter from "./Filter";
 
 import TableContainer from "@material-ui/core/TableContainer";
 import Paper from "@material-ui/core/Paper";
@@ -23,11 +24,12 @@ export default function OrdersSettings() {
   const dispatch = useDispatch();
   const locations = useSelector((state) => state.locations);
   const [open, setOpen] = useState(false);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [filteredOrders, setFilteredOrders] = useState();
 
   function splitOrders() {
-    const ordersCopy = [...orders];
+    const ordersCopy = [...(filteredOrders || orders)];
     const totalPages = Math.ceil(orders.length / rowsPerPage);
     const splittedOrders = {};
     for (let i = 0; i < totalPages; i++) {
@@ -60,6 +62,11 @@ export default function OrdersSettings() {
   if (orders) {
     return (
       <Container>
+        <Filter
+          orders={orders}
+          filteredOrders={filteredOrders}
+          setFilteredOrders={setFilteredOrders}
+        />
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -118,7 +125,7 @@ export default function OrdersSettings() {
         </TableContainer>
         <TablePagination
           component="div"
-          count={orders.length}
+          count={filteredOrders ? filteredOrders.length : orders.length}
           page={page}
           onChangePage={handleChangePage}
           rowsPerPage={rowsPerPage}
