@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getOrderFixedData } from "../../../../redux/actions/fixedData";
+import Api from "../../../../utils/Api";
 import Status from "./Status";
 import Time from "./Time";
+import Location from "./Location";
 import {
   TableContainer,
   Paper,
@@ -11,13 +13,13 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  useEventCallback,
 } from "@material-ui/core";
 import { Container, Title } from "./styles";
 
 export default function OrdersSettings() {
   const orders = useSelector((state) => state.orders);
   const dispatch = useDispatch();
+  const locations = useSelector((state) => state.locations);
 
   useEffect(() => {
     dispatch(getOrderFixedData());
@@ -50,9 +52,6 @@ export default function OrdersSettings() {
             <TableBody>
               {orders.map((order) => (
                 <TableRow key={order.id}>
-                  {/* <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell> */}
                   <TableCell align="center">
                     {order.personal_info.name}
                   </TableCell>
@@ -62,8 +61,12 @@ export default function OrdersSettings() {
                   <TableCell align="center">
                     <Time order={order} />
                   </TableCell>
-                  <TableCell align="center">
-                    {order.order_info.delivery_address}
+                  <TableCell align="left">
+                    {locations && locations.length !== 0 ? (
+                      <Location order={order} locations={locations} />
+                    ) : (
+                      "Loading..."
+                    )}
                   </TableCell>
                   <TableCell align="center">{order.id}</TableCell>
                 </TableRow>

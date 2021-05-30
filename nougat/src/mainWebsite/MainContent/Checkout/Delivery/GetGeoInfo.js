@@ -8,13 +8,12 @@ async function getGeoInfo(location) {
   const promise = Geocode.fromAddress(fullAddress, API_KEY, "zh-TW", "TW")
     .then((response) => {
       const { lat, lng } = response.results[0].geometry.location;
-      const { place_id, formatted_address } = response.results[0];
+      const { place_id } = response.results[0];
       return {
         ...location,
         lat,
         lng,
         place_id,
-        formatted_address,
       };
     })
     .catch((error) => console.log(error.message));

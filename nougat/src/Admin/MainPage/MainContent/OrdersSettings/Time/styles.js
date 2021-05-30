@@ -8,7 +8,10 @@ export const Container = styled.div`
   flex-direction: row;
 `;
 
-export const DateTime = styled.div``;
+export const DateTime = styled.div`
+  position: relative;
+  width: 174px;
+`;
 
 export const Change = styled(PublishedWithChanges)`
   width: 16px;
@@ -19,6 +22,9 @@ export const Change = styled(PublishedWithChanges)`
 
 export const Done = styled(CheckDouble)`
   width: 20px;
+  position: absolute;
+  right: 25px;
+  top: 2.5px;
   &:hover {
     cursor: pointer;
     color: green;
@@ -27,6 +33,7 @@ export const Done = styled(CheckDouble)`
 
 export const CancelIcon = styled(Cancel)`
   width: 18px;
+  margin-left: 1px;
   &:hover {
     cursor: pointer;
     color: red;

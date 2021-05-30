@@ -107,13 +107,12 @@ function CheckOut() {
 
   function handleCheckout() {
     if (cartItems.length !== 0) {
+      const { city, district, address } = selectedLocation;
       if (!isClicked) {
         setOrder({
           order_info: {
             delivery,
-            delivery_address: selectedLocation
-              ? selectedLocation.formatted_address
-              : "",
+            delivery_address: selectedLocation ? city + district + address : "",
             delivery_time: date,
             notes: personalInfo.notes ? personalInfo.notes : "N/A",
             payment: payment,
