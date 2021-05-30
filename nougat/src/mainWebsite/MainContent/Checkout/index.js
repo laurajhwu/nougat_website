@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { setMinutes, setHours } from "date-fns";
 import Api from "../../../utils/Api";
 import CartItems from "./Purchases/CartItems";
 import Map from "./Delivery/Map";
@@ -11,6 +12,7 @@ import PickDate from "./Time/Calendar";
 import uuid from "react-uuid";
 import RememberMe from "../../../Components/RememberMe";
 import updateProductStock from "../../../utils/updateProductStock";
+import addDays from "../../../utils/addDays";
 import { updateMember } from "../../../redux/actions/member";
 
 const Products = styled.div``;
@@ -38,6 +40,7 @@ function CheckOut() {
   const history = useHistory();
   const member = useSelector((state) => state.member);
   const dateSettings = useSelector((state) => state.dateTime).date;
+  const timeSettings = useSelector((state) => state.dateTime).time;
   const dispatch = useDispatch();
   const cartItems = member.cart_items;
   const allLocations = useSelector((state) => state.locations).filter(
@@ -48,16 +51,16 @@ function CheckOut() {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState();
   const [payment, setPayment] = useState("cash");
-  const [date, setDate] = useState(addDays(dateSettings.buffer));
+  const initTime = timeSettings.start_time.split(":");
+  const [date, setDate] = useState(
+    setHours(
+      setMinutes(addDays(dateSettings.buffer), +initTime[1]),
+      +initTime[0]
+    )
+  );
   const [order, setOrder] = useState({});
   const [personalInfo, setPersonalInfo] = useState({});
   const [remember, setRemember] = useState();
-
-  function addDays(days) {
-    const initDate = new Date();
-    initDate.setDate(initDate.getDate() + days);
-    return initDate;
-  }
 
   function deliveryOptionChange(event) {
     setDelivery(event.target.value);
@@ -234,12 +237,7 @@ function CheckOut() {
         </Delivery>
         <Calendar>
           <Label>取貨時間*</Label>
-          <PickDate
-            date={date}
-            setDate={setDate}
-            dateSettings={dateSettings}
-            addDays={addDays}
-          />
+          <PickDate date={date} setDate={setDate} />
         </Calendar>
         <PersonalInfo>
           <Info>

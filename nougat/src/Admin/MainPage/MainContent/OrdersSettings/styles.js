@@ -14,7 +14,6 @@ export const Container = styled.div`
 `;
 
 export const Title = styled.div`
-  /* height: 20px; */
   border-right: 2px solid #99a4ad;
   ${".MuiTableCell-root"}:last-child > & {
     border-right: none;

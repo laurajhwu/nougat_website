@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { stringDate, stringTime } from "../../../../utils/dateTimeFormat";
 import { getOrderFixedData } from "../../../../redux/actions/fixedData";
 import Status from "./Status";
+import Time from "./Time";
 import {
   TableContainer,
   Paper,
@@ -60,9 +60,7 @@ export default function OrdersSettings() {
                     <Status order={order} />
                   </TableCell>
                   <TableCell align="center">
-                    {`${stringDate(
-                      order.order_info.delivery_time.toDate()
-                    )} ${stringTime(order.order_info.delivery_time.toDate())}`}
+                    <Time order={order} />
                   </TableCell>
                   <TableCell align="center">
                     {order.order_info.delivery_address}

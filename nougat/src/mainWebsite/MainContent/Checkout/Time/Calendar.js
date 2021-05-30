@@ -8,10 +8,11 @@ import {
   stringTime,
 } from "../../../../utils/dateTimeFormat";
 import getTimeRange from "../../../../utils/getTimeRange";
+import addDays from "../../../../utils/addDays";
 import "react-datepicker/dist/react-datepicker.css";
 
 function Calendar(props) {
-  const { dateSettings, addDays } = props;
+  const dateSettings = useSelector((state) => state.dateTime).date;
   const timeSettings = useSelector((state) => state.dateTime).time;
   const orderTimes = useSelector((state) => state.orders).filter(
     (order) => order.status <= 1
