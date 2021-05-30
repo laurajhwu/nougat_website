@@ -14,6 +14,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import Button from "@material-ui/core/Button";
+import TablePagination from "@material-ui/core/TablePagination";
 
 import { Container, Title, DetailSection } from "./styles";
 
@@ -22,6 +23,27 @@ export default function OrdersSettings() {
   const dispatch = useDispatch();
   const locations = useSelector((state) => state.locations);
   const [open, setOpen] = useState(false);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  function splitOrders() {
+    const ordersCopy = [...orders];
+    const totalPages = Math.ceil(orders.length / rowsPerPage);
+    const splittedOrders = {};
+    for (let i = 0; i < totalPages; i++) {
+      splittedOrders[i] = ordersCopy.splice(0, rowsPerPage);
+    }
+    return splittedOrders;
+  }
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   function handleOpen(id) {
     setOpen(id);
@@ -60,7 +82,7 @@ export default function OrdersSettings() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {orders.map((order) => (
+              {splitOrders()[page].map((order) => (
                 <TableRow key={order.id}>
                   <TableCell align="center">
                     {order.personal_info.name}
@@ -94,6 +116,14 @@ export default function OrdersSettings() {
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+          component="div"
+          count={orders.length}
+          page={page}
+          onChangePage={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
       </Container>
     );
   } else {
