@@ -16,10 +16,6 @@ import {
 
 export default function Location(props) {
   const { order, locations } = props;
-  console.log(
-    "🚀 ~ file: index.js ~ line 11 ~ Location ~ locations",
-    locations
-  );
   const currentLocation = order.order_info.delivery_address;
   const [value, setValue] = useState(currentLocation);
   const [edit, setEdit] = useState(false);
@@ -68,7 +64,7 @@ export default function Location(props) {
   }
 
   return (
-    <Container>
+    <Container key={`${order.id}location`}>
       <Input
         value={value}
         onChange={handleChange}

@@ -1,13 +1,6 @@
 import styled from "styled-components";
-import {
-  TableContainer,
-  Paper,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-} from "@material-ui/core";
+
+import { Modal } from "semantic-ui-react";
 
 export const Container = styled.div`
   padding-top: 40px;
@@ -18,4 +11,8 @@ export const Title = styled.div`
   ${".MuiTableCell-root"}:last-child > & {
     border-right: none;
   }
+`;
+
+export const DetailSection = styled(Modal)`
+  width: 100% !important;
 `;
