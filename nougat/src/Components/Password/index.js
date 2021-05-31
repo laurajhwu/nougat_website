@@ -16,11 +16,12 @@ export default function Password(props) {
         type={display ? "text" : "password"}
         placeholder={props.placeholder || ""}
         notValid={props.notValid === undefined ? false : props.notValid}
+        theme={props.inputTheme}
       />
       {display ? (
-        <Show onClick={toggleDisplay} />
+        <Show onClick={toggleDisplay} theme={props.iconTheme} />
       ) : (
-        <NoShow onClick={toggleDisplay} />
+        <NoShow onClick={toggleDisplay} theme={props.iconTheme} />
       )}
     </Container>
   );
