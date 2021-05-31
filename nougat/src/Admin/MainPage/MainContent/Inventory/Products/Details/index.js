@@ -37,59 +37,63 @@ export default function Details(props) {
     }
   }
 
-  return (
-    <Modal show={props.show} onHide={props.handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>{product.name}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Fade in={true} show={show}>
-          <Alert variant="success">上傳成功</Alert>
-        </Fade>
-        <label htmlFor="upload-image">
-          <CameraIcon />
-          <FileInput
-            type="file"
-            accept="image/*"
-            id="upload-image"
-            onChange={(event) => uploadImage(event, product.id)}
-          />
-        </label>
-        <Img src={product.image} />
-        <List horizontal>
-          <div> 成分：</div>
-          {product.ingredients.map((ingredient, index) => {
-            if (ingredients[ingredient.id]) {
-              if (index % 2 === 0) {
-                return (
-                  <Item action variant="primary" key={ingredient.id}>
-                    {ingredients[ingredient.id].name}
-                  </Item>
-                );
+  if (ingredients) {
+    return (
+      <Modal show={props.show} onHide={props.handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>{product.name}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Fade in={true} show={show}>
+            <Alert variant="success">上傳成功</Alert>
+          </Fade>
+          <label htmlFor="upload-image">
+            <CameraIcon />
+            <FileInput
+              type="file"
+              accept="image/*"
+              id="upload-image"
+              onChange={(event) => uploadImage(event, product.id)}
+            />
+          </label>
+          <Img src={product.image} />
+          <List horizontal>
+            <div> 成分：</div>
+            {product.ingredients.map((ingredient, index) => {
+              if (ingredients[ingredient.id]) {
+                if (index % 2 === 0) {
+                  return (
+                    <Item action variant="primary" key={ingredient.id}>
+                      {ingredients[ingredient.id].name}
+                    </Item>
+                  );
+                } else {
+                  return (
+                    <Item action variant="warning" key={ingredient.id}>
+                      {ingredients[ingredient.id].name}
+                    </Item>
+                  );
+                }
               } else {
-                return (
-                  <Item action variant="warning" key={ingredient.id}>
-                    {ingredients[ingredient.id].name}
-                  </Item>
-                );
+                return <></>;
               }
-            } else {
-              return <></>;
-            }
-          })}
-        </List>
-        <List>
-          <Description variant="light" key={product.id}>
-            <Title>簡述</Title>
-            {product.description}
-          </Description>
-        </List>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={props.handleClose}>
-          關閉
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  );
+            })}
+          </List>
+          <List>
+            <Description variant="light" key={product.id}>
+              <Title>簡述</Title>
+              {product.description}
+            </Description>
+          </List>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={props.handleClose}>
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  } else {
+    return "Loading...";
+  }
 }

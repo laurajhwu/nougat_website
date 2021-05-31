@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import { Filter } from "@styled-icons/bootstrap";
+import { SortDown, SortUp } from "@styled-icons/boxicons-regular";
 
 export const Container = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   margin-bottom: 20px;
   position: relative;
 `;
@@ -35,6 +37,7 @@ export const FilterOptions = styled.select`
   &:hover {
     cursor: pointer;
   }
+  color: ${(props) => (props.filter ? "black" : "white")};
 `;
 
 export const FilterOption = styled.option``;
@@ -46,6 +49,33 @@ export const InputArea = styled.div`
 `;
 
 export const SelectArea = styled.div`
-  margin-left: 20px;
   width: 100px;
+  position: absolute;
+  top: 0px;
+  left: 120px;
+`;
+
+export const SortArea = styled.div`
+  display: flex;
+`;
+
+export const SortOption = styled.div`
+  margin-left: 10px;
+`;
+
+export const SortDesc = styled(SortDown)`
+  width: 25px;
+  margin-right: 5px;
+  color: ${(props) => (props.selected ? "blue" : "black")};
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+export const SortAsc = styled(SortUp)`
+  width: 25px;
+  color: ${(props) => (props.selected ? "blue" : "black")};
+  &:hover {
+    cursor: pointer;
+  }
 `;
