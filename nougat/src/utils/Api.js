@@ -381,10 +381,39 @@ class Api {
     return auth.signOut();
   }
 
+  checkSameAdminUsername(username) {
+    return db
+      .collection(this.admin)
+      .where("username", "==", username)
+      .get()
+      .then((snapshot) => {
+        let isNotValid = false;
+        snapshot.forEach((doc) => {
+          isNotValid = true;
+        });
+        return isNotValid;
+      });
+  }
+
+  checkSameAdminPassword(password) {
+    return db
+      .collection(this.admin)
+      .get()
+      .then((snapshot) => {
+        let isNotValid = false;
+        snapshot.forEach((doc) => {
+          if (decrypt(doc.data().password_encrypt, doc.id) === password) {
+            isNotValid = true;
+          }
+        });
+        return isNotValid;
+      });
+  }
+
   createAdmin(username, password) {
-    //need to check if user name and password already exists (rmb to trim)
     const id = uuid();
-    db.collection(this.admin)
+    return db
+      .collection(this.admin)
       .doc(id)
       .set({
         username,

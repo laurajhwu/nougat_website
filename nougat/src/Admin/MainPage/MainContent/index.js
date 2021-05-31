@@ -4,6 +4,7 @@ import Inventory from "./Inventory";
 import Calculate from "./Calculate";
 import DeliverySettings from "./DeliverySettings";
 import OrdersSettings from "./OrdersSettings";
+import OtherSettings from "./OtherSettings";
 
 import { Container } from "./styles";
 
@@ -23,6 +24,9 @@ export default function MainContent() {
       </Route>
       <Route path={`${match.url}/orders`}>
         <OrdersSettings />
+      </Route>
+      <Route path={`${match.url}/settings`}>
+        <OtherSettings />
       </Route>
     </Container>
   );
