@@ -124,6 +124,7 @@ export default function DateSettings(props) {
     const exclude = date.exclude;
     exclude.splice(index, 1);
     setDate({ ...date });
+    setDisableDates([...exclude.map((date) => new Date(date))]);
   }
 
   function addDays(days) {
@@ -294,7 +295,7 @@ export default function DateSettings(props) {
         </Exclude>
         <Btn>
           <Button variant="outlined" color="primary" type="submit">
-            確認
+            儲存
           </Button>
         </Btn>
       </Form>

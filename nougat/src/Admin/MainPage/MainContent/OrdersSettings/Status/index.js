@@ -18,7 +18,7 @@ export default function Status(props) {
     }
   }
 
-  if (fixedData) {
+  if (Object.keys(fixedData).length !== 0) {
     return (
       <Container>
         <FormControl>

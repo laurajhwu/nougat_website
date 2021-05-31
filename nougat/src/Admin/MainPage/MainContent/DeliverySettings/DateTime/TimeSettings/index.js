@@ -56,11 +56,9 @@ export default function TimeSettings(props) {
       if (isNaN(+time) || value.split(":").length !== 2) {
         return false;
       } else if (index === 0) {
-        return (
-          (+time >= 0 || +time <= 23) && (time.length <= 2 || time.length > 0)
-        );
+        return +time > 0 && +time <= 24 && time.length <= 2 && time.length > 0;
       } else if (index === 1) {
-        return (+time >= 0 || +time <= 59) && time.length === 2;
+        return +time >= 0 && +time <= 59 && time.length === 2;
       }
       return false;
     });
@@ -73,12 +71,12 @@ export default function TimeSettings(props) {
 
   function handleInterval(event) {
     const value = event.target.value.trim();
-    if (isNaN(+value) || +value < 0) {
+    if (isNaN(+value) || +value < 15) {
       setIsValid({ ...isValid, interval: false });
     } else {
       setIsValid({ ...isValid, interval: true });
     }
-    setInterval(+value);
+    setInterval(isNaN(+value) ? 0 : +value);
   }
 
   function handleStartTime(event) {
@@ -171,7 +169,6 @@ export default function TimeSettings(props) {
 
   useEffect(() => {
     if (Object.values(isValid).every((value) => value)) {
-      console.log(interval);
       setTimeRange(
         getTimeRange(stringDate(selectedDate), {
           end_time: endTime,
@@ -200,7 +197,6 @@ export default function TimeSettings(props) {
               endAdornment={
                 <InputAdornment position="end">分鐘</InputAdornment>
               }
-              type="number"
               error={!isValid.interval}
             />
             <FormHelperText>時段間隔</FormHelperText>
