@@ -1,14 +1,15 @@
 import { addMinutes } from "date-fns";
+import { stringTime } from "./dateTimeFormat";
 
 export default function getRange(stringDate, timeSettings) {
   const range = [];
-  const endingTime = new Date(`${stringDate} ${timeSettings.end_time}`);
+  const endingTime = addMinutes(
+    new Date(`${stringDate} ${timeSettings.end_time}`),
+    timeSettings.interval
+  );
   let time = new Date(`${stringDate} ${timeSettings.start_time}`);
 
-  while (
-    time.getHours() + time.getMinutes() <=
-    endingTime.getHours() + endingTime.getMinutes()
-  ) {
+  while (stringTime(time) !== stringTime(endingTime)) {
     range.push(time);
     time = addMinutes(time, timeSettings.interval);
   }

@@ -20,7 +20,9 @@ function RenderLocations(props) {
               location.place_id === props.selectedLocation.place_id
             }
           >
-            {location.formatted_address}
+            {`${location.city + location.district + location.address} - ${
+              location.description
+            }`}
           </Location>
         );
       })}

@@ -329,6 +329,10 @@ class Api {
     return unsubscribe;
   }
 
+  updateOrder(id, data) {
+    return db.collection(this.orders).doc(id).update(data);
+  }
+
   createAccount(email, password) {
     return auth
       .createUserWithEmailAndPassword(email, password)

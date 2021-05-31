@@ -121,10 +121,16 @@ export default function TimeSettings(props) {
       .sort((early, late) => {
         const earlyVal = Object.values(early)[0]
           .split(":")
-          .reduce((sum, time) => sum + +time, 0);
+          .reduce(
+            (sum, time, index) => sum + (index === 1 ? +time / 60 : +time),
+            0
+          );
         const lateVal = Object.values(late)[0]
           .split(":")
-          .reduce((sum, time) => sum + +time, 0);
+          .reduce(
+            (sum, time, index) => sum + (index === 1 ? +time / 60 : +time),
+            0
+          );
         return earlyVal - lateVal;
       });
 
@@ -165,6 +171,7 @@ export default function TimeSettings(props) {
 
   useEffect(() => {
     if (Object.values(isValid).every((value) => value)) {
+      console.log(interval);
       setTimeRange(
         getTimeRange(stringDate(selectedDate), {
           end_time: endTime,
