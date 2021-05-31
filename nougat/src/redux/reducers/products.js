@@ -5,7 +5,9 @@ function products(state = [], action) {
     case "GET_PRODUCTS":
       return [...action.payload];
     case "MODIFY_PRODUCT":
-      const i = state.findIndex((product) => product.id === action.payload.id);
+      const i = state.findIndex(
+        (product) => !product.id || product.id === action.payload.id
+      );
       state[i] = action.payload;
       return [...state];
     case "ADD_PRODUCT":

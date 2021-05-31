@@ -9,7 +9,9 @@ function orders(state = null, action) {
     case "ADD_NEW_ORDER":
       return [...state, action.payload];
     case "GET_MODIFIED_ORDER":
-      const modifyOrder = state.find((order) => order.id === action.payload.id);
+      const modifyOrder = state.find(
+        (order) => !order.id || order.id === action.payload.id
+      );
       Object.assign(modifyOrder, action.payload);
       return [...state];
     case "GET_REMOVED_ORDER":

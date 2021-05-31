@@ -17,6 +17,11 @@ export default function DisplayAll() {
   const locations = useSelector((state) => state.locations);
 
   function handleToggle(id, active) {
+    console.log("🚀 ~ file: index.js ~ line 20 ~ handleToggle ~ id", id);
+    console.log(
+      "🚀 ~ file: index.js ~ line 20 ~ handleToggle ~ active",
+      active
+    );
     Api.updateLocation(id, { active: !active });
   }
 
@@ -30,6 +35,10 @@ export default function DisplayAll() {
     <Container>
       <List>
         {locations.map((location) => {
+          console.log(
+            "🚀 ~ file: index.js ~ line 38 ~ {locations.map ~ locations",
+            locations
+          );
           const { address, active, city, description, district, id } = location;
           const fullAddress = city + district + address;
 

@@ -4,8 +4,9 @@ function locations(state = [], action) {
       return action.payload;
     case "MODIFY_LOCATION":
       const i = state.findIndex(
-        (location) => location.id === action.payload.id
+        (location) => !location.id || location.id === action.payload.id
       );
+
       state[i] = action.payload;
       return [...state];
     case "ADD_LOCATION":
