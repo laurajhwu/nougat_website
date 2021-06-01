@@ -65,6 +65,7 @@
     ]
   },
   "devDependencies": {
+    "file-loader": "^6.2.0",
     "start-server-and-test": "^1.12.2"
   }
 }

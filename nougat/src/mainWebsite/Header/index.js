@@ -3,12 +3,9 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { renderPage } from "../../redux/actions/renderPage";
+import LogoIcon from "../../images/logo.png";
 
-const Nav = styled.nav`
-  width: 500px;
-  display: flex;
-  justify-content: space-between;
-`;
+import { Nav, Container, Logo, CartIcon, MemberIcon } from "./styles";
 
 function Header() {
   const dispatch = useDispatch();
@@ -26,20 +23,23 @@ function Header() {
   }
 
   return (
-    <header>
+    <Container>
+      <Link to="/">
+        <Logo src={LogoIcon} />
+      </Link>
       <Nav>
         <Link to="/">首頁</Link>
         <Link to="/products">所有產品</Link>
         <Link to="/contact">聯絡我們</Link>
-        <Link to="/event">特別活動</Link>
+        {/* <Link to="/event">特別活動</Link> */}
         <Link to="/member" onClick={clickMemberPage}>
-          <i class="far fa-user"></i>
+          <MemberIcon />
         </Link>
         <Link to="/cart" onClick={clickCheckoutPage}>
-          <i class="fas fa-shopping-cart"></i>
+          <CartIcon />
         </Link>
       </Nav>
-    </header>
+    </Container>
   );
 }
 
