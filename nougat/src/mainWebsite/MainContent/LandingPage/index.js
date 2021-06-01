@@ -1,10 +1,13 @@
 import React, { useRef, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import BGImage from "../../../images/landing-page-bg.jpg";
 import BowlImage from "../../../images/bowl.svg";
 import WhiskImage from "../../../images/whisk.svg";
 import NougatImage from "../../../images/nougat.svg";
 import CandyImage from "../../../images/candy.svg";
 import CookieImage from "../../../images/cookies.svg";
 import { gsap } from "gsap";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 
 import {
   Container,
@@ -13,13 +16,34 @@ import {
   Animation,
   SplashArea,
   Nougat,
+  Candy,
+  Cookie,
+  Product,
+  About,
 } from "./styles";
 
+gsap.registerPlugin(MotionPathPlugin);
+
 export default function LandingPage() {
+  const products = useSelector((state) => state.products);
   const timeline = gsap.timeline();
+  const welcomeRef = useRef();
   const bowlRef = useRef();
   const whiskRef = useRef();
   const animationRef = useRef();
+  const splashItems = useRef();
+
+  function getRandomNum(min, max) {
+    return Math.ceil(Math.random() * (max - min)) + min;
+  }
+  function getRandomNumArray(min, max) {
+    const num = getRandomNum(min, max);
+    const arr = [];
+    for (let i = 0; i < num; i++) {
+      arr.push(i);
+    }
+    return arr;
+  }
 
   function mixingAnimation() {
     const whiskTimeline = gsap.timeline({
@@ -72,35 +96,117 @@ export default function LandingPage() {
       );
     return gsap
       .timeline()
+      .from(animationRef.current, { opacity: 0, duration: 1 }, "-=1")
       .addLabel("mix")
-      .add(whiskTimeline)
+      .add(whiskTimeline, "mix")
       .add(whiskScale, "mix");
   }
 
+  function splashItemsAnimation() {
+    const areaWidth = splashItems.current.clientWidth;
+    const areaHeight = splashItems.current.clientHeight;
+    const bowlWidth = bowlRef.current.offsetWidth || 500;
+    const bowlHeight = bowlRef.current.offsetHeight || 500;
+    let index = 0;
+
+    return Array.from(splashItems.current.children).map((item) => {
+      if (index % 2 === 0) {
+        index = 1;
+      } else {
+        index = 0;
+      }
+      const x = [
+        getRandomNum(-areaWidth / 2 + 20, -bowlWidth / 2 - 10),
+        getRandomNum(bowlWidth / 2 + 10, areaWidth / 2 - 20),
+      ][index];
+
+      const y = getRandomNum(-areaHeight + 20, -bowlHeight - 30);
+      return gsap
+        .timeline()
+        .add("start")
+        .to(
+          item,
+          {
+            duration: 6,
+            ease: "bounce.out",
+            rotation: getRandomNum(-360, 360),
+            motionPath: {
+              curviness: 1,
+              path: [
+                { x: x / 2, y: y },
+                { x: x, y: 0 },
+              ],
+            },
+          },
+          `+=${getRandomNum(0, 0.5)}`
+        )
+        .to(item, { opacity: 1, duration: 0.1 }, "start+=1.5");
+    });
+  }
+
   function splashAnimation() {
-    const bowlTl = gsap.timeline();
+    const splashTl = gsap.timeline();
 
-    bowlTl
+    splashTl
       .addLabel("splash")
-      .to(bowlRef.current, { y: 100, duration: 0.3 })
-      .to(whiskRef.current, { y: 50, rotation: 90, duration: 0.3 }, "splash");
+      .to(bowlRef.current, { y: 100, duration: 0.5 })
+      .to(
+        whiskRef.current,
+        { y: 50, rotation: 90, duration: 0.5, ease: "power1.out" },
+        "splash"
+      )
+      .add(splashItemsAnimation(), "splash-=1.5");
 
-    return bowlTl;
+    return splashTl;
+  }
+
+  function removeBowlWhisk() {
+    return gsap
+      .timeline()
+      .addLabel("remove")
+      .to(bowlRef.current, { y: 500, duration: 2, opacity: 0 })
+      .to(
+        whiskRef.current,
+        { rotation: 180, duration: 2, opacity: 0 },
+        "remove"
+      )
+      .to(animationRef.current, { display: "none", duration: 0.1 });
   }
 
   useEffect(() => {
-    timeline.add(mixingAnimation()).add(splashAnimation(), "+=0.1");
-  }, [whiskRef]);
+    if (products.length !== 0) {
+      timeline
+        .add(mixingAnimation())
+        .add(splashAnimation(), ">-2")
+        .add(removeBowlWhisk(), "<2.5");
+    }
+  }, [products]);
 
-  return (
-    <Container>
-      <SplashArea>
-        <Nougat src={NougatImage} />
-      </SplashArea>
-      <Animation ref={animationRef}>
-        <Whisk src={WhiskImage} ref={whiskRef} />
-        <Bowl src={BowlImage} ref={bowlRef} />
-      </Animation>
-    </Container>
-  );
+  if (products.length !== 0) {
+    return (
+      <Container>
+        <About url={BGImage}></About>
+        <SplashArea ref={splashItems}>
+          {products.map((product) => (
+            <Product key={product.id} url={product.image}></Product>
+          ))}
+          {getRandomNumArray(5, 7).map((value) => (
+            <Nougat key={`nougat${value}`} src={NougatImage} />
+          ))}
+          {getRandomNumArray(3, 5).map((value) => (
+            <Candy key={`candy${value}`} src={CandyImage} />
+          ))}
+          {getRandomNumArray(2, 4).map((value) => (
+            <Cookie key={`cookie${value}`} src={CookieImage} />
+          ))}
+        </SplashArea>
+        <Animation ref={animationRef}>
+          <Whisk src={WhiskImage} ref={whiskRef} />
+          <Bowl src={BowlImage} ref={bowlRef} />
+        </Animation>
+      </Container>
+    );
+  } else {
+    return "Loading...";
+  }
 }
