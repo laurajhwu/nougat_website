@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
@@ -28,8 +28,7 @@ import {
   modifyExcludedTimes,
 } from "./redux/actions/dateTime";
 import { getMember } from "./redux/actions/member";
-import MainContent from "./MainWebsite/MainContent";
-import Header from "./MainWebsite/Header";
+import MainWebsite from "./MainWebsite";
 import Api from "./utils/Api";
 import Calendar from "./utils/calendarSettings";
 import Admin from "./Admin";
@@ -42,12 +41,6 @@ let initOrders = true;
 function App() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
-  const MainWebsite = () => (
-    <>
-      <Header />
-      <MainContent />
-    </>
-  );
 
   function productsOnSnapshot(snapshot) {
     if (initProducts) {

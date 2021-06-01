@@ -8,16 +8,20 @@ import LinePay from "./Checkout/Payment/Linepay";
 import Confirm from "./Checkout/Payment/Confirm";
 import Cancel from "./Checkout/Payment/Cancel";
 import Member from "./Member";
+import LandingPage from "./LandingPage";
 
 const Main = styled.main`
   max-width: 1160px;
   margin: 0 auto;
+  padding-top: 160px;
+  height: 100%;
 `;
 
 function MainContent() {
   return (
     <Main>
       <Switch>
+        <Route exact path="/" component={LandingPage} />
         <Route exact path="/products" component={Products} />
         <Route exact path="/product" component={ProductDetails} />
         <Route exact path="/cart" component={Cart} />
