@@ -44,9 +44,6 @@ export default function ContactUs(props) {
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
-        {/* <Button color="black" onClick={handleClose}>
-          Nope
-        </Button> */}
         <Button
           content="已加入！"
           labelPosition="right"

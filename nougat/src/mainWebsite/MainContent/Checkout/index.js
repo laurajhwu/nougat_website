@@ -14,6 +14,7 @@ import RememberMe from "../../../Components/RememberMe";
 import updateProductStock from "../../../utils/updateProductStock";
 import addDays from "../../../utils/addDays";
 import { updateMember } from "../../../redux/actions/member";
+import Loading from "../../../Components/LoadingPage";
 
 const Products = styled.div``;
 const Delivery = styled.div`
@@ -300,7 +301,7 @@ function CheckOut() {
       </div>
     );
   } else {
-    return <>Loading...</>;
+    return <Loading />;
   }
 }
 export default CheckOut;

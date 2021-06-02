@@ -9,6 +9,7 @@ import CandyImage from "../../../images/candy.svg";
 import CookieImage from "../../../images/cookies.svg";
 import { gsap } from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+import Loading from "../../../Components/LoadingPage";
 
 import {
   Container,
@@ -270,6 +271,6 @@ export default function LandingPage() {
       </Container>
     );
   } else {
-    return "Loading...";
+    return <Loading />;
   }
 }

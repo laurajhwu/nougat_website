@@ -4,6 +4,7 @@ import qtyOptions from "../../../utils/qtyOptions";
 import AddToCart from "../../../Components/AddToCart";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Loading from "../../../Components/LoadingPage";
 
 const Product = styled.div`
   display: flex;
@@ -94,7 +95,7 @@ function AllProducts() {
       </Product>
     );
   } else {
-    return <Product>Loading...</Product>;
+    return <Loading />;
   }
 }
 

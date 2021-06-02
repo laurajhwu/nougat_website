@@ -8,6 +8,7 @@ import logout from "../../../../utils/logout";
 import Api from "../../../../utils/Api";
 import { getMemberOrders } from "../../../../redux/actions/order";
 import { getOrderFixedData } from "../../../../redux/actions/fixedData";
+import Loading from "../../../../Components/LoadingPage";
 
 const ProfilePage = styled.div``;
 const OrderPage = styled.div``;
@@ -46,31 +47,37 @@ function LoggedIn() {
     }
   }, []);
 
-  return (
-    <>
-      {member.id ? (
-        <>
-          <ProfilePage onClick={() => handleClick("profile")}>
-            會員資料
-          </ProfilePage>
-          <OrderPage onClick={() => handleClick("orders")}>訂單瀏覽</OrderPage>
-          <Route path={`${match.url}/profile`}>
-            <Profile />
-          </Route>
-          <Route path={`${match.url}/orders`}>
-            <Orders />
-          </Route>
-        </>
-      ) : (
-        <>
-          <EmailNotVerified>
-            請查看您的信箱是否收到驗證信，驗證您的信箱後，方可看到會員資料
-          </EmailNotVerified>
-          <Logout onClick={logout}>登出</Logout>
-        </>
-      )}
-    </>
-  );
+  if (member) {
+    return (
+      <>
+        {member.id ? (
+          <>
+            <ProfilePage onClick={() => handleClick("profile")}>
+              會員資料
+            </ProfilePage>
+            <OrderPage onClick={() => handleClick("orders")}>
+              訂單瀏覽
+            </OrderPage>
+            <Route path={`${match.url}/profile`}>
+              <Profile />
+            </Route>
+            <Route path={`${match.url}/orders`}>
+              <Orders />
+            </Route>
+          </>
+        ) : (
+          <>
+            <EmailNotVerified>
+              請查看您的信箱是否收到驗證信，驗證您的信箱後，方可看到會員資料
+            </EmailNotVerified>
+            <Logout onClick={logout}>登出</Logout>
+          </>
+        )}
+      </>
+    );
+  } else {
+    return <Loading />;
+  }
 }
 
 export default LoggedIn;

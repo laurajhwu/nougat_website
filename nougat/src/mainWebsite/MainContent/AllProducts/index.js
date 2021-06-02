@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import AddToCart from "../../../Components/AddToCart";
 import QuantityBtn from "../../../Components/CartItemsQty";
 import DeleteIcon from "../../../Components/RemoveFromCart";
+import Loading from "../../../Components/LoadingPage";
 
 const Products = styled.div``;
 const Product = styled.div`
@@ -100,7 +101,7 @@ function AllProducts() {
       </>
     );
   } else {
-    return <Products>Loading...</Products>;
+    return <Loading />;
   }
 }
 
