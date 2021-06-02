@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { renderPage } from "../../redux/actions/renderPage";
 import LogoIcon from "../../images/logo.png";
+import { gsap } from "gsap";
 
 import { Nav, Container, Logo, CartIcon, MemberIcon } from "./styles";
 
@@ -33,10 +34,10 @@ function Header() {
         <Link to="/contact">聯絡我們</Link>
         {/* <Link to="/event">特別活動</Link> */}
         <Link to="/member" onClick={clickMemberPage}>
-          <MemberIcon />
+          <MemberIcon className="fas fa-user-circle" />
         </Link>
         <Link to="/cart" onClick={clickCheckoutPage}>
-          <CartIcon />
+          <CartIcon className="fas fa-shopping-cart" />
         </Link>
       </Nav>
     </Container>

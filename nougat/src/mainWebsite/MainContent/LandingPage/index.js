@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import BGImage from "../../../images/landing-page-bg.jpg";
 import BowlImage from "../../../images/bowl.svg";
 import WhiskImage from "../../../images/whisk.svg";
@@ -20,18 +21,28 @@ import {
   Cookie,
   Product,
   About,
+  AboutContent,
+  Slogan,
+  MoreInfo,
 } from "./styles";
 
 gsap.registerPlugin(MotionPathPlugin);
 
 export default function LandingPage() {
+  const history = useHistory();
   const products = useSelector((state) => state.products);
   const timeline = gsap.timeline();
-  const welcomeRef = useRef();
+  const bgRef = useRef();
+  const sloganRef = useRef();
+  const moreRef = useRef();
   const bowlRef = useRef();
   const whiskRef = useRef();
   const animationRef = useRef();
   const splashItems = useRef();
+
+  function handleMoreInfo() {
+    history.push("/products");
+  }
 
   function getRandomNum(min, max) {
     return Math.ceil(Math.random() * (max - min)) + min;
@@ -140,7 +151,8 @@ export default function LandingPage() {
           },
           `+=${getRandomNum(0, 0.5)}`
         )
-        .to(item, { opacity: 1, duration: 0.1 }, "start+=1.5");
+        .to(item, { opacity: 1, duration: 0.1 }, "start+=1.5")
+        .to(item, { opacity: 0, duration: 1 });
     });
   }
 
@@ -173,19 +185,60 @@ export default function LandingPage() {
       .to(animationRef.current, { display: "none", duration: 0.1 });
   }
 
+  function fadeInBg() {
+    return gsap
+      .timeline()
+      .to(bgRef.current, { opacity: 1, ease: "power2.in", duration: 1.5 })
+      .from(
+        sloganRef.current.children,
+        { opacity: 0, ease: "slow.in", duration: 1.5, stagger: 0.1 },
+        "+=0.5"
+      )
+      .from(moreRef.current, {
+        opacity: 0,
+        scale: 1.1,
+        duration: 1,
+        ease: "back.out",
+      });
+  }
+
   useEffect(() => {
     if (products.length !== 0) {
       timeline
         .add(mixingAnimation())
         .add(splashAnimation(), ">-2")
-        .add(removeBowlWhisk(), "<2.5");
+        .add(removeBowlWhisk(), "<2.5")
+        .add(fadeInBg(), "<1.5")
+        .to(bgRef.current, { "z-index": 1, duration: 0.1 });
     }
   }, [products]);
 
   if (products.length !== 0) {
     return (
       <Container>
-        <About url={BGImage}></About>
+        <About url={BGImage} ref={bgRef}>
+          <AboutContent>
+            <Slogan ref={sloganRef}>
+              <div>用</div>
+              <div>心</div>
+              <div>の</div>
+              <div>點</div>
+              <div>心</div>
+              <div></div>
+              <div></div>
+              <div>品</div>
+              <div>嚐</div>
+              <div>手</div>
+              <div>工</div>
+              <div>の</div>
+              <div>清</div>
+              <div>新</div>
+            </Slogan>
+            <MoreInfo onClick={handleMoreInfo} ref={moreRef}>
+              查看更多
+            </MoreInfo>
+          </AboutContent>
+        </About>
         <SplashArea ref={splashItems}>
           {products.map((product) => (
             <Product key={product.id} url={product.image}></Product>

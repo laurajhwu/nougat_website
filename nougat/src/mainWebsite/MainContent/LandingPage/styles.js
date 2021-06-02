@@ -8,13 +8,74 @@ export const Container = styled.div`
 `;
 
 export const About = styled.div`
-  /* width: 100vw;
-  height: calc(100vh - 160px);
-  background-image: url(${(props) => props.url});
-  background-position: center;
-  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  background-color: #ebe7ef;
+  top: 0;
+  z-index: -1;
+  opacity: 0;
+
+  &::before {
+    content: "";
+    background-image: url(${(props) => props.url});
+    background-size: cover;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    opacity: 0.75;
+  }
+`;
+
+export const AboutContent = styled.div`
+  width: 30%;
+  height: 30%;
+  min-width: 400px;
+  position: absolute;
+  background-color: #dddde4;
+  opacity: 0.6;
+  bottom: 150px;
+  left: 100px;
+  border-radius: 10px;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const Slogan = styled.div`
+  width: 70%;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 30px 10px;
   & * {
-  } */
+    font-size: 28px;
+    font-style: italic;
+    font-weight: bolder;
+    color: #820933;
+    opacity: 1;
+  }
+`;
+
+export const MoreInfo = styled.div`
+  margin-top: 40px;
+
+  font-size: 24px;
+  padding: 15px 20px;
+  border: 5px solid white;
+  font-weight: bold;
+  opacity: 1;
+  color: #bba0b2;
+  transition: all 0.5s;
+  z-index: 100;
+  &:hover {
+    transform: scale(1.1) !important;
+    color: #584573;
+    border-color: #584573;
+    cursor: pointer;
+  }
 `;
 
 export const Animation = styled.div`
