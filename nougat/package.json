@@ -19,6 +19,7 @@
     "crypto-js": "^4.0.0",
     "date-fns": "^2.21.3",
     "firebase": "^8.6.0",
+    "gsap": "file:gsap-bonus.tgz",
     "notistack": "^1.0.9",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",

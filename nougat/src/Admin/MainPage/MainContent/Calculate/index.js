@@ -114,7 +114,7 @@ export default function Calculate() {
 
   function handleReset() {
     setError({});
-    // setData({});
+
     setResult("");
     setIsValid(false);
   }
