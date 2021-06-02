@@ -107,7 +107,8 @@ export default function LandingPage() {
       );
     return gsap
       .timeline()
-      .from(animationRef.current, { opacity: 0, duration: 1 }, "-=1")
+      .to("body", { backgroundColor: "#d6cfde", ease: "power1.in" }, "-=1")
+      .from(animationRef.current, { opacity: 0, duration: 1.5 }, "-=1.5")
       .addLabel("mix")
       .add(whiskTimeline, "mix")
       .add(whiskScale, "mix");
@@ -188,18 +189,27 @@ export default function LandingPage() {
   function fadeInBg() {
     return gsap
       .timeline()
-      .to(bgRef.current, { opacity: 1, ease: "power2.in", duration: 1.5 })
+      .to("body", { backgroundColor: "#fff", ease: "power1.out" }, "-=1")
+      .to(
+        bgRef.current,
+        { opacity: 1, ease: "power2.in", duration: 1.5 },
+        ">-0.5"
+      )
       .from(
         sloganRef.current.children,
         { opacity: 0, ease: "slow.in", duration: 1.5, stagger: 0.1 },
         "+=0.5"
       )
-      .from(moreRef.current, {
-        opacity: 0,
-        scale: 1.1,
-        duration: 1,
-        ease: "back.out",
-      });
+      .from(
+        moreRef.current,
+        {
+          opacity: 0,
+          scale: 1.1,
+          duration: 1,
+          ease: "back.out",
+        },
+        "-=0.5"
+      );
   }
 
   useEffect(() => {
@@ -208,7 +218,7 @@ export default function LandingPage() {
         .add(mixingAnimation())
         .add(splashAnimation(), ">-2")
         .add(removeBowlWhisk(), "<2.5")
-        .add(fadeInBg(), "<1.5")
+        .add(fadeInBg(), "<1.7")
         .to(bgRef.current, { "z-index": 1, duration: 0.1 });
     }
   }, [products]);

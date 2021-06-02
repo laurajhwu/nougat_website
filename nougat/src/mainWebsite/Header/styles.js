@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import { PeopleCircle } from "@styled-icons/ionicons-sharp";
-import { ShoppingCart } from "@styled-icons/remix-fill";
 
 export const Container = styled.header`
   display: flex;
@@ -15,7 +13,6 @@ export const Container = styled.header`
 `;
 
 export const Nav = styled.nav`
-  /* width: 100%; */
   height: 70px;
   display: flex;
   align-items: center;
@@ -39,8 +36,7 @@ export const Nav = styled.nav`
   }
 
   & > *:hover {
-    color: #025068;
-    transform: scale(1.2);
+    transform: scale(1.2) !important;
   }
 `;
 
