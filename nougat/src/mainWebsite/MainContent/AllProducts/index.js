@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -5,20 +6,22 @@ import AddToCart from "../../../Components/AddToCart";
 import QuantityBtn from "../../../Components/CartItemsQty";
 import DeleteIcon from "../../../Components/RemoveFromCart";
 import Loading from "../../../Components/LoadingPage";
+import BGImage from "../../../images/products-bg.png";
 
-const Products = styled.div``;
-const Product = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-`;
-const Img = styled.img`
-  width: 300px;
-`;
-const Name = styled.div``;
-const Price = styled.div``;
+import IconButton from "@material-ui/core/IconButton";
+import {
+  Container,
+  Products,
+  Product,
+  Img,
+  Name,
+  Price,
+  ProductInfo,
+  AddToCartIcon,
+} from "./styles";
+
 const Cart = styled.div``;
 const Title = styled.div``;
-const AddToCartIcon = styled.div``;
 
 const CartProduct = styled.div`
   display: flex;
@@ -40,33 +43,56 @@ function AllProducts() {
   const member = useSelector((state) => state.member);
   const cartItems = member.cart_items;
   const qty = 1;
+  const [cols, setCols] = useState();
 
-  if (allProducts.length !== 0) {
+  function handleColsRWD() {
+    if (window.innerWidth > 1200) {
+      setCols(3);
+    } else if (window.innerWidth > 600) {
+      setCols(2);
+    } else {
+      setCols(1);
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", handleColsRWD);
+    handleColsRWD();
+
+    return () => {
+      window.removeEventListener("resize", handleColsRWD);
+    };
+  }, []);
+
+  if (allProducts.length !== 0 && cols) {
     return (
-      <>
-        <Products>
+      <Container url={BGImage}>
+        <Products cellHeight={"auto"} cols={cols}>
           {allProducts.map((product) => (
-            <>
-              <AddToCartIcon>
-                <AddToCart
-                  productId={product.id}
-                  qty={qty}
-                  member={member}
-                  soldOut={product.stock === 0}
-                />
-              </AddToCartIcon>
+            <Product id={product.id} key={product.id}>
               <Link
                 to={`/product?id=${product.id}`}
                 style={{ textDecoration: "none", color: "black" }}
               >
-                <Product id={product.id}>
-                  <Img src={product.image} />
-                  <Name>{product.name}</Name>
-
-                  <Price>{product.price}</Price>
-                </Product>
+                <Img src={product.image} />
               </Link>
-            </>
+              <ProductInfo
+                title={<Name>{product.name}</Name>}
+                subtitle={<Price>{`$${product.price}`}</Price>}
+                actionIcon={
+                  <IconButton>
+                    <AddToCartIcon>
+                      <AddToCart
+                        productId={product.id}
+                        qty={qty}
+                        member={member}
+                        soldOut={product.stock === 0}
+                      />
+                    </AddToCartIcon>
+                  </IconButton>
+                }
+              />
+            </Product>
           ))}
         </Products>
         <Cart>
@@ -98,7 +124,7 @@ function AllProducts() {
             <Title>購物車({0})</Title>
           )}
         </Cart>
-      </>
+      </Container>
     );
   } else {
     return <Loading />;
