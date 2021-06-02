@@ -17,5 +17,7 @@ export default function Delete(props) {
     dispatch(updateMember("cart_items", cartItems));
   }
 
-  return <DeleteIcon onClick={deleteOnClick}></DeleteIcon>;
+  return (
+    <DeleteIcon onClick={deleteOnClick} styles={props.styles}></DeleteIcon>
+  );
 }

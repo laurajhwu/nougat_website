@@ -6,8 +6,12 @@ import AddToCart from "../../../Components/AddToCart";
 import QuantityBtn from "../../../Components/CartItemsQty";
 import DeleteIcon from "../../../Components/RemoveFromCart";
 import Loading from "../../../Components/LoadingPage";
-import BGImage from "../../../images/products-bg.png";
+// import BGImage from "../../../images/products-bg.png";
+import BGImage from "../../../images/products-bg2.png";
 
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
 import {
   Container,
@@ -18,23 +22,16 @@ import {
   Price,
   ProductInfo,
   AddToCartIcon,
+  Cart,
+  Title,
+  CartProduct,
+  CartImg,
+  CartName,
+  CartPrice,
+  Total,
+  Delete,
+  Quantity,
 } from "./styles";
-
-const Cart = styled.div``;
-const Title = styled.div``;
-
-const CartProduct = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-`;
-const CartImg = styled.img`
-  width: 100px;
-`;
-const CartName = styled.div``;
-const CartPrice = styled.div``;
-const Quantity = styled.div``;
-const Delete = styled.div``;
-const Total = styled.div``;
 
 function AllProducts() {
   const allProducts = useSelector((state) => state.products).sort(
@@ -72,13 +69,22 @@ function AllProducts() {
             <Product id={product.id} key={product.id}>
               <Link
                 to={`/product?id=${product.id}`}
-                style={{ textDecoration: "none", color: "black" }}
+                style={{ textDecoration: "none" }}
               >
                 <Img src={product.image} />
               </Link>
               <ProductInfo
-                title={<Name>{product.name}</Name>}
-                subtitle={<Price>{`$${product.price}`}</Price>}
+                title={
+                  <Link
+                    to={`/product?id=${product.id}`}
+                    style={{ textDecoration: "none", color: "#fff" }}
+                  >
+                    <Name>{product.name}</Name>
+                  </Link>
+                }
+                subtitle={
+                  <Price>{`$${product.price} / ${product.unit}`}</Price>
+                }
                 actionIcon={
                   <IconButton>
                     <AddToCartIcon>
@@ -101,22 +107,52 @@ function AllProducts() {
               <Title>購物車({cartItems.length})</Title>
               {cartItems.map((product) => (
                 <CartProduct>
-                  <Delete>
-                    <DeleteIcon member={member} productId={product.id} />
-                  </Delete>
-                  <CartImg src={product.image} />
-                  <CartName>{product.name}</CartName>
-                  <CartPrice>{product.price}</CartPrice>
-                  <Total>
-                    小計：<span>{product.total}</span>
-                  </Total>
-                  <Quantity>
-                    <QuantityBtn
-                      qty={product.qty}
-                      stock={product.stock}
-                      productId={product.id}
-                    />
-                  </Quantity>
+                  <CardActionArea>
+                    {/* <CartImg src={product.image} /> */}
+                    <CardContent>
+                      <CartName>{product.name}</CartName>
+                      <CartPrice>單價：${product.price}</CartPrice>
+                      <Total>
+                        小計：$<span>{product.total}</span>
+                      </Total>
+                    </CardContent>
+                  </CardActionArea>
+                  <CardActions
+                    style={{ display: "flex", justifyContent: "space-around" }}
+                  >
+                    <Delete>
+                      <DeleteIcon
+                        member={member}
+                        productId={product.id}
+                        styles={{
+                          color: "#7e7f9a",
+                          "&:hover": { color: "#820933" },
+                          width: "28px",
+                        }}
+                      />
+                    </Delete>
+                    <Quantity>
+                      <QuantityBtn
+                        qty={product.qty}
+                        stock={product.stock}
+                        productId={product.id}
+                        selectStyle={{
+                          "font-size": "18px",
+                          color: "#474973",
+                          "font-weight": "bold",
+                        }}
+                        menuStyle={{
+                          "font-size": "16px",
+                          color: "#37323e",
+                          "max-height": "300px",
+                        }}
+                        containerStyle={{
+                          "font-size": "18px",
+                          color: "#474973",
+                        }}
+                      />
+                    </Quantity>
+                  </CardActions>
                 </CartProduct>
               ))}
             </>
