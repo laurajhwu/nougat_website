@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Modal } from "semantic-ui-react";
 
 export const Container = styled.header`
   display: flex;
@@ -48,6 +49,20 @@ export const Logo = styled.img`
   }
   position: absolute;
   top: 6px;
+`;
+
+export const ContactModal = {
+  height: "auto",
+  top: "auto",
+  left: "auto",
+  bottom: "auto",
+  right: "auto",
+};
+
+export const ContactUs = styled.div`
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const CartIcon = styled.i`

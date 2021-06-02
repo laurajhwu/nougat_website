@@ -1,16 +1,27 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { renderPage } from "../../redux/actions/renderPage";
 import LogoIcon from "../../images/logo.png";
 import { gsap } from "gsap";
+import ContactInfo from "./ContactUs";
+import { Modal } from "semantic-ui-react";
 
-import { Nav, Container, Logo, CartIcon, MemberIcon } from "./styles";
+import {
+  Nav,
+  Container,
+  Logo,
+  CartIcon,
+  MemberIcon,
+  ContactUs,
+  ContactModal,
+} from "./styles";
 
 function Header() {
   const dispatch = useDispatch();
   const member = useSelector((state) => state.member);
+  const [open, setOpen] = useState(false);
   const logoRef = useRef();
   const navRef = useRef();
 
@@ -47,7 +58,26 @@ function Header() {
       <Nav ref={navRef}>
         <Link to="/">首頁</Link>
         <Link to="/products">所有產品</Link>
-        <Link to="/contact">聯絡我們</Link>
+
+        <Modal
+          onClose={() => setOpen(false)}
+          onOpen={() => setOpen(true)}
+          open={open}
+          trigger={<ContactUs>聯絡我們</ContactUs>}
+          centered={false}
+          size="mini"
+          style={ContactModal}
+          dimmer={{
+            style: {
+              "justify-content": "center",
+              display: "flex",
+              "align-items": "center",
+            },
+          }}
+        >
+          <ContactInfo handleClose={() => setOpen(false)} />
+        </Modal>
+
         {/* <Link to="/event">特別活動</Link> */}
         <Link to="/member" onClick={clickMemberPage}>
           <MemberIcon className="fas fa-user-circle" />
