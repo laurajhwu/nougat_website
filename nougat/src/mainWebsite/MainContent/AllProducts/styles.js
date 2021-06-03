@@ -26,9 +26,6 @@ export const Products = styled(GridList)`
 export const Product = styled(GridListTile)`
   height: 300px;
   width: 300px;
-  &:hover {
-    transform: scale(1.01);
-  }
 
   @media only screen and (max-width: 1000px) {
     height: 250px;
@@ -41,8 +38,11 @@ export const Product = styled(GridListTile)`
   }
 `;
 export const Img = styled.img`
-  width: 100%;
+  width: ${(props) => (props.helperImage ? "300px" : "100%")};
   height: 300px;
+  position: ${(props) => (props.helperImage ? "fixed" : "unset")};
+  z-index: ${(props) => (props.helperImage ? 2 : 0)};
+  opacity: ${(props) => (props.helperImage ? 0 : 1)};
   @media only screen and (max-width: 1000px) {
     height: 250px;
   }
@@ -50,6 +50,7 @@ export const Img = styled.img`
     height: 200px;
   }
 `;
+
 export const ProductInfo = styled(GridListTileBar)``;
 export const Name = styled.div`
   font-size: 20px;
@@ -61,6 +62,7 @@ export const Price = styled.div`
 export const AddToCartIcon = styled.div`
   color: white;
   font-size: 32px;
+  z-index: 3;
 `;
 
 export const Cart = styled.div`
@@ -75,7 +77,7 @@ export const Cart = styled.div`
   min-height: 500px;
   max-height: 1500px;
   z-index: 2;
-  overflow: auto;
+  overflow-y: scroll;
   position: relative;
 `;
 
@@ -104,8 +106,11 @@ export const CartProduct = styled.div`
   width: 100%;
   margin-bottom: 20px;
   background-color: rgba(241, 249, 246, 0.7) !important;
-  height: 400px;
+  height: 200px;
   position: relative;
+  &:last-child {
+    opacity: ${(props) => props.opacity};
+  }
 `;
 export const CartImg = styled.img`
   width: 25%;

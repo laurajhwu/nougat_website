@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import useAddToCartAnimation from "../../../Hooks/useAddToCartAnimation";
 import AddToCart from "../../../Components/AddToCart";
 import QuantityBtn from "../../../Components/CartItemsQty";
 import DeleteIcon from "../../../Components/RemoveFromCart";
 import Loading from "../../../Components/LoadingPage";
-// import BGImage from "../../../images/products-bg.png";
 import BGImage from "../../../images/products-bg2.png";
 
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -38,9 +37,27 @@ function AllProducts() {
     (first, last) => first.display_order - last.display_order
   );
   const member = useSelector((state) => state.member);
-  const cartItems = member.cart_items;
   const qty = 1;
+  const cartItems = member ? member.cart_items : null;
+  const [cartLength, setCartLength] = useState();
+  const [isClicked, setIsClicked] = useState(false);
   const [cols, setCols] = useState();
+  const [addEvent, setAddEvent] = useState();
+  const cartRef = useRef();
+  const imageRef = useRef();
+  const productImageRef = useCallback(
+    (node) => {
+      if (node) {
+        imageRef.current = node;
+        setAddEvent(false);
+      }
+    },
+    [addEvent]
+  );
+  const cartItemRef = useAddToCartAnimation(addEvent, {
+    cartRef: cartRef.current,
+    imageRef: imageRef,
+  });
 
   function handleColsRWD() {
     if (window.innerWidth > 1200) {
@@ -61,6 +78,18 @@ function AllProducts() {
     };
   }, []);
 
+  useEffect(() => {
+    if (cartItems) {
+      if (cartItems.length > cartLength) {
+        window.setTimeout(function () {
+          setCartLength(cartItems.length);
+        }, 2000);
+      } else {
+        setCartLength(cartItems.length);
+      }
+    }
+  }, [cartItems]);
+
   if (allProducts.length !== 0 && cols) {
     return (
       <Container url={BGImage}>
@@ -71,6 +100,15 @@ function AllProducts() {
                 to={`/product?id=${product.id}`}
                 style={{ textDecoration: "none" }}
               >
+                <Img
+                  src={product.image}
+                  ref={
+                    addEvent && addEvent === product.id
+                      ? productImageRef
+                      : undefined
+                  }
+                  helperImage={true}
+                />
                 <Img src={product.image} />
               </Link>
               <ProductInfo
@@ -93,6 +131,8 @@ function AllProducts() {
                         qty={qty}
                         member={member}
                         soldOut={product.stock === 0}
+                        setAddEvent={setAddEvent}
+                        setIsClicked={setIsClicked}
                       />
                     </AddToCartIcon>
                   </IconButton>
@@ -101,12 +141,19 @@ function AllProducts() {
             </Product>
           ))}
         </Products>
-        <Cart>
+        <Cart ref={cartRef}>
           {cartItems ? (
             <>
-              <Title>購物車({cartItems.length})</Title>
-              {cartItems.map((product) => (
-                <CartProduct>
+              <Title>
+                購物車(
+                {cartLength || cartLength === 0 ? cartLength : cartItems.length}
+                )
+              </Title>
+              {cartItems.map((product, index) => (
+                <CartProduct
+                  ref={index === cartItems.length - 1 ? cartItemRef : undefined}
+                  opacity={isClicked ? 0 : 1}
+                >
                   <CardActionArea>
                     {/* <CartImg src={product.image} /> */}
                     <CardContent>
@@ -124,6 +171,7 @@ function AllProducts() {
                       <DeleteIcon
                         member={member}
                         productId={product.id}
+                        setIsClicked={setIsClicked}
                         styles={{
                           color: "#7e7f9a",
                           "&:hover": { color: "#820933" },
