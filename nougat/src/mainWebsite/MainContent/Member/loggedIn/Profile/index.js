@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Api from "../../../../../utils/Api";
 import logout from "../../../../../utils/logout";
 import EditableInput from "../../../../../Components/EditableInput";
-import { updateMember } from "../../../../../redux/actions/member";
 
 import { ProfilePage, Logout, Picture, Info } from "./styles";
 
@@ -15,11 +14,9 @@ export default function Profile() {
   function handleFinishEdit(prop, data) {
     if (prop === "email") {
       Api.updateMemberAuthEmail(data, () => {
-        dispatch(updateMember(prop, data));
         Api.updateMember(member.id, prop, data);
       });
     } else {
-      dispatch(updateMember(prop, data));
       Api.updateMember(member.id, prop, data);
     }
   }

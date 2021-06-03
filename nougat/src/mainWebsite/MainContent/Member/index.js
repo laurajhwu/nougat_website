@@ -12,7 +12,7 @@ function Member() {
   const reRender = useSelector((state) => state.reRender);
 
   useEffect(() => {
-    if (Object.keys(member).length === 0) {
+    if (!member) {
       history.push("/member/login");
     } else {
       history.push("/member/logged-in/profile");

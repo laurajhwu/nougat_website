@@ -1,9 +1,7 @@
-import React from "react";
-import { updateMember } from "../../redux/actions/member";
+import React, { useState, useEffect } from "react";
 import Api from "../../utils/Api";
 import convertArrToObj from "../../utils/arrayToObjectConverter";
-
-import { useDispatch } from "react-redux";
+import { gsap } from "gsap";
 
 import {
   Add,
@@ -14,9 +12,9 @@ import {
 } from "./styles";
 
 export default function AddToCart(props) {
-  const dispatch = useDispatch();
+  const { setAddEvent, setIsClicked } = props;
   const path = window.location.pathname;
-  const cartItems = props.member.cart_items;
+  const cartItems = props.member ? props.member.cart_items : null;
   const cartObject = cartItems ? convertArrToObj(cartItems, "id") : {};
   const isInCart = cartObject[props.productId];
 
@@ -37,9 +35,14 @@ export default function AddToCart(props) {
           total: price * props.qty,
         };
         cartItems.push(newCartItem);
-        Api.updateMember(props.member.id, "cart_items", cartItems);
-        dispatch(updateMember("cart_items", cartItems));
-        alert("已加入購物車");
+        Api.updateMember(props.member.id, "cart_items", cartItems).then(() => {
+          if (path === "/products") {
+            setAddEvent(product.id);
+            setIsClicked(true);
+          } else {
+            alert("已加入購物車");
+          }
+        });
       });
     } else if (
       cartObject[props.productId].qty !== props.qty &&
@@ -48,7 +51,6 @@ export default function AddToCart(props) {
       cartObject[props.productId].qty = props.qty;
       cartObject[props.productId].total =
         props.qty * cartObject[props.productId].price;
-      dispatch(updateMember("cart_items", cartItems));
       Api.updateMember(props.member.id, "cart_items", cartItems);
       alert("已更換商品數量");
     }

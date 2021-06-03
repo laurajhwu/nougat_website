@@ -27,7 +27,6 @@ import {
   addExcludedTimes,
   modifyExcludedTimes,
 } from "./redux/actions/dateTime";
-import { getMember } from "./redux/actions/member";
 import MainWebsite from "./MainWebsite";
 import Api from "./utils/Api";
 import Calendar from "./utils/calendarSettings";
@@ -146,16 +145,6 @@ function App() {
     }
   }
 
-  function onLoginStatusChange(user) {
-    if (user) {
-      Api.getMemberInfo(user.uid).then((data) => {
-        dispatch(getMember(data));
-      });
-    } else {
-      dispatch(getMember({}));
-    }
-  }
-
   useEffect(() => {
     Calendar.calendarSettings();
 
@@ -173,10 +162,7 @@ function App() {
       excludedTimesOnSnapshot
     );
 
-    const unsubscribeLogin = Api.getLoginStatus(onLoginStatusChange);
-
     return () => {
-      unsubscribeLogin();
       unsubscribeProducts();
       unsubscribeOrders();
       unsubscribeLocations();

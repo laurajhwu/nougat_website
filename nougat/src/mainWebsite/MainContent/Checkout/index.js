@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { setMinutes, setHours } from "date-fns";
 import Api from "../../../utils/Api";
@@ -13,7 +13,6 @@ import uuid from "react-uuid";
 import RememberMe from "../../../Components/RememberMe";
 import updateProductStock from "../../../utils/updateProductStock";
 import addDays from "../../../utils/addDays";
-import { updateMember } from "../../../redux/actions/member";
 import Loading from "../../../Components/LoadingPage";
 
 const Products = styled.div``;
@@ -42,8 +41,7 @@ function CheckOut() {
   const member = useSelector((state) => state.member);
   const dateSettings = useSelector((state) => state.dateTime).date;
   const timeSettings = useSelector((state) => state.dateTime).time;
-  const dispatch = useDispatch();
-  const cartItems = member.cart_items;
+  const cartItems = member ? member.cart_items : null;
   const allLocations = useSelector((state) => state.locations).filter(
     (location) => location.active
   );
@@ -101,7 +99,6 @@ function CheckOut() {
     if (Object.keys(remember.order_info).length !== 0 || remember.line_id) {
       Object.entries(remember).forEach(([key, value]) => {
         Api.updateMember(member.id, key, value);
-        dispatch(updateMember(key, value));
       });
     }
   }
@@ -163,7 +160,7 @@ function CheckOut() {
   }, [order]);
 
   useEffect(() => {
-    if (member.order_info) {
+    if (member) {
       setDelivery(member.order_info.delivery || "select");
       setPayment(member.order_info.payment || "cash");
       setRemember({
@@ -172,15 +169,16 @@ function CheckOut() {
           payment: member.order_info.payment || "",
         },
       });
+      setPersonalInfo({
+        name: member.name || "",
+        line_id: member.line_id || "",
+      });
+    } else {
+      history.push("/member");
     }
-
-    setPersonalInfo({
-      name: member.name || "",
-      line_id: member.line_id || "",
-    });
   }, [member]);
 
-  if (Object.keys(member).length !== 0 && locations.length !== 0) {
+  if (member && locations.length !== 0) {
     return (
       <div>
         <Products>

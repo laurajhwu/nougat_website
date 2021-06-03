@@ -6,17 +6,19 @@ export const Add = styled.div`
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
   &:hover {
     cursor: pointer;
+    transform: scale(1.1);
+    color: #c44536;
   }
 `;
 
 export const CartPlusIcon = styled(CartPlus)`
-  width: 25px;
+  width: 30px;
 `;
 export const CartPlusFillIcon = styled(CartPlusFill)`
-  width: 25px;
+  width: 30px;
 `;
 export const CartDisableIcon = styled(CartX)`
-  width: 25px;
+  width: 30px;
 `;
 
 export const CartButton = styled.button``;

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Modal } from "semantic-ui-react";
 
 export const Container = styled.header`
   display: flex;
