@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import Api from "../../utils/Api";
 import qtyOptions from "../../utils/qtyOptions";
-import { useSelector, useDispatch } from "react-redux";
-import { updateMember } from "../../redux/actions/member";
+import { useSelector } from "react-redux";
 
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { QuantityBar } from "./styles";
 
 export default function QuantityBtn(props) {
-  const dispatch = useDispatch();
   const member = useSelector((state) => state.member);
   const cartItems = member.cart_items;
   const product = cartItems.find((cartItem) => cartItem.id === props.productId);
@@ -20,7 +18,6 @@ export default function QuantityBtn(props) {
     product.qty = Number(event.target.value);
     product.total = product.qty * product.price;
     Api.updateMember(member.id, "cart_items", cartItems);
-    dispatch(updateMember("cart_items", cartItems));
   }
 
   return (

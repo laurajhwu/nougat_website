@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -17,12 +17,7 @@ function Confirm() {
   const member = useSelector((state) => state.member);
   const allProducts = useSelector((state) => state.products);
 
-  if (
-    order &&
-    allProducts.length !== 0 &&
-    Object.keys(member).length !== 0 &&
-    !isLoading
-  ) {
+  if (order && allProducts.length !== 0 && member && !isLoading) {
     isLoading = true;
     order.status = 1;
     order.order_info.delivery_time = new Date(order.order_info.delivery_time);

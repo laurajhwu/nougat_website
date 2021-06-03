@@ -1,9 +1,7 @@
-function member(state = {}, action) {
+function member(state = null, action) {
   switch (action.type) {
-    case "UPDATE_MEMBER":
-      return { ...state, ...action.payload };
     case "GET_MEMBER":
-      return { ...action.payload };
+      return action.payload ? { ...action.payload } : null;
     default:
       return state;
   }

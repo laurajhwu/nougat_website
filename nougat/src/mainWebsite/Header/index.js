@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from "react";
-import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { renderPage } from "../../redux/actions/renderPage";
@@ -30,7 +29,7 @@ function Header() {
   }
 
   function clickCheckoutPage(event) {
-    if (Object.keys(member).length === 0) {
+    if (!member) {
       event.preventDefault();
       alert("請先登入！");
     }

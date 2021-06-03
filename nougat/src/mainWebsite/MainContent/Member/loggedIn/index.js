@@ -31,7 +31,9 @@ function LoggedIn() {
   }, [page]);
 
   useEffect(() => {
-    if (member.id) {
+    if (!member) {
+      history.push(`/member`);
+    } else if (member.id) {
       Api.getMemberOrders(member.id)
         .then((querySnapshot) => {
           const orders = [];

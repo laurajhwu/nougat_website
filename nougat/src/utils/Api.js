@@ -270,12 +270,9 @@ class Api {
       });
   }
 
-  getMemberInfo(id) {
-    return db
-      .collection(this.member)
-      .doc(id)
-      .get()
-      .then((doc) => doc.data());
+  getMemberInfo(id, callback) {
+    const unsubscribe = db.collection(this.member).doc(id).onSnapshot(callback);
+    return unsubscribe;
   }
 
   isMember(id) {
