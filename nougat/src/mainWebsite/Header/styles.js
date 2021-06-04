@@ -26,11 +26,29 @@ export const Nav = styled.nav`
     font-weight: 700;
     line-height: 26px;
     transition: transform 0.2s;
-
-    background: #a7cfdf;
-    background: -webkit-linear-gradient(to right, #a7cfdf 0%, #23538a 100%);
-    background: -moz-linear-gradient(to right, #a7cfdf 0%, #23538a 100%);
-    background: linear-gradient(to right, #a7cfdf 0%, #23538a 100%);
+    /* color: #7f7594; */
+    background: #7f7594;
+    background: -webkit-linear-gradient(
+      to right,
+      #7f7594 0%,
+      #ad6495 50%,
+      #b05d8c 50%,
+      #7f7594 100%
+    );
+    background: -moz-linear-gradient(
+      to right,
+      #7f7594 0%,
+      #ad6495 50%,
+      #b05d8c 50%,
+      #7f7594 100%
+    );
+    background: linear-gradient(
+      to right,
+      #7f7594 0%,
+      #ad6495 50%,
+      #b05d8c 50%,
+      #7f7594 100%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }

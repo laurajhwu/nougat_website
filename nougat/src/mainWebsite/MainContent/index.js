@@ -11,10 +11,9 @@ import Member from "./Member";
 import LandingPage from "./LandingPage";
 
 const Main = styled.main`
-  max-width: 1160px;
-  margin: 0 auto;
+  width: 100vw;
   padding-top: 160px;
-  height: 100%;
+  height: 100vh;
 `;
 
 function MainContent() {

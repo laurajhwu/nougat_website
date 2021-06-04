@@ -28,6 +28,7 @@ export const CartButton = styled.div`
   background-color: #bba0b2;
   color: #fcefee;
   opacity: 0.75;
+  text-align: center;
   &:hover {
     opacity: 1;
   }

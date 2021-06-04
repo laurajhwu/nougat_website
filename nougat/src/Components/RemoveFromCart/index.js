@@ -8,9 +8,10 @@ export default function Delete(props) {
     const cartItems = props.member.cart_items.filter(
       (item) => item.id !== props.productId
     );
-    Api.updateMember(props.member.id, "cart_items", cartItems);
-    alert("已從購物車移除");
-    props.setIsClicked(false);
+    Api.updateMember(props.member.id, "cart_items", cartItems).then(() => {
+      alert("已從購物車移除");
+      props.setIsClicked && props.setIsClicked(false);
+    });
   }
 
   return (

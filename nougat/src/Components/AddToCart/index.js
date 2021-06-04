@@ -12,7 +12,7 @@ import {
 } from "./styles";
 
 export default function AddToCart(props) {
-  const { setAddEvent, setIsClicked } = props;
+  const { setAddEvent, setIsClicked, addToCartAnimation } = props;
   const path = window.location.pathname;
   const cartItems = props.member ? props.member.cart_items : null;
   const cartObject = cartItems ? convertArrToObj(cartItems, "id") : {};
@@ -40,7 +40,8 @@ export default function AddToCart(props) {
             setAddEvent(product.id);
             setIsClicked(true);
           } else {
-            alert("已加入購物車");
+            addToCartAnimation();
+            // alert("已加入購物車");
           }
         });
       });

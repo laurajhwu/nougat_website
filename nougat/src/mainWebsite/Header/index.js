@@ -82,7 +82,7 @@ function Header() {
           <MemberIcon className="fas fa-user-circle" />
         </Link>
         <Link to="/cart" onClick={clickCheckoutPage}>
-          <CartIcon className="fas fa-shopping-cart" />
+          <CartIcon className="fas fa-shopping-cart" id="cart-icon" />
         </Link>
       </Nav>
     </Container>

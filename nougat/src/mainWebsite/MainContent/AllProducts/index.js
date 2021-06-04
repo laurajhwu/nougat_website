@@ -30,9 +30,11 @@ import {
   Total,
   Delete,
   Quantity,
+  useStyles,
 } from "./styles";
 
 function AllProducts() {
+  const classes = useStyles();
   const allProducts = useSelector((state) => state.products).sort(
     (first, last) => first.display_order - last.display_order
   );
@@ -93,7 +95,7 @@ function AllProducts() {
   if (allProducts.length !== 0 && cols) {
     return (
       <Container url={BGImage}>
-        <Products cellHeight={"auto"} cols={cols}>
+        <Products cellHeight={"auto"} cols={cols} className={classes.gridList}>
           {allProducts.map((product) => (
             <Product id={product.id} key={product.id}>
               <Link

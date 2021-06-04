@@ -29,10 +29,15 @@ export const useStyles = makeStyles((theme) => ({
 export const Product = styled.div`
   display: flex;
   flex-flow: column nowrap;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   align-items: center;
+  top: 0;
+  left: 0;
   justify-content: flex-start;
+  background-color: rgba(215, 205, 204, 0.5);
+  position: absolute;
+  padding-top: 160px;
   &::before {
     content: "";
     background-image: url(${(props) => props.url});
@@ -46,16 +51,20 @@ export const Product = styled.div`
     left: 0;
     position: absolute;
     z-index: -1;
-    opacity: 0.55;
+    opacity: 0.4;
   }
 `;
 export const Img = styled.img`
   width: 400px;
   opacity: 0.9;
-  border: 20px solid #762e34;
+  border: ${(props) =>
+    props.helperImage ? "20px solid transparent" : "20px solid #762e34;"};
   margin-top: 50px;
+  position: ${(props) => (props.helperImage ? "absolute" : "relative")};
+  z-index: ${(props) => (props.helperImage ? 2 : 0)};
 `;
 export const Info = styled.div`
+  max-width: 550px;
   width: 100%;
   margin: 40px 0;
   background: rgba(207, 180, 184, 0.3);
