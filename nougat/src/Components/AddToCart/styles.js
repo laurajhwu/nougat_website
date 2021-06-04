@@ -21,4 +21,15 @@ export const CartDisableIcon = styled(CartX)`
   width: 30px;
 `;
 
-export const CartButton = styled.button``;
+export const CartButton = styled.div`
+  padding: 5px 10px;
+  font-size: 20px;
+  border: 5px solid #9d858d;
+  background-color: #bba0b2;
+  color: #fcefee;
+  opacity: 0.75;
+  text-align: center;
+  &:hover {
+    opacity: 1;
+  }
+`;

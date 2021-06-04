@@ -6,12 +6,23 @@ import { useSelector } from "react-redux";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { QuantityBar } from "./styles";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  option: {
+    backgroundColor: "#dbe6e6",
+    "&:hover": {
+      backgroundColor: "#f1f9f6",
+    },
+  },
+}));
 
 export default function QuantityBtn(props) {
   const member = useSelector((state) => state.member);
   const cartItems = member.cart_items;
   const product = cartItems.find((cartItem) => cartItem.id === props.productId);
   const [selectedOption, setSelectedOption] = useState(+props.qty);
+  const classes = useStyles();
 
   function handleChange(event) {
     setSelectedOption(event.target.value);
@@ -29,7 +40,11 @@ export default function QuantityBtn(props) {
       >
         {qtyOptions(props.stock).map((option) => {
           return (
-            <MenuItem value={+option} style={props.menuStyle}>
+            <MenuItem
+              value={+option}
+              style={props.menuStyle}
+              className={classes.option}
+            >
               {option}
             </MenuItem>
           );

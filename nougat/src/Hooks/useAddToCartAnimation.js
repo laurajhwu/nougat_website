@@ -1,19 +1,11 @@
 import React, { useCallback } from "react";
 import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import cartTitleAnimation from "../utils/shakeAnimation";
 
 gsap.registerPlugin(ScrollToPlugin);
 
 export default function useAddToCartAnimation(event, refs) {
-  function cartTitleAnimation(ref) {
-    return gsap
-      .timeline()
-      .to(ref, { rotation: -5, duration: 0.025 })
-      .to(ref, { rotation: 0, duration: 0.025 })
-      .to(ref, { rotation: 5, duration: 0.025 })
-      .to(ref, { rotation: 0, duration: 0.025 });
-  }
-
   const ref = useCallback(
     (node) => {
       if (node !== null && refs.imageRef.current) {
@@ -23,7 +15,6 @@ export default function useAddToCartAnimation(event, refs) {
         const productRect = imageRef.getBoundingClientRect();
         const cartRect = cartRef.children[0].getBoundingClientRect();
 
-        console.log(rect.bottom, cartRect.top);
         gsap
           .timeline()
           .to(imageRef, {

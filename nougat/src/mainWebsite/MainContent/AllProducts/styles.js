@@ -3,43 +3,66 @@ import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
+import { makeStyles } from "@material-ui/core/styles";
+
+export const useStyles = makeStyles((theme) => ({
+  gridList: {
+    // width: 500,
+    height: "auto",
+    overflowY: "auto",
+  },
+}));
 
 export const Container = styled.div`
   display: flex;
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
+  width: 100%;
+  height: 100%;
   top: 0;
   left: 0;
-  padding: 200px 100px 100px;
-  background-image: url(${(props) => props.url});
-  background-position: center;
-  background-size: cover;
+  margin: 0 auto;
+  padding: 40px 100px 100px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url(${(props) => props.url});
+    background-position: center;
+    background-size: cover;
+    z-index: -1;
+    opacity: 0.6;
+  }
 `;
 
 export const Products = styled(GridList)`
-  flex-basis: 70%;
+  flex-basis: 75%;
   max-width: 900px;
   max-height: 1050px;
   min-width: 200px;
+  height: auto !important;
 `;
 export const Product = styled(GridListTile)`
-  height: 300px;
-  width: 300px;
+  height: 270px !important;
+  width: 270px;
 
   @media only screen and (max-width: 1000px) {
-    height: 250px;
+    height: 250px !important;
     width: 250px;
   }
 
   @media only screen and (max-width: 850px) {
-    height: 200px;
+    height: 200px !important;
     width: 200px;
   }
 `;
 export const Img = styled.img`
-  width: ${(props) => (props.helperImage ? "300px" : "100%")};
-  height: 300px;
+  width: ${(props) => (props.helperImage ? "270px" : "100%")};
+  height: 270px;
   position: ${(props) => (props.helperImage ? "fixed" : "unset")};
   z-index: ${(props) => (props.helperImage ? 2 : 0)};
   opacity: ${(props) => (props.helperImage ? 0 : 1)};
@@ -86,17 +109,18 @@ export const Title = styled.div`
   color: #7e4e53;
   position: fixed;
   top: 210px;
-  background: rgb(185, 54, 0);
-  background: linear-gradient(
-    156deg,
-    rgba(185, 54, 0, 0.7777485994397759) 0%,
-    rgba(255, 252, 227, 0.8869922969187675) 100%
+  background: rgb(255, 252, 227);
+  background: radial-gradient(
+    circle,
+    rgba(255, 252, 227, 0.89) 0%,
+    rgba(226, 189, 138, 0.7637429971988796) 65%,
+    rgba(185, 54, 0, 0.77) 100%
   );
   line-height: 32px;
   letter-spacing: 3px;
   width: 15%;
   min-width: 120px;
-  max-width: 270px;
+  max-width: 200px;
   text-align: center;
   border-radius: 8px;
   z-index: 1;

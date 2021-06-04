@@ -102,7 +102,6 @@ export const Whisk = styled.img`
 `;
 
 export const SplashArea = styled.div`
-  /* outline: 1px solid black; */
   position: absolute;
   height: calc(100vh - 200px);
   padding: 10px 20px;

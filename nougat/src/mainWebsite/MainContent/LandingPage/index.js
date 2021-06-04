@@ -118,8 +118,8 @@ export default function LandingPage() {
   function splashItemsAnimation() {
     const areaWidth = splashItems.current.clientWidth;
     const areaHeight = splashItems.current.clientHeight;
-    const bowlWidth = bowlRef.current.offsetWidth || 500;
-    const bowlHeight = bowlRef.current.offsetHeight || 500;
+    const bowlWidth = bowlRef.current.offsetWidth || 400;
+    const bowlHeight = bowlRef.current.offsetHeight || 400;
     let index = 0;
 
     return Array.from(splashItems.current.children).map((item) => {

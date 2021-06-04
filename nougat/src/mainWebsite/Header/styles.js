@@ -20,17 +20,36 @@ export const Nav = styled.nav`
   padding: 0 50px;
   border-radius: 50px;
   background-color: #fcefee;
+  position: relative;
   & > * {
     margin-left: 50px;
     font-size: 24px;
     font-weight: 700;
     line-height: 26px;
     transition: transform 0.2s;
-
-    background: #a7cfdf;
-    background: -webkit-linear-gradient(to right, #a7cfdf 0%, #23538a 100%);
-    background: -moz-linear-gradient(to right, #a7cfdf 0%, #23538a 100%);
-    background: linear-gradient(to right, #a7cfdf 0%, #23538a 100%);
+    /* color: #7f7594; */
+    background: #7f7594;
+    background: -webkit-linear-gradient(
+      to right,
+      #7f7594 0%,
+      #ad6495 50%,
+      #b05d8c 50%,
+      #7f7594 100%
+    );
+    background: -moz-linear-gradient(
+      to right,
+      #7f7594 0%,
+      #ad6495 50%,
+      #b05d8c 50%,
+      #7f7594 100%
+    );
+    background: linear-gradient(
+      to right,
+      #7f7594 0%,
+      #ad6495 50%,
+      #b05d8c 50%,
+      #7f7594 100%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -48,6 +67,7 @@ export const Logo = styled.img`
   }
   position: absolute;
   top: 6px;
+  z-index: 2;
 `;
 
 export const ContactModal = {
@@ -93,4 +113,17 @@ export const MemberIcon = styled.i`
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+`;
+
+export const Bubble = styled.div`
+  position: absolute;
+  font-size: 20px;
+  background-color: #bba0b2;
+  color: #fff;
+  top: 5px;
+  right: 2px;
+  width: 40px;
+  height: 40px;
+  font-weight: 600;
+  display: none;
 `;
