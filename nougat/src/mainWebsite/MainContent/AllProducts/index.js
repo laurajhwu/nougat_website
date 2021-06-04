@@ -6,7 +6,7 @@ import AddToCart from "../../../Components/AddToCart";
 import QuantityBtn from "../../../Components/CartItemsQty";
 import DeleteIcon from "../../../Components/RemoveFromCart";
 import Loading from "../../../Components/LoadingPage";
-import BGImage from "../../../images/products-bg2.png";
+import BGImage from "../../../images/products-bg3.png";
 
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
@@ -24,17 +24,14 @@ import {
   Cart,
   Title,
   CartProduct,
-  CartImg,
   CartName,
   CartPrice,
   Total,
   Delete,
   Quantity,
-  useStyles,
 } from "./styles";
 
 function AllProducts() {
-  const classes = useStyles();
   const allProducts = useSelector((state) => state.products).sort(
     (first, last) => first.display_order - last.display_order
   );
@@ -64,7 +61,7 @@ function AllProducts() {
   function handleColsRWD() {
     if (window.innerWidth > 1200) {
       setCols(3);
-    } else if (window.innerWidth > 600) {
+    } else if (window.innerWidth > 780) {
       setCols(2);
     } else {
       setCols(1);
@@ -95,7 +92,7 @@ function AllProducts() {
   if (allProducts.length !== 0 && cols) {
     return (
       <Container url={BGImage}>
-        <Products cellHeight={"auto"} cols={cols} className={classes.gridList}>
+        <Products cellHeight={"auto"} cols={cols}>
           {allProducts.map((product) => (
             <Product id={product.id} key={product.id}>
               <Link

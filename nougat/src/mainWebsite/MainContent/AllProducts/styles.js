@@ -3,15 +3,6 @@ import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
-import { makeStyles } from "@material-ui/core/styles";
-
-export const useStyles = makeStyles((theme) => ({
-  gridList: {
-    // width: 500,
-    height: "auto",
-    overflowY: "auto",
-  },
-}));
 
 export const Container = styled.div`
   display: flex;
@@ -35,29 +26,45 @@ export const Container = styled.div`
     background-position: center;
     background-size: cover;
     z-index: -1;
-    opacity: 0.6;
+    opacity: 0.8;
   }
 `;
 
 export const Products = styled(GridList)`
   flex-basis: 75%;
   max-width: 900px;
+  min-width: 250px;
   max-height: 1050px;
-  min-width: 200px;
-  height: auto !important;
+  height: 600px !important;
+  @media only screen and (max-width: 1200px) {
+    height: auto !important;
+    width: 500px !important;
+  }
+  @media only screen and (max-width: 900px) {
+    flex-basis: unset;
+    height: auto !important;
+    width: 300px !important;
+  }
+
+  @media only screen and (max-width: 780px) {
+    flex-basis: unset;
+    width: 250px !important;
+  }
 `;
+
 export const Product = styled(GridListTile)`
   height: 270px !important;
   width: 270px;
 
   @media only screen and (max-width: 1000px) {
     height: 250px !important;
-    width: 250px;
+    width: 250px !important;
   }
 
-  @media only screen and (max-width: 850px) {
+  @media only screen and (max-width: 780px) {
     height: 200px !important;
-    width: 200px;
+    width: 200px !important;
+    align-self: center;
   }
 `;
 export const Img = styled.img`
@@ -68,9 +75,11 @@ export const Img = styled.img`
   opacity: ${(props) => (props.helperImage ? 0 : 1)};
   @media only screen and (max-width: 1000px) {
     height: 250px;
+    width: 250px;
   }
-  @media only screen and (max-width: 850px) {
+  @media only screen and (max-width: 780px) {
     height: 200px;
+    width: 200px;
   }
 `;
 
