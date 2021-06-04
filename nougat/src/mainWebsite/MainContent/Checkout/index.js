@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { setMinutes, setHours } from "date-fns";
@@ -14,6 +14,8 @@ import updateProductStock from "../../../utils/updateProductStock";
 import addDays from "../../../utils/addDays";
 import Loading from "../../../Components/LoadingPage";
 import BGImage from "../../../images/checkout-bg2.png";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import {
   Container,
@@ -34,6 +36,8 @@ import {
 
 let isClicked = false;
 const id = uuid();
+
+gsap.registerPlugin(ScrollTrigger);
 
 function CheckOut() {
   const history = useHistory();
@@ -61,6 +65,12 @@ function CheckOut() {
   const [order, setOrder] = useState({});
   const [personalInfo, setPersonalInfo] = useState({});
   const [remember, setRemember] = useState();
+
+  const design1Ref = useCallback((ref) => {
+    if (ref) {
+      design1Animation(ref);
+    }
+  }, []);
 
   function deliveryOptionChange(event) {
     setDelivery(event.target.value);
@@ -134,6 +144,27 @@ function CheckOut() {
     }
   }
 
+  function design1Animation(ref) {
+    //   {
+    //   scrollTrigger: {
+    //     trigger: design1Ref.current,
+    //     start: "top top",
+    //     toggleActions: "restart pause resume pause",
+    //   },
+    // }
+    gsap.timeline().from(ref, {
+      y: -600,
+      opacity: 0,
+      duration: 1.5,
+      ease: "power1.in",
+    });
+    // .to(totalRef.current, {
+    //   opacity: 1,
+    //   duration: 0.5,
+    //   ease: "power1.inOut",
+    // });
+  }
+
   useEffect(() => {
     const promises = allLocations.map((location) => getGeoInfo(location));
     Promise.all(promises).then((values) => {
@@ -182,7 +213,7 @@ function CheckOut() {
   if (member && locations.length !== 0) {
     return (
       <Container url={BGImage}>
-        <Design1>
+        <Design1 ref={design1Ref}>
           <div></div>
         </Design1>
         <Products>

@@ -45,6 +45,7 @@ export const Total = styled.div`
   font-size: 28px;
   font-weight: 700;
   color: #b6174b;
+
   & * {
     padding: 5px;
     text-align: center;
