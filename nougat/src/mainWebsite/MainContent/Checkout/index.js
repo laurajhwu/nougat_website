@@ -1,5 +1,4 @@
-import styled from "styled-components";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { setMinutes, setHours } from "date-fns";
@@ -14,24 +13,24 @@ import RememberMe from "../../../Components/RememberMe";
 import updateProductStock from "../../../utils/updateProductStock";
 import addDays from "../../../utils/addDays";
 import Loading from "../../../Components/LoadingPage";
+import BGImage from "../../../images/checkout-bg2.png";
 
-const Products = styled.div``;
-const Delivery = styled.div`
-  border: 1px solid black;
-  border-color: ${(props) => (props.notFilled ? "red" : "black")};
-`;
-const Select = styled.select``;
-const Option = styled.option``;
-const Calendar = styled.div``;
-const PersonalInfo = styled.div``;
-const Info = styled.div``;
-const Input = styled.input`
-  border: 1px solid black;
-  border-color: ${(props) => (props.notFilled ? "red" : "black")};
-`;
-const Label = styled.label``;
-const Payment = styled.div``;
-const CheckoutBtn = styled.button``;
+import {
+  Container,
+  Products,
+  Total,
+  Delivery,
+  Label,
+  Select,
+  Option,
+  Calendar,
+  PersonalInfo,
+  Info,
+  Input,
+  Payment,
+  CheckoutBtn,
+  Design1,
+} from "./styles";
 
 let isClicked = false;
 const id = uuid();
@@ -50,12 +49,14 @@ function CheckOut() {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState();
   const [payment, setPayment] = useState("cash");
-  const initTime = timeSettings.start_time.split(":");
+  const initTime = timeSettings ? timeSettings.start_time.split(":") : null;
   const [date, setDate] = useState(
-    setHours(
-      setMinutes(addDays(dateSettings.buffer), +initTime[1]),
-      +initTime[0]
-    )
+    dateSettings
+      ? setHours(
+          setMinutes(addDays(dateSettings.buffer), +initTime[1]),
+          +initTime[0]
+        )
+      : null
   );
   const [order, setOrder] = useState({});
   const [personalInfo, setPersonalInfo] = useState({});
@@ -180,9 +181,16 @@ function CheckOut() {
 
   if (member && locations.length !== 0) {
     return (
-      <div>
+      <Container url={BGImage}>
+        <Design1>
+          <div></div>
+        </Design1>
         <Products>
           <CartItems member={member} />
+          <Total>
+            <div>總計：</div>
+            <div>$ {getOrderTotal()}</div>
+          </Total>
         </Products>
         <Delivery
           notFilled={
@@ -296,7 +304,7 @@ function CheckOut() {
           />
         </Payment>
         <CheckoutBtn onClick={handleCheckout}>結帳</CheckoutBtn>
-      </div>
+      </Container>
     );
   } else {
     return <Loading />;

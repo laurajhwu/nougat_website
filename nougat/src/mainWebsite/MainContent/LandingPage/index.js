@@ -254,7 +254,7 @@ export default function LandingPage() {
           {products.map((product) => (
             <Product key={product.id} url={product.image}></Product>
           ))}
-          {getRandomNumArray(5, 7).map((value) => (
+          {/* {getRandomNumArray(5, 7).map((value) => (
             <Nougat key={`nougat${value}`} src={NougatImage} />
           ))}
           {getRandomNumArray(3, 5).map((value) => (
@@ -262,7 +262,7 @@ export default function LandingPage() {
           ))}
           {getRandomNumArray(2, 4).map((value) => (
             <Cookie key={`cookie${value}`} src={CookieImage} />
-          ))}
+          ))} */}
         </SplashArea>
         <Animation ref={animationRef}>
           <Whisk src={WhiskImage} ref={whiskRef} />

@@ -1,27 +1,38 @@
-import styled from "styled-components";
+import React from "react";
 import { Link } from "react-router-dom";
 import QuantityBtn from "../../../../Components/CartItemsQty";
 import DeleteIcon from "../../../../Components/RemoveFromCart";
 
-const Product = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-`;
-const Img = styled.img`
-  width: 150px;
-`;
-const Name = styled.div``;
-const Price = styled.div``;
-const Delete = styled.div``;
-const Total = styled.div``;
+import {
+  Product,
+  Img,
+  Name,
+  Price,
+  Total,
+  Delete,
+  Container,
+  Group,
+} from "./styles";
 
 function AllProducts(props) {
   const member = props.member;
   const products = member.cart_items;
 
+  const styles = {
+    selectStyle: {
+      "font-size": "16px",
+      color: "#CC7B82",
+      width: " 50px",
+    },
+    containerStyle: {
+      "font-size": "16px",
+      color: "#CC7B82",
+    },
+  };
+
   if (products) {
     return (
-      <>
+      <Container>
         {products.length === 0 ? (
           <Product>您的購物車尚無商品</Product>
         ) : (
@@ -33,23 +44,33 @@ function AllProducts(props) {
               >
                 <Img src={product.image} />
               </Link>
-              <Name>{product.name}</Name>
-              <Price>{product.price}</Price>
-              <QuantityBtn
-                qty={product.qty}
-                stock={product.stock}
-                productId={product.id}
-              />
-              <Total>
-                小計：<span>{product.total}</span>
-              </Total>
-              <Delete>
-                <DeleteIcon member={member} productId={product.id} />
-              </Delete>
+              <Group>
+                <Name>{product.name}</Name>
+                <Price>
+                  ${product.price} /{product.unit}
+                </Price>
+                <Total>
+                  小計：<span>$ {product.total}</span>
+                </Total>
+              </Group>
+              <Group>
+                <QuantityBtn
+                  qty={product.qty}
+                  stock={product.stock}
+                  productId={product.id}
+                  containerStyle={styles.containerStyle}
+                  selectStyle={styles.selectStyle}
+                />
+              </Group>
+              <Group>
+                <Delete>
+                  <DeleteIcon member={member} productId={product.id} />
+                </Delete>
+              </Group>
             </Product>
           ))
         )}
-      </>
+      </Container>
     );
   } else {
     return <>Loading...</>;

@@ -8,14 +8,36 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { QuantityBar } from "./styles";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
-  option: {
-    backgroundColor: "#dbe6e6",
-    "&:hover": {
-      backgroundColor: "#f1f9f6",
+let useStyles;
+
+if (window.location.pathname === "/cart") {
+  useStyles = makeStyles((theme) => ({
+    option: {
+      "background-color": "#EFD2CB",
+      "&:hover": {
+        "background-color": "#CC7B82",
+      },
     },
-  },
-}));
+    select: {
+      "&:before": {
+        borderColor: "#EFD2CB",
+      },
+      "&:after": {
+        borderColor: "#CC7B82",
+      },
+    },
+    icon: { fill: "#CC7B82" },
+  }));
+} else {
+  useStyles = makeStyles((theme) => ({
+    option: {
+      backgroundColor: "#dbe6e6",
+      "&:hover": {
+        backgroundColor: "#f1f9f6",
+      },
+    },
+  }));
+}
 
 export default function QuantityBtn(props) {
   const member = useSelector((state) => state.member);
@@ -37,6 +59,12 @@ export default function QuantityBtn(props) {
         onChange={handleChange}
         value={selectedOption}
         style={props.selectStyle}
+        className={classes.select}
+        inputProps={{
+          classes: {
+            icon: classes.icon,
+          },
+        }}
       >
         {qtyOptions(props.stock).map((option) => {
           return (
