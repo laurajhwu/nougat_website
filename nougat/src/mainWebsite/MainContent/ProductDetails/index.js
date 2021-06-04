@@ -1,43 +1,28 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import qtyOptions from "../../../utils/qtyOptions";
 import AddToCart from "../../../Components/AddToCart";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Loading from "../../../Components/LoadingPage";
+import BGImage from "../../../images/details-bg2.jpg";
+import { gsap } from "gsap";
 
-const Product = styled.div`
-  display: flex;
-`;
-const Img = styled.img`
-  width: 300px;
-`;
-const Info = styled.div``;
-const Name = styled.div``;
-const Price = styled.div``;
-const Description = styled.p`
-  white-space: pre-wrap;
-`;
-
-const Label = styled.label`
-  font-size: 20px;
-  letter-spacing: 4px;
-  line-height: 24px;
-  width: 93px;
-`;
-
-const Quantity = styled.div`
-  margin-top: 26px;
-  display: flex;
-  height: 44px;
-  align-items: center;
-`;
-
-const QuantityBar = styled.div``;
-const Select = styled.select``;
-const Option = styled.option``;
-
-const AddToCartIcon = styled.div``;
+import {
+  Container,
+  Product,
+  Img,
+  Info,
+  Name,
+  Price,
+  Description,
+  Quantity,
+  Label,
+  QuantityBar,
+  Options,
+  Option,
+  AddToCartIcon,
+  useStyles,
+} from "./styles";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -49,37 +34,47 @@ function AllProducts() {
   const id = useQuery().get("id");
   const product = allProducts.find((product) => product.id === id);
   const [qty, setQty] = useState(1);
+  const classes = useStyles();
 
   function handleChange(event) {
-    setQty(Number(event.target.value));
+    setQty(+event.target.value);
   }
+
+  function addToCartAnimation() {}
 
   if (product) {
     return (
-      <Product>
+      <Product url={BGImage}>
         <Img src={product.image} />
         <Info>
           <Name>{product.name}</Name>
-          <Price>{product.price}</Price>
           <Description>{product.description}</Description>
+          <Price>$ {`${product.price} / ${product.unit}`}</Price>
           <Quantity>
-            <Label>數量 |</Label>
             {product.stock === 0 ? (
               <QuantityBar>售完</QuantityBar>
             ) : (
               <QuantityBar>
-                <Select onChange={handleChange}>
-                  {qtyOptions(product.stock).map((option) =>
-                    option === qty.toFixed(1) ? (
-                      <Option value={option} selected>
+                <Options
+                  onChange={handleChange}
+                  value={qty}
+                  autoWidth
+                  className={classes.select}
+                  inputProps={{
+                    classes: {
+                      icon: classes.icon,
+                    },
+                  }}
+                >
+                  {qtyOptions(product.stock).map((option) => {
+                    return (
+                      <Option value={+option} className={classes.option}>
                         {option}
+                        {product.unit}
                       </Option>
-                    ) : (
-                      <Option value={option}>{option}</Option>
-                    )
-                  )}
-                </Select>
-                {product.unit}
+                    );
+                  })}
+                </Options>
               </QuantityBar>
             )}
           </Quantity>
