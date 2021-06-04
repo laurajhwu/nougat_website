@@ -59,14 +59,14 @@ export const Img = styled.img`
   opacity: 0.9;
   border: ${(props) =>
     props.helperImage ? "20px solid transparent" : "20px solid #762e34;"};
-  margin-top: 50px;
+  margin-top: 30px;
   position: ${(props) => (props.helperImage ? "absolute" : "relative")};
   z-index: ${(props) => (props.helperImage ? 2 : 0)};
 `;
 export const Info = styled.div`
   max-width: 550px;
   width: 100%;
-  margin: 40px 0;
+  margin: 30px 0;
   background: rgba(207, 180, 184, 0.3);
   border: 3px solid #a06a73;
   border-radius: 10px;
@@ -83,7 +83,6 @@ export const Name = styled.div`
   line-height: 40px;
   font-size: 32px;
   font-weight: bold;
-  /* margin-bottom: 10px; */
   grid-column: 1 / 4;
   display: auto;
   color: #59363a;

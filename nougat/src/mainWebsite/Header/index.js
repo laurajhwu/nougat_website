@@ -15,11 +15,13 @@ import {
   MemberIcon,
   ContactUs,
   ContactModal,
+  Bubble,
 } from "./styles";
 
 function Header() {
   const dispatch = useDispatch();
   const member = useSelector((state) => state.member);
+  const qtyDiff = useSelector((state) => state.qtyDiff);
   const [open, setOpen] = useState(false);
   const logoRef = useRef();
   const navRef = useRef();
@@ -81,6 +83,9 @@ function Header() {
         <Link to="/member" onClick={clickMemberPage}>
           <MemberIcon className="fas fa-user-circle" />
         </Link>
+        <Bubble id="qty-diff">
+          {qtyDiff ? (qtyDiff >= 0 ? `+${qtyDiff}` : qtyDiff) : ""}
+        </Bubble>
         <Link to="/cart" onClick={clickCheckoutPage}>
           <CartIcon className="fas fa-shopping-cart" id="cart-icon" />
         </Link>
