@@ -48,6 +48,7 @@ export default function LandingPage() {
   function getRandomNum(min, max) {
     return Math.ceil(Math.random() * (max - min)) + min;
   }
+
   function getRandomNumArray(min, max) {
     const num = getRandomNum(min, max);
     const arr = [];
@@ -106,20 +107,22 @@ export default function LandingPage() {
         },
         "-=0.1"
       );
-    return gsap
-      .timeline()
-      .to("body", { backgroundColor: "#d6cfde", ease: "power1.in" }, "-=1")
-      .from(animationRef.current, { opacity: 0, duration: 1.5 }, "-=1.5")
-      .addLabel("mix")
-      .add(whiskTimeline, "mix")
-      .add(whiskScale, "mix");
+    return (
+      gsap
+        .timeline()
+        // .to("body", { backgroundColor: "#d6cfde", ease: "power1.in" }, "-=1")
+        .from(animationRef.current, { opacity: 0, duration: 1.5 }, "-=1.5")
+        .addLabel("mix")
+        .add(whiskTimeline, "mix")
+        .add(whiskScale, "mix")
+    );
   }
 
   function splashItemsAnimation() {
     const areaWidth = splashItems.current.clientWidth;
     const areaHeight = splashItems.current.clientHeight;
-    const bowlWidth = bowlRef.current.offsetWidth || 400;
-    const bowlHeight = bowlRef.current.offsetHeight || 400;
+    const bowlWidth = bowlRef.current.offsetWidth || 300;
+    const bowlHeight = bowlRef.current.offsetHeight || 300;
     let index = 0;
 
     return Array.from(splashItems.current.children).map((item) => {

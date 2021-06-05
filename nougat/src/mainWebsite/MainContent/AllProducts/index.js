@@ -92,7 +92,7 @@ function AllProducts() {
   if (allProducts.length !== 0 && cols) {
     return (
       <Container url={BGImage}>
-        <Products cellHeight={"auto"} cols={cols}>
+        <Products cellHeight={"auto"} cols={cols} spacing={20}>
           {allProducts.map((product) => (
             <Product id={product.id} key={product.id}>
               <Link

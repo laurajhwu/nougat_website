@@ -35,14 +35,12 @@ import {
   Calendar,
   PersonalInfo,
   Info,
-  Input,
   Payment,
   CheckoutBtn,
   Group,
   Design1,
   Design2,
   Design3,
-  HelperBlock,
 } from "./styles";
 
 let isClicked = false;
@@ -78,11 +76,45 @@ function CheckOut() {
   const [personalInfo, setPersonalInfo] = useState({});
   const [remember, setRemember] = useState();
   const [vWidth, setVWidth] = useState();
-  const [design1Ref, setDesign1Ref] = useState();
-  const getDesign1Ref = useCallback(
+  const timeline = gsap.timeline({
+    repeat: -1,
+    yoyo: true,
+    defaults: { ease: "power1.inOut" },
+  });
+
+  const btnRef = useCallback(
+    (ref) => {
+      if (ref) {
+        timeline
+          .to(ref, { scale: 0.9, opacity: 0.8, duration: 1 })
+          .to(ref, { scale: 1, opacity: 1, duration: 1 });
+      }
+    },
+    [member]
+  );
+
+  const design1Ref = useCallback(
     (ref) => {
       if (ref) {
         design1Animation(ref);
+      }
+    },
+    [member]
+  );
+
+  const design2Ref = useCallback(
+    (ref) => {
+      if (ref) {
+        design2Animation(ref);
+      }
+    },
+    [member]
+  );
+
+  const design3Ref = useCallback(
+    (ref) => {
+      if (ref) {
+        design3Animation(ref);
       }
     },
     [member]
@@ -131,7 +163,6 @@ function CheckOut() {
 
   function handleCheckout() {
     if (cartItems.length !== 0) {
-      // const { city, district, address } = selectedLocation;
       if (!isClicked) {
         setOrder({
           order_info: {
@@ -174,19 +205,52 @@ function CheckOut() {
       })
       .from(ref, {
         opacity: 0,
-        duration: 1.5,
+        duration: 1,
         ease: "power1.in",
       });
-    // .to(totalRef.current, {
-    //   opacity: 1,
-    //   duration: 0.5,
-    //   ease: "power1.inOut",
-    // });
+  }
+
+  function design2Animation(ref) {
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: ref,
+          start: "top 80%",
+          end: "+=200",
+          scrub: 0.5,
+        },
+      })
+      .from(ref, { x: -500, opacity: 0, duration: 1.5, ease: "power1.in" });
+  }
+
+  function design3Animation(ref) {
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: ref,
+          start: "bottom 80%",
+          end: "+=300",
+          scrub: 0.5,
+        },
+      })
+      .from(ref, {
+        y: -500,
+        x: 700,
+        opacity: 0,
+        duration: 2,
+        ease: "power1.in",
+      });
   }
 
   function handleWindowSizeChange() {
     setVWidth(window.innerWidth);
   }
+
+  useEffect(() => {
+    if (btnRef.current) {
+      console.log(btnRef);
+    }
+  }, []);
 
   useEffect(() => {
     window.addEventListener("resize", handleWindowSizeChange);
@@ -196,12 +260,6 @@ function CheckOut() {
       window.removeEventListener("resize", handleWindowSizeChange);
     };
   }, []);
-
-  // useEffect(() => {
-  //   if (design1Ref) {
-  //     design1Animation(design1Ref);
-  //   }
-  // }, [design1Ref]);
 
   useEffect(() => {
     const promises = allLocations.map((location) => getGeoInfo(location));
@@ -251,7 +309,7 @@ function CheckOut() {
   if (member && locations.length !== 0) {
     return (
       <Container url={BGImage}>
-        <Design1 ref={getDesign1Ref}>
+        <Design1 ref={design1Ref}>
           <div></div>
         </Design1>
         <Label id="cart-label"> 購物車 ({cartItems.length})</Label>
@@ -262,7 +320,7 @@ function CheckOut() {
             <div>$ {getOrderTotal()}</div>
           </Total>
         </Products>
-        <Design2 vw={vWidth}>
+        <Design2 vw={vWidth} ref={design2Ref}>
           <div />
         </Design2>
         <Delivery
@@ -422,8 +480,19 @@ function CheckOut() {
               </Info>
             </PersonalInfo>
           </div>
-          <CheckoutBtn onClick={handleCheckout}>結帳</CheckoutBtn>
-          <Design3 vw={vWidth} />
+          <CheckoutBtn
+            onClick={handleCheckout}
+            ref={btnRef}
+            onMouseEnter={() => {
+              timeline.paused(true);
+            }}
+            onMouseLeave={() => {
+              timeline.paused(false);
+            }}
+          >
+            結帳
+          </CheckoutBtn>
+          <Design3 vw={vWidth} ref={design3Ref} />
         </Group>
       </Container>
     );

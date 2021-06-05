@@ -53,23 +53,20 @@ export const Container = styled.div`
   position: relative;
   max-height: 1600px;
 
-  /* overflow-y: hidden; */
-  /* background-color: rgba(213, 242, 207, 0.4);
-  border-radius: 20px; */
   &::before {
     content: "";
-    /* background-image: url(${(props) => props.url}); */
+    background-image: url(${(props) => props.url});
     background-position: center;
     background-size: cover;
     position: absolute;
     top: -160px;
     bottom: 0;
-    left: -100px;
-    right: 0;
-    width: 100vw;
+    left: -400px;
+    right: px;
+    width: calc(100vw + 500px);
     height: calc(100% + 200px);
     z-index: -1;
-    opacity: 0.6;
+    opacity: 0.5;
     background-color: #f6f4f4;
   }
 `;
@@ -172,6 +169,7 @@ export const CheckoutBtn = styled.div`
   display: flex;
   /* margin: 0 auto; */
   margin-right: 100px;
+  margin-bottom: 60px;
   width: 200px;
   /* line-height: 50px; */
   height: 200px;
@@ -188,10 +186,15 @@ export const CheckoutBtn = styled.div`
     transform: scale(1.1);
     color: #c78283;
   }
+
+  @media screen and (max-width: 1200px) {
+    margin-right: 120px;
+    margin-bottom: 50px;
+  }
 `;
 
 export const Design1 = styled.div`
-  height: 650px;
+  height: 700px;
   width: 300px;
   position: absolute;
   top: -400px;
@@ -227,7 +230,7 @@ export const Design1 = styled.div`
 
 export const Design2 = styled.div`
   height: 300px;
-  width: 52vw;
+  width: 50vw;
   min-width: 650px;
   position: absolute;
   top: 725px;
@@ -267,7 +270,3 @@ export const Design3 = styled.div`
     top: 1120px;
   }
 `;
-
-// export const HelperBlock = styled.div`
-//   outline: 1px solid black;
-// `;

@@ -54,7 +54,7 @@ function ProductDetails() {
       .timeline()
       .to(imageRef.current, { duration: 0.5, scale: 0.5, opacity: 0.5 })
       .to(imageRef.current, {
-        x: imageRect.right - iconRect.left - iconRect.width / 2,
+        x: iconRect.left - imageRect.right + imageRect.width / 2,
         y: iconRect.top - imageRect.top - imageRect.height / 2,
         duration: 0.5,
         scale: 0,
