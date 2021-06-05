@@ -16,9 +16,13 @@ import Loading from "../../../Components/LoadingPage";
 import BGImage from "../../../images/checkout-bg2.png";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import UseAnimations from "react-useanimations";
+import alertCircle from "react-useanimations/lib/alertCircle";
 
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
+import TextField from "@material-ui/core/TextField";
+
 import {
   useStyles,
   Container,
@@ -34,8 +38,11 @@ import {
   Input,
   Payment,
   CheckoutBtn,
+  Group,
   Design1,
   Design2,
+  Design3,
+  HelperBlock,
 } from "./styles";
 
 let isClicked = false;
@@ -103,8 +110,7 @@ function CheckOut() {
   }
 
   function validateCheckoutInfo() {
-    return order.order_info.delivery === "select" ||
-      !order.order_info.delivery_address ||
+    return !order.order_info.delivery_address ||
       !order.personal_info.name ||
       !order.personal_info.line_id
       ? false
@@ -125,12 +131,16 @@ function CheckOut() {
 
   function handleCheckout() {
     if (cartItems.length !== 0) {
-      const { city, district, address } = selectedLocation;
+      // const { city, district, address } = selectedLocation;
       if (!isClicked) {
         setOrder({
           order_info: {
             delivery,
-            delivery_address: selectedLocation ? city + district + address : "",
+            delivery_address: selectedLocation
+              ? selectedLocation.city +
+                selectedLocation.district +
+                selectedLocation.address
+              : "",
             delivery_time: date,
             notes: personalInfo.notes ? personalInfo.notes : "N/A",
             payment: payment,
@@ -159,7 +169,7 @@ function CheckOut() {
         scrollTrigger: {
           trigger: ref,
           start: "top top",
-          toggleActions: "restart pause resume pause",
+          toggleActions: "restart reset resume restart",
         },
       })
       .from(ref, {
@@ -244,6 +254,7 @@ function CheckOut() {
         <Design1 ref={getDesign1Ref}>
           <div></div>
         </Design1>
+        <Label id="cart-label"> 購物車 ({cartItems.length})</Label>
         <Products>
           <CartItems member={member} />
           <Total>
@@ -263,6 +274,16 @@ function CheckOut() {
         >
           <div>
             <div>
+              {order.order_info && !order.order_info.delivery_address ? (
+                <UseAnimations
+                  animation={alertCircle}
+                  strokeColor="#b6174b"
+                  size={30}
+                />
+              ) : (
+                <></>
+              )}
+              <Label>取貨方式* :</Label>
               <FormControl className={classes.formControl}>
                 <Options
                   onChange={deliveryOptionChange}
@@ -278,9 +299,6 @@ function CheckOut() {
                     面交
                   </Option>
                 </Options>
-                <FormHelperText className={classes.label}>
-                  取貨方式 *
-                </FormHelperText>
               </FormControl>
               <RememberMe
                 prop="delivery"
@@ -309,76 +327,104 @@ function CheckOut() {
             />
           </div>
         </Delivery>
-        <Calendar>
-          <Label>取貨時間*</Label>
-          <PickDate date={date} setDate={setDate} />
-        </Calendar>
-        <PersonalInfo>
-          <Info>
-            <Label>姓名*</Label>
-            <Input
-              name="name"
-              type="text"
-              defaultValue={personalInfo.name}
-              onChange={personalInfoOnChange}
-              notFilled={order.personal_info && !order.personal_info.name}
-            />
-          </Info>
-          <Info>
-            <Label>Line ID*</Label>
-            <Input
-              name="line_id"
-              defaultValue={personalInfo.line_id}
-              type="text"
-              onChange={personalInfoOnChange}
-              notFilled={order.personal_info && !order.personal_info.line_id}
-            />
-            <RememberMe
-              prop="line-pay"
-              handleRememberData={() =>
-                handleRememberMe("line_id", personalInfo.line_id)
-              }
-            />
-          </Info>
-          <Info>
-            <Label>備註</Label>
-            <Input name="notes" type="text" onChange={personalInfoOnChange} />
-          </Info>
-        </PersonalInfo>
-        <Payment>
-          <FormControl className={classes.formControl}>
-            <Options
-              onChange={paymentOptionChange}
-              value={payment}
-              className={classes.select}
-              inputProps={{
-                classes: {
-                  icon: classes.icon,
-                },
-              }}
-            >
-              <Option value="cash" className={classes.option}>
-                面交現金
-              </Option>
-              <Option value="line-pay" className={classes.option}>
-                Line Pay
-              </Option>
-            </Options>
-            <FormHelperText className={classes.label}>
-              付款方式 *
-            </FormHelperText>
-          </FormControl>
-          <RememberMe
-            prop="payment"
-            handleRememberData={() =>
-              handleRememberMe("order_info", {
-                ...remember.order_info,
-                payment,
-              })
-            }
-          />
-        </Payment>
-        <CheckoutBtn onClick={handleCheckout}>結帳</CheckoutBtn>
+        <Group>
+          <div>
+            <Calendar>
+              <Label>取貨時間* :</Label>
+              <PickDate date={date} setDate={setDate} />
+            </Calendar>
+            <Payment>
+              <Label> 付款方式* :</Label>
+              <FormControl className={classes.formControl}>
+                <Options
+                  onChange={paymentOptionChange}
+                  value={payment}
+                  className={classes.select}
+                  inputProps={{
+                    classes: {
+                      icon: classes.icon,
+                    },
+                  }}
+                >
+                  <Option value="cash" className={classes.option}>
+                    面交現金
+                  </Option>
+                  <Option value="line-pay" className={classes.option}>
+                    Line Pay
+                  </Option>
+                </Options>
+                <FormHelperText className={classes.label}></FormHelperText>
+              </FormControl>
+              <RememberMe
+                prop="payment"
+                handleRememberData={() =>
+                  handleRememberMe("order_info", {
+                    ...remember.order_info,
+                    payment,
+                  })
+                }
+              />
+            </Payment>
+            <PersonalInfo>
+              <Info>
+                {order.personal_info && !order.personal_info.name ? (
+                  <UseAnimations
+                    animation={alertCircle}
+                    strokeColor="#b6174b"
+                    size={30}
+                  />
+                ) : (
+                  <></>
+                )}
+                <Label>姓名* :</Label>
+                <TextField
+                  name="name"
+                  type="text"
+                  defaultValue={personalInfo.name}
+                  onChange={personalInfoOnChange}
+                  className={classes.input}
+                />
+                <div></div>
+              </Info>
+              <Info>
+                {order.personal_info && !order.personal_info.line_id ? (
+                  <UseAnimations
+                    animation={alertCircle}
+                    strokeColor="#b6174b"
+                    size={30}
+                  />
+                ) : (
+                  <></>
+                )}
+                <Label>Line ID* :</Label>
+                <TextField
+                  name="line_id"
+                  defaultValue={personalInfo.line_id}
+                  type="text"
+                  onChange={personalInfoOnChange}
+                  className={classes.input}
+                />
+                <RememberMe
+                  prop="line-pay"
+                  handleRememberData={() =>
+                    handleRememberMe("line_id", personalInfo.line_id)
+                  }
+                />
+              </Info>
+              <Info>
+                <Label>備註 :</Label>
+                <TextField
+                  name="notes"
+                  type="text"
+                  onChange={personalInfoOnChange}
+                  className={classes.input}
+                />
+              </Info>
+            </PersonalInfo>
+          </div>
+          <CheckoutBtn onClick={handleCheckout}>結帳</CheckoutBtn>
+          <Design3 vw={vWidth} />
+        </Group>
       </Container>
     );
   } else {

@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   flex-flow: column nowrap;
-  max-height: 320px;
+  height: 500px;
   overflow: auto;
   padding: 10px 15px;
   width: 60%;
