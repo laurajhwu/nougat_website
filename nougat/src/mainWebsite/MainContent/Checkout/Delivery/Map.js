@@ -21,7 +21,7 @@ function MainMap(props) {
 
   return (
     <GoogleMap
-      mapContainerStyle={{ width: "50vw", height: "30vh" }}
+      mapContainerStyle={{ width: "500px", height: "400px" }}
       zoom={12}
       center={{ lat: 25.132410388599844, lng: 121.4987463275781 }}
     >

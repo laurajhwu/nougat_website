@@ -17,13 +17,16 @@ import BGImage from "../../../images/checkout-bg2.png";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
 import {
+  useStyles,
   Container,
   Products,
   Total,
   Delivery,
   Label,
-  Select,
+  Options,
   Option,
   Calendar,
   PersonalInfo,
@@ -32,6 +35,7 @@ import {
   Payment,
   CheckoutBtn,
   Design1,
+  Design2,
 } from "./styles";
 
 let isClicked = false;
@@ -40,6 +44,7 @@ const id = uuid();
 gsap.registerPlugin(ScrollTrigger);
 
 function CheckOut() {
+  const classes = useStyles();
   const history = useHistory();
   const member = useSelector((state) => state.member);
   const dateSettings = useSelector((state) => state.dateTime).date;
@@ -49,7 +54,7 @@ function CheckOut() {
     (location) => location.active
   );
   const allProducts = useSelector((state) => state.products);
-  const [delivery, setDelivery] = useState("select");
+  const [delivery, setDelivery] = useState("face-to-face");
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState();
   const [payment, setPayment] = useState("cash");
@@ -65,12 +70,16 @@ function CheckOut() {
   const [order, setOrder] = useState({});
   const [personalInfo, setPersonalInfo] = useState({});
   const [remember, setRemember] = useState();
-
-  const design1Ref = useCallback((ref) => {
-    if (ref) {
-      design1Animation(ref);
-    }
-  }, []);
+  const [vWidth, setVWidth] = useState();
+  const [design1Ref, setDesign1Ref] = useState();
+  const getDesign1Ref = useCallback(
+    (ref) => {
+      if (ref) {
+        design1Animation(ref);
+      }
+    },
+    [member]
+  );
 
   function deliveryOptionChange(event) {
     setDelivery(event.target.value);
@@ -145,25 +154,44 @@ function CheckOut() {
   }
 
   function design1Animation(ref) {
-    //   {
-    //   scrollTrigger: {
-    //     trigger: design1Ref.current,
-    //     start: "top top",
-    //     toggleActions: "restart pause resume pause",
-    //   },
-    // }
-    gsap.timeline().from(ref, {
-      y: -600,
-      opacity: 0,
-      duration: 1.5,
-      ease: "power1.in",
-    });
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: ref,
+          start: "top top",
+          toggleActions: "restart pause resume pause",
+        },
+      })
+      .from(ref, {
+        opacity: 0,
+        duration: 1.5,
+        ease: "power1.in",
+      });
     // .to(totalRef.current, {
     //   opacity: 1,
     //   duration: 0.5,
     //   ease: "power1.inOut",
     // });
   }
+
+  function handleWindowSizeChange() {
+    setVWidth(window.innerWidth);
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowSizeChange);
+    handleWindowSizeChange();
+
+    return () => {
+      window.removeEventListener("resize", handleWindowSizeChange);
+    };
+  }, []);
+
+  // useEffect(() => {
+  //   if (design1Ref) {
+  //     design1Animation(design1Ref);
+  //   }
+  // }, [design1Ref]);
 
   useEffect(() => {
     const promises = allLocations.map((location) => getGeoInfo(location));
@@ -213,7 +241,7 @@ function CheckOut() {
   if (member && locations.length !== 0) {
     return (
       <Container url={BGImage}>
-        <Design1 ref={design1Ref}>
+        <Design1 ref={getDesign1Ref}>
           <div></div>
         </Design1>
         <Products>
@@ -223,6 +251,9 @@ function CheckOut() {
             <div>$ {getOrderTotal()}</div>
           </Total>
         </Products>
+        <Design2 vw={vWidth}>
+          <div />
+        </Design2>
         <Delivery
           notFilled={
             order.order_info &&
@@ -230,47 +261,53 @@ function CheckOut() {
               !order.order_info.delivery_address)
           }
         >
-          <Label>取貨方式*</Label>
-          <Select onChange={deliveryOptionChange}>
-            <Option
-              value="select"
-              selected={delivery === "select" ? "selected" : ""}
-            >
-              請選擇取貨方式
-            </Option>
-            <Option
-              value="face-to-face"
-              selected={delivery === "face-to-face" ? "selected" : ""}
-            >
-              北投區面交
-            </Option>
-          </Select>
-          <RememberMe
-            prop={"delivery"}
-            handleRememberData={() =>
-              handleRememberMe("order_info", {
-                ...remember.order_info,
-                delivery,
-              })
-            }
-          />
-          {delivery === "select" ? (
-            ""
-          ) : (
-            <>
-              <Map
-                locations={locations}
-                selectedLocation={selectedLocation}
-                setSelectedLocation={setSelectedLocation}
+          <div>
+            <div>
+              <FormControl className={classes.formControl}>
+                <Options
+                  onChange={deliveryOptionChange}
+                  value={delivery}
+                  className={classes.select}
+                  inputProps={{
+                    classes: {
+                      icon: classes.icon,
+                    },
+                  }}
+                >
+                  <Option value="face-to-face" className={classes.option}>
+                    面交
+                  </Option>
+                </Options>
+                <FormHelperText className={classes.label}>
+                  取貨方式 *
+                </FormHelperText>
+              </FormControl>
+              <RememberMe
+                prop="delivery"
+                handleRememberData={() =>
+                  handleRememberMe("order_info", {
+                    ...remember.order_info,
+                    delivery,
+                  })
+                }
+                style={{
+                  color: "#584573",
+                }}
               />
-
-              <Locations
-                locations={locations}
-                selectedLocation={selectedLocation}
-                setSelectedLocation={setSelectedLocation}
-              />
-            </>
-          )}
+            </div>
+            <Locations
+              locations={locations}
+              selectedLocation={selectedLocation}
+              setSelectedLocation={setSelectedLocation}
+            />
+          </div>
+          <div>
+            <Map
+              locations={locations}
+              selectedLocation={selectedLocation}
+              setSelectedLocation={setSelectedLocation}
+            />
+          </div>
         </Delivery>
         <Calendar>
           <Label>取貨時間*</Label>
@@ -297,7 +334,7 @@ function CheckOut() {
               notFilled={order.personal_info && !order.personal_info.line_id}
             />
             <RememberMe
-              prop={"line-pay"}
+              prop="line-pay"
               handleRememberData={() =>
                 handleRememberMe("line_id", personalInfo.line_id)
               }
@@ -309,23 +346,30 @@ function CheckOut() {
           </Info>
         </PersonalInfo>
         <Payment>
-          <Label>付款方式*</Label>
-          <Select onChange={paymentOptionChange}>
-            <Option
-              value="cash"
-              selected={payment === "cash" ? "selected" : ""}
+          <FormControl className={classes.formControl}>
+            <Options
+              onChange={paymentOptionChange}
+              value={payment}
+              className={classes.select}
+              inputProps={{
+                classes: {
+                  icon: classes.icon,
+                },
+              }}
             >
-              面交現金
-            </Option>
-            <Option
-              value="line-pay"
-              selected={payment === "line-pay" ? "selected" : ""}
-            >
-              Line Pay
-            </Option>
-          </Select>
+              <Option value="cash" className={classes.option}>
+                面交現金
+              </Option>
+              <Option value="line-pay" className={classes.option}>
+                Line Pay
+              </Option>
+            </Options>
+            <FormHelperText className={classes.label}>
+              付款方式 *
+            </FormHelperText>
+          </FormControl>
           <RememberMe
-            prop={"payment"}
+            prop="payment"
             handleRememberData={() =>
               handleRememberMe("order_info", {
                 ...remember.order_info,
