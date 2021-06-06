@@ -1,5 +1,4 @@
-import styled from "styled-components";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { setMinutes, setHours } from "date-fns";
@@ -14,29 +13,43 @@ import RememberMe from "../../../Components/RememberMe";
 import updateProductStock from "../../../utils/updateProductStock";
 import addDays from "../../../utils/addDays";
 import Loading from "../../../Components/LoadingPage";
+import BGImage from "../../../images/checkout-bg2.png";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import UseAnimations from "react-useanimations";
+import alertCircle from "react-useanimations/lib/alertCircle";
 
-const Products = styled.div``;
-const Delivery = styled.div`
-  border: 1px solid black;
-  border-color: ${(props) => (props.notFilled ? "red" : "black")};
-`;
-const Select = styled.select``;
-const Option = styled.option``;
-const Calendar = styled.div``;
-const PersonalInfo = styled.div``;
-const Info = styled.div``;
-const Input = styled.input`
-  border: 1px solid black;
-  border-color: ${(props) => (props.notFilled ? "red" : "black")};
-`;
-const Label = styled.label``;
-const Payment = styled.div``;
-const CheckoutBtn = styled.button``;
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
+import TextField from "@material-ui/core/TextField";
+
+import {
+  useStyles,
+  Container,
+  Products,
+  Total,
+  Delivery,
+  Label,
+  Options,
+  Option,
+  Calendar,
+  PersonalInfo,
+  Info,
+  Payment,
+  CheckoutBtn,
+  Group,
+  Design1,
+  Design2,
+  Design3,
+} from "./styles";
 
 let isClicked = false;
 const id = uuid();
 
+gsap.registerPlugin(ScrollTrigger);
+
 function CheckOut() {
+  const classes = useStyles();
   const history = useHistory();
   const member = useSelector((state) => state.member);
   const dateSettings = useSelector((state) => state.dateTime).date;
@@ -46,20 +59,66 @@ function CheckOut() {
     (location) => location.active
   );
   const allProducts = useSelector((state) => state.products);
-  const [delivery, setDelivery] = useState("select");
+  const [delivery, setDelivery] = useState("face-to-face");
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState();
   const [payment, setPayment] = useState("cash");
-  const initTime = timeSettings.start_time.split(":");
+  const initTime = timeSettings ? timeSettings.start_time.split(":") : null;
   const [date, setDate] = useState(
-    setHours(
-      setMinutes(addDays(dateSettings.buffer), +initTime[1]),
-      +initTime[0]
-    )
+    dateSettings
+      ? setHours(
+          setMinutes(addDays(dateSettings.buffer), +initTime[1]),
+          +initTime[0]
+        )
+      : null
   );
   const [order, setOrder] = useState({});
   const [personalInfo, setPersonalInfo] = useState({});
   const [remember, setRemember] = useState();
+  const [vWidth, setVWidth] = useState();
+  const timeline = gsap.timeline({
+    repeat: -1,
+    yoyo: true,
+    defaults: { ease: "power1.inOut" },
+  });
+
+  const btnRef = useCallback(
+    (ref) => {
+      if (ref) {
+        timeline
+          .to(ref, { scale: 0.9, opacity: 0.8, duration: 1 })
+          .to(ref, { scale: 1, opacity: 1, duration: 1 });
+      }
+    },
+    [member]
+  );
+
+  const design1Ref = useCallback(
+    (ref) => {
+      if (ref) {
+        design1Animation(ref);
+      }
+    },
+    [member]
+  );
+
+  const design2Ref = useCallback(
+    (ref) => {
+      if (ref) {
+        design2Animation(ref);
+      }
+    },
+    [member]
+  );
+
+  const design3Ref = useCallback(
+    (ref) => {
+      if (ref) {
+        design3Animation(ref);
+      }
+    },
+    [member]
+  );
 
   function deliveryOptionChange(event) {
     setDelivery(event.target.value);
@@ -83,8 +142,7 @@ function CheckOut() {
   }
 
   function validateCheckoutInfo() {
-    return order.order_info.delivery === "select" ||
-      !order.order_info.delivery_address ||
+    return !order.order_info.delivery_address ||
       !order.personal_info.name ||
       !order.personal_info.line_id
       ? false
@@ -105,12 +163,15 @@ function CheckOut() {
 
   function handleCheckout() {
     if (cartItems.length !== 0) {
-      const { city, district, address } = selectedLocation;
       if (!isClicked) {
         setOrder({
           order_info: {
             delivery,
-            delivery_address: selectedLocation ? city + district + address : "",
+            delivery_address: selectedLocation
+              ? selectedLocation.city +
+                selectedLocation.district +
+                selectedLocation.address
+              : "",
             delivery_time: date,
             notes: personalInfo.notes ? personalInfo.notes : "N/A",
             payment: payment,
@@ -132,6 +193,73 @@ function CheckOut() {
       alert("請選取欲購賣商品！");
     }
   }
+
+  function design1Animation(ref) {
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: ref,
+          start: "top top",
+          toggleActions: "restart reset resume restart",
+        },
+      })
+      .from(ref, {
+        opacity: 0,
+        duration: 1,
+        ease: "power1.in",
+      });
+  }
+
+  function design2Animation(ref) {
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: ref,
+          start: "top 80%",
+          end: "+=200",
+          scrub: 0.5,
+        },
+      })
+      .from(ref, { x: -500, opacity: 0, duration: 1.5, ease: "power1.in" });
+  }
+
+  function design3Animation(ref) {
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: ref,
+          start: "bottom 80%",
+          end: "+=300",
+          scrub: 0.5,
+        },
+      })
+      .from(ref, {
+        y: -500,
+        x: 700,
+        opacity: 0,
+        duration: 2,
+        ease: "power1.in",
+      });
+  }
+
+  function handleWindowSizeChange() {
+    setVWidth(window.innerWidth);
+  }
+
+  useEffect(() => {
+    if (btnRef.current) {
+      console.log(btnRef);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowSizeChange);
+    handleWindowSizeChange();
+
+    return () => {
+      window.removeEventListener("resize", handleWindowSizeChange);
+    };
+  }, []);
 
   useEffect(() => {
     const promises = allLocations.map((location) => getGeoInfo(location));
@@ -180,10 +308,21 @@ function CheckOut() {
 
   if (member && locations.length !== 0) {
     return (
-      <div>
+      <Container url={BGImage}>
+        <Design1 ref={design1Ref}>
+          <div></div>
+        </Design1>
+        <Label id="cart-label"> 購物車 ({cartItems.length})</Label>
         <Products>
           <CartItems member={member} />
+          <Total>
+            <div>總計：</div>
+            <div>$ {getOrderTotal()}</div>
+          </Total>
         </Products>
+        <Design2 vw={vWidth} ref={design2Ref}>
+          <div />
+        </Design2>
         <Delivery
           notFilled={
             order.order_info &&
@@ -191,112 +330,171 @@ function CheckOut() {
               !order.order_info.delivery_address)
           }
         >
-          <Label>取貨方式*</Label>
-          <Select onChange={deliveryOptionChange}>
-            <Option
-              value="select"
-              selected={delivery === "select" ? "selected" : ""}
-            >
-              請選擇取貨方式
-            </Option>
-            <Option
-              value="face-to-face"
-              selected={delivery === "face-to-face" ? "selected" : ""}
-            >
-              北投區面交
-            </Option>
-          </Select>
-          <RememberMe
-            prop={"delivery"}
-            handleRememberData={() =>
-              handleRememberMe("order_info", {
-                ...remember.order_info,
-                delivery,
-              })
-            }
-          />
-          {delivery === "select" ? (
-            ""
-          ) : (
-            <>
-              <Map
-                locations={locations}
-                selectedLocation={selectedLocation}
-                setSelectedLocation={setSelectedLocation}
+          <div>
+            <div>
+              {order.order_info && !order.order_info.delivery_address ? (
+                <UseAnimations
+                  animation={alertCircle}
+                  strokeColor="#b6174b"
+                  size={30}
+                />
+              ) : (
+                <></>
+              )}
+              <Label>取貨方式* :</Label>
+              <FormControl className={classes.formControl}>
+                <Options
+                  onChange={deliveryOptionChange}
+                  value={delivery}
+                  className={classes.select}
+                  inputProps={{
+                    classes: {
+                      icon: classes.icon,
+                    },
+                  }}
+                >
+                  <Option value="face-to-face" className={classes.option}>
+                    面交
+                  </Option>
+                </Options>
+              </FormControl>
+              <RememberMe
+                prop="delivery"
+                handleRememberData={() =>
+                  handleRememberMe("order_info", {
+                    ...remember.order_info,
+                    delivery,
+                  })
+                }
+                style={{
+                  color: "#584573",
+                }}
               />
-
-              <Locations
-                locations={locations}
-                selectedLocation={selectedLocation}
-                setSelectedLocation={setSelectedLocation}
-              />
-            </>
-          )}
+            </div>
+            <Locations
+              locations={locations}
+              selectedLocation={selectedLocation}
+              setSelectedLocation={setSelectedLocation}
+            />
+          </div>
+          <div>
+            <Map
+              locations={locations}
+              selectedLocation={selectedLocation}
+              setSelectedLocation={setSelectedLocation}
+            />
+          </div>
         </Delivery>
-        <Calendar>
-          <Label>取貨時間*</Label>
-          <PickDate date={date} setDate={setDate} />
-        </Calendar>
-        <PersonalInfo>
-          <Info>
-            <Label>姓名*</Label>
-            <Input
-              name="name"
-              type="text"
-              defaultValue={personalInfo.name}
-              onChange={personalInfoOnChange}
-              notFilled={order.personal_info && !order.personal_info.name}
-            />
-          </Info>
-          <Info>
-            <Label>Line ID*</Label>
-            <Input
-              name="line_id"
-              defaultValue={personalInfo.line_id}
-              type="text"
-              onChange={personalInfoOnChange}
-              notFilled={order.personal_info && !order.personal_info.line_id}
-            />
-            <RememberMe
-              prop={"line-pay"}
-              handleRememberData={() =>
-                handleRememberMe("line_id", personalInfo.line_id)
-              }
-            />
-          </Info>
-          <Info>
-            <Label>備註</Label>
-            <Input name="notes" type="text" onChange={personalInfoOnChange} />
-          </Info>
-        </PersonalInfo>
-        <Payment>
-          <Label>付款方式*</Label>
-          <Select onChange={paymentOptionChange}>
-            <Option
-              value="cash"
-              selected={payment === "cash" ? "selected" : ""}
-            >
-              面交現金
-            </Option>
-            <Option
-              value="line-pay"
-              selected={payment === "line-pay" ? "selected" : ""}
-            >
-              Line Pay
-            </Option>
-          </Select>
-          <RememberMe
-            prop={"payment"}
-            handleRememberData={() =>
-              handleRememberMe("order_info", {
-                ...remember.order_info,
-                payment,
-              })
-            }
-          />
-        </Payment>
-        <CheckoutBtn onClick={handleCheckout}>結帳</CheckoutBtn>
-      </div>
+        <Group>
+          <div>
+            <Calendar>
+              <Label>取貨時間* :</Label>
+              <PickDate date={date} setDate={setDate} />
+            </Calendar>
+            <Payment>
+              <Label> 付款方式* :</Label>
+              <FormControl className={classes.formControl}>
+                <Options
+                  onChange={paymentOptionChange}
+                  value={payment}
+                  className={classes.select}
+                  inputProps={{
+                    classes: {
+                      icon: classes.icon,
+                    },
+                  }}
+                >
+                  <Option value="cash" className={classes.option}>
+                    面交現金
+                  </Option>
+                  <Option value="line-pay" className={classes.option}>
+                    Line Pay
+                  </Option>
+                </Options>
+                <FormHelperText className={classes.label}></FormHelperText>
+              </FormControl>
+              <RememberMe
+                prop="payment"
+                handleRememberData={() =>
+                  handleRememberMe("order_info", {
+                    ...remember.order_info,
+                    payment,
+                  })
+                }
+              />
+            </Payment>
+            <PersonalInfo>
+              <Info>
+                {order.personal_info && !order.personal_info.name ? (
+                  <UseAnimations
+                    animation={alertCircle}
+                    strokeColor="#b6174b"
+                    size={30}
+                  />
+                ) : (
+                  <></>
+                )}
+                <Label>姓名* :</Label>
+                <TextField
+                  name="name"
+                  type="text"
+                  defaultValue={personalInfo.name}
+                  onChange={personalInfoOnChange}
+                  className={classes.input}
+                />
+                <div></div>
+              </Info>
+              <Info>
+                {order.personal_info && !order.personal_info.line_id ? (
+                  <UseAnimations
+                    animation={alertCircle}
+                    strokeColor="#b6174b"
+                    size={30}
+                  />
+                ) : (
+                  <></>
+                )}
+                <Label>Line ID* :</Label>
+                <TextField
+                  name="line_id"
+                  defaultValue={personalInfo.line_id}
+                  type="text"
+                  onChange={personalInfoOnChange}
+                  className={classes.input}
+                />
+                <RememberMe
+                  prop="line-pay"
+                  handleRememberData={() =>
+                    handleRememberMe("line_id", personalInfo.line_id)
+                  }
+                />
+              </Info>
+              <Info>
+                <Label>備註 :</Label>
+                <TextField
+                  name="notes"
+                  type="text"
+                  onChange={personalInfoOnChange}
+                  className={classes.input}
+                />
+              </Info>
+            </PersonalInfo>
+          </div>
+          <CheckoutBtn
+            onClick={handleCheckout}
+            ref={btnRef}
+            onMouseEnter={() => {
+              timeline.paused(true);
+            }}
+            onMouseLeave={() => {
+              timeline.paused(false);
+            }}
+          >
+            結帳
+          </CheckoutBtn>
+          <Design3 vw={vWidth} ref={design3Ref} />
+        </Group>
+      </Container>
     );
   } else {
     return <Loading />;

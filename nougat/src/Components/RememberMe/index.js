@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-import { Container, Checkbox, Label } from "./styles";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import { Container } from "./styles";
 
 export default function RememberMe(props) {
   const [checked, setChecked] = useState(false);
@@ -11,14 +13,28 @@ export default function RememberMe(props) {
   }, [checked]);
 
   return (
-    <Container>
-      <Checkbox
+    <Container style={props.style}>
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={checked}
+            onChange={() => setChecked(!checked)}
+            name="checkedB"
+            color="primary"
+            value={props.prop}
+            id={props.prop}
+          />
+        }
+        label="記住我"
+      />
+
+      {/* <Checkbox
         type="checkbox"
         value={props.prop}
         id={props.prop}
         onChange={() => setChecked(!checked)}
       />
-      <Label for={props.prop}>記住我</Label>
+      <Label for={props.prop}>記住我</Label> */}
     </Container>
   );
 }

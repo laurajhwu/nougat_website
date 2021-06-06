@@ -38,6 +38,7 @@ export const Product = styled.div`
   background-color: rgba(215, 205, 204, 0.5);
   position: absolute;
   padding-top: 160px;
+  padding-bottom: 20px;
   &::before {
     content: "";
     background-image: url(${(props) => props.url});
@@ -59,7 +60,7 @@ export const Img = styled.img`
   opacity: 0.9;
   border: ${(props) =>
     props.helperImage ? "20px solid transparent" : "20px solid #762e34;"};
-  margin-top: 30px;
+  /* margin-top: 20px; */
   position: ${(props) => (props.helperImage ? "absolute" : "relative")};
   z-index: ${(props) => (props.helperImage ? 2 : 0)};
 `;

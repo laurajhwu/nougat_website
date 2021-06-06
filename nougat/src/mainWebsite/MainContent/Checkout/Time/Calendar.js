@@ -1,5 +1,4 @@
-import React from "react";
-import styled from "styled-components";
+import React, { forwardRef } from "react";
 import { useSelector } from "react-redux";
 import DatePicker from "react-datepicker";
 import {
@@ -10,6 +9,10 @@ import {
 import getTimeRange from "../../../../utils/getTimeRange";
 import addDays from "../../../../utils/addDays";
 import "react-datepicker/dist/react-datepicker.css";
+import UseAnimations from "react-useanimations";
+import calendar from "react-useanimations/lib/calendar";
+
+import { Container, Value } from "./styles";
 
 function Calendar(props) {
   const dateSettings = useSelector((state) => state.dateTime).date;
@@ -17,6 +20,19 @@ function Calendar(props) {
   const orderTimes = useSelector((state) => state.orders).filter(
     (order) => order.status <= 1
   );
+  const CustomInput = forwardRef(({ value, onClick }, ref) => (
+    <Container>
+      <UseAnimations
+        strokeColor="#C78283"
+        size={70}
+        animation={calendar}
+        onClick={onClick}
+        ref={ref}
+        onMouseOver={(event) => (event.target.style.cursor = "pointer")}
+      />
+      <Value>{value}</Value>
+    </Container>
+  ));
 
   const timesToExclude = [
     ...orderTimes
@@ -111,6 +127,7 @@ function Calendar(props) {
       minTime={getTimestamp(timeSettings.start_time)}
       maxTime={getTimestamp(timeSettings.end_time)}
       filterTime={filterTimes}
+      customInput={<CustomInput />}
     />
   );
 }
