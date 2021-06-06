@@ -1,6 +1,9 @@
+import React from "react";
 import styled from "styled-components";
 import { Facebook, Google } from "@styled-icons/bootstrap";
-import Api from "../../../../utils/Api";
+import Api from "../../../../../utils/Api";
+
+import { Container } from "./styles";
 
 const FbIcon = styled(Facebook)`
   width: 40px;

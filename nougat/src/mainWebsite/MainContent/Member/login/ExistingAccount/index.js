@@ -1,7 +1,10 @@
+import React from "react";
 import styled from "styled-components";
 import { useState } from "react";
-import PasswordInput from "../../../../Components/Password";
-import Api from "../../../../utils/Api";
+import PasswordInput from "../../../../../Components/Password";
+import Api from "../../../../../utils/Api";
+
+import { Container } from "./styles";
 
 const Form = styled.form``;
 const Title = styled.div``;

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import React from "react";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -8,15 +8,7 @@ import CreateAccount from "./CreateAccount";
 import LoginAccount from "./ExistingAccount";
 import SocialLogin from "./SocialLogin";
 
-const Email = styled.div``;
-const Create = styled.div``;
-const Existing = styled.div``;
-const SocialMedia = styled.div``;
-const Container = styled.div`
-  & * {
-    opacity: ${(props) => (props.isLoading ? 0.7 : 1)};
-  }
-`;
+import { Container, Email, Existing, Create, SocialMedia } from "./styles";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
