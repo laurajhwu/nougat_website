@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from "react";
+import Input from "@material-ui/core/Input";
 
-import { Container, Input, Edit, Done, Text, Textarea } from "./styles";
+import {
+  Container,
+  Edit,
+  Done,
+  Text,
+  Textarea,
+  TextContainer,
+  useStyles,
+} from "./styles";
 
 export default function EditableInput(props) {
+  const classes = useStyles();
   const [isEditing, setIsEditing] = useState(false);
   const [data, setData] = useState(props.initValue);
 
@@ -33,19 +43,20 @@ export default function EditableInput(props) {
             />
           ) : (
             <Input
-              defaultValue={props.initValue}
+              value={data}
               isEditing={isEditing}
               onChange={handleChange}
+              className={classes.input}
             />
           )}
 
-          <Done onClick={handleClick} />
+          <Done onClick={handleClick} theme={props.doneIconStyle} />
         </>
       ) : (
-        <>
+        <TextContainer>
           <Text>{props.initValue}</Text>
           <Edit onClick={handleClick} />
-        </>
+        </TextContainer>
       )}
     </Container>
   );

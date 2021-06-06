@@ -30,8 +30,8 @@ export const Email = styled.div`
 const BtnStyle = styled.div`
   width: 50%;
   text-align: center;
-  padding-left: 20px;
   margin-top: 30px;
+  padding-left: 20px;
   font-size: 22px;
   letter-spacing: 20px;
   line-height: 40px;

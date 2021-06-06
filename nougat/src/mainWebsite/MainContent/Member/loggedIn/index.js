@@ -1,6 +1,5 @@
-import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { useHistory, Route, useRouteMatch } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Profile from "./Profile";
 import Orders from "./Orders";
@@ -10,14 +9,17 @@ import { getMemberOrders } from "../../../../redux/actions/order";
 import { getOrderFixedData } from "../../../../redux/actions/fixedData";
 import Loading from "../../../../Components/LoadingPage";
 
-const ProfilePage = styled.div``;
-const OrderPage = styled.div``;
-const EmailNotVerified = styled.div``;
-const Logout = styled.a``;
+import {
+  Container,
+  ProfilePage,
+  OrderPage,
+  EmailNotVerified,
+  Logout,
+  Header,
+} from "./styles";
 
 function LoggedIn() {
   const history = useHistory();
-  const match = useRouteMatch();
   const member = useSelector((state) => state.member);
   const dispatch = useDispatch();
   const [page, setPage] = useState("profile");
@@ -51,22 +53,22 @@ function LoggedIn() {
 
   if (member) {
     return (
-      <>
+      <Container>
         {member.id ? (
-          <>
-            <ProfilePage onClick={() => handleClick("profile")}>
-              會員資料
-            </ProfilePage>
-            <OrderPage onClick={() => handleClick("orders")}>
-              訂單瀏覽
-            </OrderPage>
-            <Route path={`${match.url}/profile`}>
+          <Header
+            fill
+            justify
+            variant="tabs"
+            activeKey={page}
+            onSelect={(key) => handleClick(key)}
+          >
+            <ProfilePage title="會員資料" eventKey="profile">
               <Profile />
-            </Route>
-            <Route path={`${match.url}/orders`}>
+            </ProfilePage>
+            <OrderPage title="訂單瀏覽" eventKey="orders">
               <Orders />
-            </Route>
-          </>
+            </OrderPage>
+          </Header>
         ) : (
           <>
             <EmailNotVerified>
@@ -75,7 +77,7 @@ function LoggedIn() {
             <Logout onClick={logout}>登出</Logout>
           </>
         )}
-      </>
+      </Container>
     );
   } else {
     return <Loading />;
