@@ -43,6 +43,12 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     overflowY: "auto",
     marginTop: 10,
+    [theme.breakpoints.down("md")]: {
+      maxWidth: 400,
+    },
+    [theme.breakpoints.down("lg")]: {
+      maxWidth: 460,
+    },
   },
   avatar: {
     backgroundColor: " rgba(140,171,190,0.3)",

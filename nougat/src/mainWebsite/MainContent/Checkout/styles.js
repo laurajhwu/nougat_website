@@ -118,6 +118,10 @@ export const Delivery = styled.div`
       }
     }
   }
+
+  /* @media screen and (max-width: 600px) {
+    flex-direction: column;
+  } */
 `;
 
 export const Group = styled.div`
@@ -231,7 +235,8 @@ export const Design1 = styled.div`
 export const Design2 = styled.div`
   height: 300px;
   width: 50vw;
-  min-width: 650px;
+  min-width: 550px;
+  max-width: 900px;
   position: absolute;
   top: 725px;
   left: ${(props) =>
