@@ -1,23 +1,9 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
-import { Facebook, Google } from "@styled-icons/bootstrap";
+
 import Api from "../../../../../utils/Api";
 
-import { Container } from "./styles";
-
-const FbIcon = styled(Facebook)`
-  width: 40px;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const GoogleIcon = styled(Google)`
-  width: 40px;
-  &:hover {
-    cursor: pointer;
-  }
-`;
+import { FbContainer, GoogleContainer, FbIcon, GoogleIcon } from "./styles";
 
 function SocialLogin(props) {
   function login(api) {
@@ -55,8 +41,14 @@ function SocialLogin(props) {
 
   return (
     <>
-      <FbIcon onClick={() => login(Api.facebookLogin)} />
-      <GoogleIcon onClick={() => login(Api.googleLogin)} />
+      <FbContainer>
+        <FbIcon />
+        <div onClick={() => login(Api.facebookLogin)}>Facebook 登入</div>
+      </FbContainer>
+      <GoogleContainer>
+        <GoogleIcon />
+        <div onClick={() => login(Api.googleLogin)}>Google 登入</div>
+      </GoogleContainer>
     </>
   );
 }

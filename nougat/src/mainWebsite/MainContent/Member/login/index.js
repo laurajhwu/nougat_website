@@ -31,6 +31,14 @@ function Login() {
       });
   }
 
+  function handleClickCreate() {
+    setExist(false);
+  }
+
+  function handleClickExist() {
+    setExist(true);
+  }
+
   useEffect(() => {
     if (verify) {
       setIsLoading(true);
@@ -56,14 +64,6 @@ function Login() {
     };
   }, []);
 
-  function handleClickCreate() {
-    setExist(false);
-  }
-
-  function handleClickExist() {
-    setExist(true);
-  }
-
   return (
     <Container isLoading={isLoading}>
       <Email>
@@ -75,7 +75,7 @@ function Login() {
         ) : (
           <CreateAccount />
         )}
-        <Existing onClick={handleClickExist}>登入</Existing>
+        <Existing onClick={handleClickExist}>會員</Existing>
         <Create onClick={handleClickCreate}>註冊</Create>
       </Email>
       <SocialMedia>

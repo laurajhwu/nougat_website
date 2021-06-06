@@ -1,25 +1,25 @@
 import React from "react";
-import styled from "styled-components";
 import { useState } from "react";
 import PasswordInput from "../../../../../Components/Password";
+import ErrorComponent from "../../../../../Components/Error";
 import Api from "../../../../../utils/Api";
 
-import { Container } from "./styles";
-
-const Form = styled.form``;
-const Title = styled.div``;
-const Email = styled(Title)``;
-const Password = styled.div``;
-const Label = styled.label``;
-const Input = styled.input`
-  border: 1px solid black;
-  border-color: ${(props) => (props.notValid ? "red" : "black")};
-`;
-const Register = styled.button``;
+import Input from "@material-ui/core/Input";
+import {
+  Container,
+  Form,
+  Email,
+  Label,
+  Password,
+  Register,
+  useStyles,
+  iconTheme,
+} from "./styles";
 
 function SignIn(props) {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const classes = useStyles();
+  const [email, setEmail] = useState("test@test.com");
+  const [password, setPassword] = useState("test123");
   const [register, setRegister] = useState(false);
   const [checkInput, setCheckInput] = useState(false);
 
@@ -79,27 +79,37 @@ function SignIn(props) {
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Email>
-        <Label>信箱</Label>
-        <Input
-          type="text"
-          onChange={(event) => handleChange(event, setEmail)}
-          notValid={checkInput && !validEmail()}
-        />
-      </Email>
-      <Password>
-        <Label>密碼</Label>
-        <PasswordInput
-          handleChange={(event) => handleChange(event, setPassword)}
-          placeholder="至少6個字"
-          notValid={checkInput && !validPassword()}
-        />
-      </Password>
-      <Register type="submit" disabled={register}>
-        登入
-      </Register>
-    </Form>
+    <Container>
+      <Form onSubmit={handleSubmit}>
+        <Email>
+          <Label>信箱</Label>
+          <Input
+            onChange={(event) => handleChange(event, setEmail)}
+            value={email}
+            className={classes.input}
+          />
+          {ErrorComponent(checkInput && !validEmail())}
+        </Email>
+        <Password>
+          <Label>密碼</Label>
+          <PasswordInput
+            children={(type) => (
+              <Input
+                onChange={(event) => handleChange(event, setPassword)}
+                value={password}
+                className={classes.input}
+                type={type}
+              />
+            )}
+            iconTheme={iconTheme}
+          />
+          {ErrorComponent(checkInput && !validPassword())}
+        </Password>
+        <Register type="submit" disabled={register}>
+          登入
+        </Register>
+      </Form>
+    </Container>
   );
 }
 

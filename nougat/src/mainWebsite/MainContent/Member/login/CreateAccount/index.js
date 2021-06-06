@@ -1,25 +1,25 @@
 import React from "react";
-import styled from "styled-components";
 import { useState } from "react";
 import PasswordInput from "../../../../../Components/Password";
+import ErrorComponent from "../../../../../Components/Error";
 import Api from "../../../../../utils/Api";
 
-import { Container } from "./styles";
-
-const Form = styled.form``;
-const Title = styled.div``;
-const Name = styled(Title)``;
-const Line = styled.div``;
-const Email = styled.div``;
-const Password = styled.div``;
-const Label = styled.label``;
-const Input = styled.input`
-  border: 1px solid black;
-  border-color: ${(props) => (props.notValid ? "red" : "black")};
-`;
-const Register = styled.button``;
+import Input from "@material-ui/core/Input";
+import {
+  Container,
+  Form,
+  Name,
+  Label,
+  Line,
+  Email,
+  Password,
+  Register,
+  useStyles,
+  iconTheme,
+} from "./styles";
 
 function CreateAccount() {
+  const classes = useStyles();
   const [name, setName] = useState();
   const [line_id, setLine] = useState();
   const [email, setEmail] = useState();
@@ -109,50 +109,71 @@ function CreateAccount() {
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Name>
-        <Label>姓名</Label>
-        <Input
-          type="text"
-          onChange={(event) => handleChange(event, setName)}
-          notValid={checkInput && !name}
-        />
-      </Name>
-      <Line>
-        <Label>Line ID</Label>
-        <Input
-          type="text"
-          onChange={(event) => handleChange(event, setLine)}
-          notValid={checkInput && !line_id}
-        />
-      </Line>
-      <Email>
-        <Label>信箱</Label>
-        <Input
-          type="text"
-          onChange={(event) => handleChange(event, setEmail)}
-          notValid={checkInput && !validEmail()}
-        />
-      </Email>
-      <Password>
-        <Label>密碼</Label>
-        <PasswordInput
-          handleChange={(event) => handleChange(event, setPassword)}
-          placeholder="至少6個字"
-          notValid={checkInput && !validPassword()}
-        />
-      </Password>
-      <Password>
-        <Label>確認密碼</Label>
-        <PasswordInput
-          handleChange={(event) => handleChange(event, setConfirmPW)}
-          notValid={checkInput && !validConfirmPW()}
-        />
-      </Password>
-      <Register type="submit" disabled={register}>
-        註冊
-      </Register>
-    </Form>
+    <Container>
+      <Form onSubmit={handleSubmit}>
+        <Name>
+          <Label>姓名</Label>
+          <Input
+            onChange={(event) => handleChange(event, setName)}
+            value={name}
+            className={classes.input}
+          />
+          {ErrorComponent(checkInput && !name)}
+        </Name>
+        <Line>
+          <Label>Line ID</Label>
+          <Input
+            onChange={(event) => handleChange(event, setLine)}
+            value={line_id}
+            className={classes.input}
+          />
+          {ErrorComponent(checkInput && !line_id)}
+        </Line>
+        <Email>
+          <Label>信箱</Label>
+          <Input
+            onChange={(event) => handleChange(event, setEmail)}
+            value={email}
+            className={classes.input}
+          />
+          {ErrorComponent(checkInput && !validEmail())}
+        </Email>
+        <Password>
+          <Label>密碼</Label>
+          <PasswordInput
+            children={(type) => (
+              <Input
+                onChange={(event) => handleChange(event, setPassword)}
+                value={password}
+                className={classes.input}
+                type={type}
+                placeholder="至少6個字"
+              />
+            )}
+            iconTheme={iconTheme}
+          />
+          {ErrorComponent(checkInput && !validPassword())}
+        </Password>
+        <Password>
+          <Label>確認密碼</Label>
+          <PasswordInput
+            children={(type) => (
+              <Input
+                onChange={(event) => handleChange(event, setConfirmPW)}
+                value={confirmPW}
+                className={classes.input}
+                type={type}
+              />
+            )}
+            iconTheme={iconTheme}
+          />
+          {ErrorComponent(checkInput && !validConfirmPW())}
+        </Password>
+        <Register type="submit" disabled={register}>
+          註冊
+        </Register>
+      </Form>
+    </Container>
   );
 }
 

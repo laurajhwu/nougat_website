@@ -1,44 +1,38 @@
 import styled from "styled-components";
 import { EyeSlash, EyeFill } from "@styled-icons/bootstrap";
 
-export const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  position: relative;
-`;
+export const Container = styled.div((props) => ({
+  ...{ display: "flex", "flex-direction": "row", position: "relative" },
+  ...props.theme,
+}));
 
-export const Input = styled.input`
-  border: 1px solid black;
-  border-color: ${(props) => (props.notValid ? "red" : "black")};
-  height: ${(props) => props.theme.height};
-  padding: ${(props) => props.theme.padding};
-  font-size: ${(props) => props.theme["font-size"]};
-  border-radius: ${(props) => props.theme["border-radius"]};
-  width: ${(props) => props.theme.width};
-  outline: none;
-  /* background-color: transparent; */
-`;
+export const Input = styled.input((props) => ({
+  ...{
+    border: "1px solid black",
+    "border-color": `${props.notValid ? "red" : "black"}`,
+    outline: "none",
+  },
+  ...props.theme,
+}));
 
-export const NoShow = styled(EyeSlash)`
-  color: #d7cdcc;
-  width: 20px;
-  position: ${(props) => props.theme.position};
-  right: ${(props) => props.theme.right};
-  top: ${(props) => props.theme.top};
-  width: ${(props) => props.theme.width};
-  &:hover {
-    cursor: pointer;
-  }
-`;
+export const NoShow = styled(EyeSlash)((props) => ({
+  ...{
+    color: "#d7cdcc",
+    width: "20px",
+    "&:hover": {
+      cursor: "pointer",
+    },
+  },
+  ...props.theme,
+}));
 
-export const Show = styled(EyeFill)`
-  color: #d7cdcc;
-  width: 20px;
-  position: ${(props) => props.theme.position};
-  right: ${(props) => props.theme.right};
-  top: ${(props) => props.theme.top};
-  width: ${(props) => props.theme.width};
-  &:hover {
-    cursor: pointer;
-  }
-`;
+export const Show = styled(EyeFill)((props) => ({
+  ...{
+    color: "#d7cdcc",
+    width: "20px",
+    "&:hover": {
+      cursor: "pointer",
+    },
+  },
+  ...props.theme,
+}));

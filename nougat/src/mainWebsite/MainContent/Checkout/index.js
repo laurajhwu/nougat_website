@@ -13,11 +13,10 @@ import RememberMe from "../../../Components/RememberMe";
 import updateProductStock from "../../../utils/updateProductStock";
 import addDays from "../../../utils/addDays";
 import Loading from "../../../Components/LoadingPage";
+import ErrorComponent from "../../../Components/Error";
 import BGImage from "../../../images/checkout-bg2.png";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import UseAnimations from "react-useanimations";
-import alertCircle from "react-useanimations/lib/alertCircle";
 
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
@@ -332,14 +331,8 @@ function CheckOut() {
         >
           <div>
             <div>
-              {order.order_info && !order.order_info.delivery_address ? (
-                <UseAnimations
-                  animation={alertCircle}
-                  strokeColor="#b6174b"
-                  size={30}
-                />
-              ) : (
-                <></>
+              {ErrorComponent(
+                order.order_info && !order.order_info.delivery_address
               )}
               <Label>取貨方式* :</Label>
               <FormControl className={classes.formControl}>
@@ -425,14 +418,8 @@ function CheckOut() {
             </Payment>
             <PersonalInfo>
               <Info>
-                {order.personal_info && !order.personal_info.name ? (
-                  <UseAnimations
-                    animation={alertCircle}
-                    strokeColor="#b6174b"
-                    size={30}
-                  />
-                ) : (
-                  <></>
+                {ErrorComponent(
+                  order.personal_info && !order.personal_info.name
                 )}
                 <Label>姓名* :</Label>
                 <TextField
@@ -445,14 +432,8 @@ function CheckOut() {
                 <div></div>
               </Info>
               <Info>
-                {order.personal_info && !order.personal_info.line_id ? (
-                  <UseAnimations
-                    animation={alertCircle}
-                    strokeColor="#b6174b"
-                    size={30}
-                  />
-                ) : (
-                  <></>
+                {ErrorComponent(
+                  order.personal_info && !order.personal_info.line_id
                 )}
                 <Label>Line ID* :</Label>
                 <TextField
