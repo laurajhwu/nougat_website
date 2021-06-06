@@ -51,3 +51,19 @@ export const Delete = styled.div`
     transform: scale(1.2);
   }
 `;
+
+export const EmptyCart = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  color: #b6174b;
+  padding-bottom: 20px;
+  & > * {
+    &:first-child {
+      width: 100px;
+      margin: 10px 0;
+    }
+  }
+`;

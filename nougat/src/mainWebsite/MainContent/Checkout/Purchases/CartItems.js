@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import QuantityBtn from "../../../../Components/CartItemsQty";
 import DeleteIcon from "../../../../Components/RemoveFromCart";
+import UnhappySnail from "../../../../images/snail-unhappy.svg";
 
 import {
   Product,
@@ -12,6 +13,7 @@ import {
   Delete,
   Container,
   Group,
+  EmptyCart,
 } from "./styles";
 
 function AllProducts(props) {
@@ -34,7 +36,12 @@ function AllProducts(props) {
     return (
       <Container>
         {products.length === 0 ? (
-          <Product>您的購物車尚無商品</Product>
+          <Product>
+            <EmptyCart>
+              <img src={UnhappySnail} alt="unhappy snail" />
+              <div> 您的購物車尚無商品</div>
+            </EmptyCart>
+          </Product>
         ) : (
           products.map((product) => (
             <Product id={product.id}>

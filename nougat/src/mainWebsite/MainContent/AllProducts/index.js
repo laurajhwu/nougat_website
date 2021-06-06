@@ -40,6 +40,7 @@ function AllProducts() {
   const cartItems = member ? member.cart_items : null;
   const [cartLength, setCartLength] = useState();
   const [isClicked, setIsClicked] = useState(false);
+  const isClickedRef = useRef(false);
   const [cols, setCols] = useState();
   const [addEvent, setAddEvent] = useState();
   const cartRef = useRef();
@@ -132,6 +133,7 @@ function AllProducts() {
                         soldOut={product.stock === 0}
                         setAddEvent={setAddEvent}
                         setIsClicked={setIsClicked}
+                        isClickedRef={isClickedRef}
                       />
                     </AddToCartIcon>
                   </IconButton>
@@ -151,7 +153,7 @@ function AllProducts() {
               {cartItems.map((product, index) => (
                 <CartProduct
                   ref={index === cartItems.length - 1 ? cartItemRef : undefined}
-                  opacity={isClicked ? 0 : 1}
+                  opacity={isClicked || isClickedRef.current ? 0 : 1}
                 >
                   <CardActionArea>
                     {/* <CartImg src={product.image} /> */}
@@ -176,6 +178,7 @@ function AllProducts() {
                           "&:hover": { color: "#820933" },
                           width: "28px",
                         }}
+                        isClickedRef={isClickedRef}
                       />
                     </Delete>
                     <Quantity>

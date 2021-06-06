@@ -15,7 +15,7 @@ import { setQtyDiff } from "../../redux/actions/qtyChange";
 
 export default function AddToCart(props) {
   const dispatch = useDispatch();
-  const { setAddEvent, setIsClicked, addToCartAnimation } = props;
+  const { setAddEvent, setIsClicked, addToCartAnimation, isClickedRef } = props;
   const path = window.location.pathname;
   const cartItems = props.member ? props.member.cart_items : null;
   const cartObject = cartItems ? convertArrToObj(cartItems, "id") : {};
@@ -37,15 +37,23 @@ export default function AddToCart(props) {
           qty: props.qty,
           total: price * props.qty,
         };
+
         cartItems.push(newCartItem);
-        Api.updateMember(props.member.id, "cart_items", cartItems).then(() => {
-          if (path === "/products") {
-            setAddEvent(product.id);
-            setIsClicked(true);
-          } else {
-            addToCartAnimation();
-          }
-        });
+
+        if (path === "/products") {
+          isClickedRef.current = true;
+        }
+
+        Api.updateMember(props.member.id, "cart_items", cartItems)
+          .then(() => {
+            if (path === "/products") {
+              setAddEvent(product.id);
+              setIsClicked(true);
+            } else {
+              addToCartAnimation();
+            }
+          })
+          .catch(() => (isClickedRef.current = false));
       });
     } else if (
       cartObject[props.productId].qty !== props.qty &&
@@ -57,8 +65,6 @@ export default function AddToCart(props) {
         props.qty * cartObject[props.productId].price;
       Api.updateMember(props.member.id, "cart_items", cartItems).then(() => {
         dispatch(setQtyDiff(props.qty - original));
-
-        // alert("已更換商品數量");
       });
     }
   }
