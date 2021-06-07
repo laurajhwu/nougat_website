@@ -71,6 +71,7 @@ export const Img = styled.img`
   width: ${(props) => (props.helperImage ? "270px" : "100%")};
   height: 270px;
   position: ${(props) => (props.helperImage ? "fixed" : "unset")};
+  visibility: ${(props) => (props.helperImage ? "hidden" : "visible")};
   z-index: ${(props) => (props.helperImage ? 2 : 0)};
   opacity: ${(props) => (props.helperImage ? 0 : 1)};
   @media only screen and (max-width: 1000px) {

@@ -10,13 +10,19 @@ export default function useAddToCartAnimation(event, refs) {
     (node) => {
       if (node !== null && refs.imageRef.current) {
         const imageRef = refs.imageRef.current;
-        const cartRef = refs.cartRef;
+        const { cartRef, productsRef } = refs;
         const rect = node.getBoundingClientRect();
         const productRect = imageRef.getBoundingClientRect();
         const cartRect = cartRef.children[0].getBoundingClientRect();
 
         gsap
           .timeline()
+          .to(imageRef, {
+            visibility: "visible",
+            duration: 0.1,
+            y: -productsRef.scrollTop - productRect.height / 15,
+            x: -productRect.width / 50,
+          })
           .to(imageRef, {
             scale: 0.7,
             opacity: 1,
@@ -41,7 +47,7 @@ export default function useAddToCartAnimation(event, refs) {
             ease: "power1.inOut",
           })
           .to(node, { opacity: 1, duration: 0.5, ease: "power1.in" })
-          .set(imageRef, { scale: 1, x: 0, y: 0 });
+          .set(imageRef, { scale: 1, x: 0, y: 0, visibility: "hidden" });
       }
 
       refs.imageRef.current = null;

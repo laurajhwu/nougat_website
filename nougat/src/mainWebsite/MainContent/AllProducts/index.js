@@ -44,6 +44,7 @@ function AllProducts() {
   const [cols, setCols] = useState();
   const [addEvent, setAddEvent] = useState();
   const cartRef = useRef();
+  const productsRef = useRef();
   const imageRef = useRef();
   const productImageRef = useCallback(
     (node) => {
@@ -56,6 +57,7 @@ function AllProducts() {
   );
   const cartItemRef = useAddToCartAnimation(addEvent, {
     cartRef: cartRef.current,
+    productsRef: productsRef.current,
     imageRef: imageRef,
   });
 
@@ -83,7 +85,7 @@ function AllProducts() {
       if (cartItems.length > cartLength) {
         window.setTimeout(function () {
           setCartLength(cartItems.length);
-        }, 2000);
+        }, 2100);
       } else {
         setCartLength(cartItems.length);
       }
@@ -93,7 +95,12 @@ function AllProducts() {
   if (allProducts.length !== 0 && cols) {
     return (
       <Container url={BGImage}>
-        <Products cellHeight={"auto"} cols={cols} spacing={20}>
+        <Products
+          cellHeight={"auto"}
+          cols={cols}
+          spacing={20}
+          ref={productsRef}
+        >
           {allProducts.map((product) => (
             <Product id={product.id} key={product.id}>
               <Link
