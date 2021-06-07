@@ -8,13 +8,16 @@ import { makeStyles } from "@material-ui/core/styles";
 export const useStyles = makeStyles((theme) => ({
   select: {
     color: "#37323e",
+    opacity: 0.8,
+
     "&:before": {
       borderColor: "#613a3a",
     },
     "&:after": {
       borderColor: "#BF9BA1",
     },
-    "font-size": "20px",
+    "font-size": "24px",
+    width: "90%",
   },
   icon: { fill: "#613a3a" },
   option: {
@@ -60,7 +63,6 @@ export const Img = styled.img`
   opacity: 0.9;
   border: ${(props) =>
     props.helperImage ? "20px solid transparent" : "20px solid #762e34;"};
-  /* margin-top: 20px; */
   position: ${(props) => (props.helperImage ? "absolute" : "relative")};
   z-index: ${(props) => (props.helperImage ? 2 : 0)};
 `;
@@ -92,7 +94,6 @@ export const Name = styled.div`
 `;
 export const Price = styled.div`
   font-size: 26px;
-  font-style: italic;
   opacity: 0.8;
   color: #37323e;
   align-self: center;
@@ -122,6 +123,12 @@ export const Quantity = styled.div`
 
 export const QuantityBar = styled(FormControl)`
   width: 100%;
+  justify-self: center;
+  justify-content: center;
+  align-items: center;
+  height: 100% !important;
+  color: #b6174b;
+  letter-spacing: 2px;
 `;
 export const Options = styled(Select)``;
 export const Option = styled(MenuItem)``;
