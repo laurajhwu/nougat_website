@@ -23,3 +23,9 @@ export const LogoutVerify = styled.div`
   font-size: 18px;
   letter-spacing: 3px;
 `;
+
+export const TitleAdded = styled.div`
+  font-size: 22px;
+  letter-spacing: 5px;
+  color: #9d858d;
+`;

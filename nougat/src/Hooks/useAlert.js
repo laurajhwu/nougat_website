@@ -20,6 +20,7 @@ import {
   TextVerify,
   ConfirmVerify,
   LogoutVerify,
+  TitleAdded,
 } from "./styles/verifyEmail";
 
 const MySwal = withReactContent(Swal);
@@ -146,4 +147,16 @@ export function useError(message, func = () => {}) {
       }
     });
   };
+}
+
+export function useAddedAlert() {
+  return MySwal.mixin({
+    toast: true,
+    icon: "success",
+    title: <TitleAdded>已加入購物車</TitleAdded>,
+    animation: true,
+    position: "top-right",
+    showConfirmButton: false,
+    timer: 2000,
+  });
 }

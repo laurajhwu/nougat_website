@@ -32,7 +32,6 @@ function LoggedIn() {
   }, [page]);
 
   useEffect(() => {
-    verifyEmailAlert();
     if (!member) {
       history.push(`/member`);
     } else if (member.id) {
@@ -48,6 +47,8 @@ function LoggedIn() {
         .catch((error) => {
           throw error;
         });
+    } else if (!member.id) {
+      verifyEmailAlert();
     }
   }, []);
 

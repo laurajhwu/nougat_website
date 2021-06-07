@@ -43,7 +43,7 @@ export default function QuantityBtn(props) {
   const member = useSelector((state) => state.member);
   const cartItems = member.cart_items;
   const product = cartItems.find((cartItem) => cartItem.id === props.productId);
-  const [selectedOption, setSelectedOption] = useState(+props.qty);
+  const [selectedOption, setSelectedOption] = useState(props.qty);
   const classes = useStyles();
 
   function handleChange(event) {
@@ -52,6 +52,7 @@ export default function QuantityBtn(props) {
     product.total = product.qty * product.price;
     Api.updateMember(member.id, "cart_items", cartItems);
   }
+  console.log(props.stock);
 
   return (
     <QuantityBar style={props.containerStyle}>
@@ -69,11 +70,11 @@ export default function QuantityBtn(props) {
         {qtyOptions(props.stock).map((option) => {
           return (
             <MenuItem
-              value={+option}
+              value={option}
               style={props.menuStyle}
               className={classes.option}
             >
-              {option}
+              {option.toFixed(1)}
             </MenuItem>
           );
         })}
