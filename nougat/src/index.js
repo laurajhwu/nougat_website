@@ -6,10 +6,12 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./redux";
+import FontStyles from "./fontStyles";
 
 ReactDOM.render(
   <StrictMode>
     <Provider store={store}>
+      <FontStyles />
       <App />
     </Provider>
   </StrictMode>,
