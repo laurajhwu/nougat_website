@@ -1,25 +1,12 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
 import PasswordInput from "../../Components/Password";
 import Api from "../../utils/Api";
 
-const Main = styled.main`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Username = styled.div``;
-const Password = styled.div``;
-const Label = styled.label``;
-const Input = styled.input`
-  border: 1px solid black;
-  border-color: ${(props) => (props.notValid ? "red" : "black")};
-`;
-const LoginBtn = styled.button``;
+import { Main, Username, Label, Password, Input, LoginBtn } from "./styles";
 
 export default function Login(props) {
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUsername] = useState("test");
+  const [password, setPassword] = useState("test123");
   const [notValid, setNotValid] = useState();
 
   function handleChange(event, callback) {
@@ -27,17 +14,27 @@ export default function Login(props) {
   }
 
   function handleLogin() {
-    Api.adminLogin(username, password).then((result) => {
-      if (result === "usernameInvalid") {
-        alert("該管理帳號不存在！");
+    if (username && password) {
+      Api.adminLogin(username, password).then((result) => {
+        if (result === "usernameInvalid") {
+          alert("該管理帳號不存在！");
+          setNotValid("username");
+        } else if (!result) {
+          alert("密碼有誤！");
+          setNotValid("password");
+        } else {
+          props.setIsLogin(true);
+        }
+      });
+    } else {
+      if (!username && !password) {
+        setNotValid(false);
+      } else if (!username) {
         setNotValid("username");
-      } else if (!result) {
-        alert("密碼有誤！");
-        setNotValid("password");
       } else {
-        props.setIsLogin(true);
+        setNotValid("password");
       }
-    });
+    }
   }
 
   return (
@@ -46,17 +43,35 @@ export default function Login(props) {
         <Label>管理者帳號</Label>
         <Input
           onChange={(event) => handleChange(event, setUsername)}
-          notValid={notValid === "username" ? true : false}
+          notValid={
+            notValid === "username" || notValid === false ? true : false
+          }
+          value={username}
         />
       </Username>
       <Password>
         <Label>密碼</Label>
         <PasswordInput
-          handleChange={(event) => handleChange(event, setPassword)}
-          notValid={notValid === "password" ? true : false}
+          children={(type) => (
+            <Input
+              onChange={(event) => handleChange(event, setPassword)}
+              notValid={
+                notValid === "password" || notValid === false ? true : false
+              }
+              type={type}
+              value={password}
+            />
+          )}
+          iconTheme={{
+            width: "30px",
+            position: "absolute",
+            right: "10px",
+            top: "5px",
+            color: "#7e7f9a",
+          }}
         />
       </Password>
-      <LoginBtn onClick={handleLogin}>登入</LoginBtn>
+      <LoginBtn onClick={handleLogin}>登入蝸蝸系統</LoginBtn>
     </Main>
   );
 }
