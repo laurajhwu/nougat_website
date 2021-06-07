@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Profile from "./Profile";
 import Orders from "./Orders";
-import logout from "../../../../utils/logout";
+import useLogout from "../../../../Hooks/useLogout";
 import Api from "../../../../utils/Api";
 import { getMemberOrders } from "../../../../redux/actions/order";
 import { getOrderFixedData } from "../../../../redux/actions/fixedData";
@@ -13,6 +13,7 @@ import { useVerifyEmail } from "../../../../Hooks/useAlert";
 import { Container, ProfilePage, OrderPage, Header } from "./styles";
 
 function LoggedIn() {
+  const logout = useLogout();
   const history = useHistory();
   const member = useSelector((state) => state.member);
   const dispatch = useDispatch();

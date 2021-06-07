@@ -112,6 +112,11 @@ html {
 body {
   line-height: 1;
 }
+
+body * {
+  font-family: "Noto Sans TC", sans-serif;
+}
+
 ol,
 ul {
   list-style: none;

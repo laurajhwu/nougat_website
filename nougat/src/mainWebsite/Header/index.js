@@ -6,6 +6,7 @@ import LogoIcon from "../../images/logo.png";
 import { gsap } from "gsap";
 import ContactInfo from "./ContactUs";
 import { Modal } from "semantic-ui-react";
+import { useError } from "../../Hooks/useAlert";
 
 import {
   Nav,
@@ -25,6 +26,7 @@ function Header() {
   const [open, setOpen] = useState(false);
   const logoRef = useRef();
   const navRef = useRef();
+  const errorAlert = useError("請先登入！");
 
   function clickMemberPage() {
     dispatch(renderPage());
@@ -33,7 +35,7 @@ function Header() {
   function clickCheckoutPage(event) {
     if (!member) {
       event.preventDefault();
-      alert("請先登入！");
+      errorAlert();
     }
   }
 

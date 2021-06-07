@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Api from "../../utils/Api";
 import convertArrToObj from "../../utils/arrayToObjectConverter";
-import { useAddedAlert } from "../../Hooks/useAlert";
+import { useAddedAlert, useError } from "../../Hooks/useAlert";
 import { gsap } from "gsap";
 
 import {
@@ -16,6 +16,7 @@ import { setQtyDiff } from "../../redux/actions/qtyChange";
 
 export default function AddToCart(props) {
   const addedAlert = useAddedAlert();
+  const errorAlert = useError("請先登入！");
   const dispatch = useDispatch();
   const { setAddEvent, setIsClicked, addToCartAnimation, isClickedRef } = props;
   const path = window.location.pathname;
@@ -25,7 +26,7 @@ export default function AddToCart(props) {
 
   function addOnClick() {
     if (!cartItems) {
-      alert("請先登入！");
+      errorAlert();
     } else if (!isInCart) {
       Api.getSpecificProduct(props.productId).then((product) => {
         const { name, image, id, price, unit } = product;

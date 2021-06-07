@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Api from "../../../../../utils/Api";
-import logout from "../../../../../utils/logout";
+import useLogout from "../../../../../Hooks/useLogout";
 import EditableInput from "../../../../../Components/EditableInput";
 import ProfilePic from "../../../../../images/snail-profile2.svg";
 import { useError } from "../../../../../Hooks/useAlert";
@@ -20,6 +20,7 @@ export default function Profile() {
   const member = useSelector((state) => state.member);
   const fixedData = useSelector((state) => state.fixedData);
   const errorAlert = useError(errorMsg, () => setErrorMsg(null));
+  const logout = useLogout();
 
   function handleFinishEdit(prop, data) {
     if (prop === "email") {
