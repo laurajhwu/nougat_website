@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Container, Input, Show, NoShow } from "./styles";
 
 export default function Password(props) {
+  const { children, containerTheme } = props;
   const [display, setDisplay] = useState(false);
 
   function toggleDisplay() {
@@ -10,14 +11,19 @@ export default function Password(props) {
   }
 
   return (
-    <Container>
-      <Input
-        onChange={props.handleChange}
-        type={display ? "text" : "password"}
-        placeholder={props.placeholder || ""}
-        notValid={props.notValid === undefined ? false : props.notValid}
-        theme={props.inputTheme}
-      />
+    <Container theme={containerTheme || {}}>
+      {children ? (
+        <>{children(display ? "text" : "password")}</>
+      ) : (
+        <Input
+          onChange={props.handleChange}
+          type={display ? "text" : "password"}
+          placeholder={props.placeholder || ""}
+          notValid={props.notValid === undefined ? false : props.notValid}
+          theme={props.inputTheme}
+        />
+      )}
+
       {display ? (
         <Show onClick={toggleDisplay} theme={props.iconTheme} />
       ) : (

@@ -1,8 +1,6 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import UseAnimations from "react-useanimations";
-// import { ReactComponent as LocationIcon } from "../../../../animatedIcons/Explore/Explore.svg";
-// import LocationIconFile from "../../../../animatedIcons/Explore/Explore.json";
 import explore from "react-useanimations/lib/explore";
 
 import { makeStyles } from "@material-ui/core/styles";
