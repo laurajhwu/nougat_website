@@ -1,11 +1,14 @@
 import axios from "axios";
-import React from "react";
-import styled from "styled-components";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import uuid from "react-uuid";
 import crypto from "crypto-js";
+import Loading from "../../../../Components/LoadingPage";
+import LinepayLogo from "../../../../images/linepay-logo.png";
+import BGImage from "../../../../images/checkout-bg2.png";
+import UseAnimations from "react-useanimations";
+import arrowDown from "react-useanimations/lib/arrowDown";
 
-const Pay = styled.a``;
+import { Pay, Text, Logo } from "./styles";
 
 function Payment() {
   const requestUri = "/v3/payments/request";
@@ -76,9 +79,17 @@ function Payment() {
   }, []);
 
   if (paymentLink) {
-    return <Pay href={paymentLink}>使用Line Pay結帳</Pay>;
+    return (
+      <Pay url={BGImage}>
+        <Text>點擊Line Pay結帳</Text>
+        <UseAnimations animation={arrowDown} size={50} strokeColor="#08BF5B" />
+        <a href={paymentLink}>
+          <Logo src={LinepayLogo} />
+        </a>
+      </Pay>
+    );
   } else {
-    return <Pay>Loading...</Pay>;
+    return <Loading />;
   }
 }
 

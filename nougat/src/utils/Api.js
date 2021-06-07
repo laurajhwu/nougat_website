@@ -258,7 +258,6 @@ class Api {
       .doc(order.id)
       .set(order)
       .then(() => {
-        console.log(updateStock(order));
         Promise.all(updateStock(order)).then(() => {
           if (order.order_info.payment === "line-pay") {
             window.localStorage.removeItem("order");
