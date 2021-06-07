@@ -1,5 +1,7 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import convertToObj from "../../../../utils/arrayToObjectConverter";
 import QuantityBtn from "../../../../Components/CartItemsQty";
 import DeleteIcon from "../../../../Components/RemoveFromCart";
 import UnhappySnail from "../../../../images/snail-unhappy.svg";
@@ -18,13 +20,14 @@ import {
 
 function AllProducts(props) {
   const member = props.member;
-  const products = member.cart_items;
+  const cartItems = member.cart_items;
+  const products = useSelector((state) => state.products);
 
   const styles = {
     selectStyle: {
       "font-size": "16px",
       color: "#CC7B82",
-      width: " 50px",
+      width: "65px",
     },
     containerStyle: {
       "font-size": "16px",
@@ -32,10 +35,11 @@ function AllProducts(props) {
     },
   };
 
-  if (products) {
+  if (products.length !== 0) {
+    const productsObj = convertToObj(products, "id");
     return (
       <Container>
-        {products.length === 0 ? (
+        {cartItems.length === 0 ? (
           <Product>
             <EmptyCart>
               <img src={UnhappySnail} alt="unhappy snail" />
@@ -43,7 +47,7 @@ function AllProducts(props) {
             </EmptyCart>
           </Product>
         ) : (
-          products.map((product) => (
+          cartItems.map((product) => (
             <Product id={product.id}>
               <Link
                 to={`/product?id=${product.id}`}
@@ -63,7 +67,7 @@ function AllProducts(props) {
               <Group>
                 <QuantityBtn
                   qty={product.qty}
-                  stock={product.stock}
+                  stock={productsObj[product.id].stock}
                   productId={product.id}
                   containerStyle={styles.containerStyle}
                   selectStyle={styles.selectStyle}

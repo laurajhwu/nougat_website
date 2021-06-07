@@ -28,12 +28,11 @@ export default function AddToCart(props) {
       alert("請先登入！");
     } else if (!isInCart) {
       Api.getSpecificProduct(props.productId).then((product) => {
-        const { name, image, id, stock, price, unit } = product;
+        const { name, image, id, price, unit } = product;
         const newCartItem = {
           name,
           image,
           id,
-          stock,
           price,
           unit,
           qty: props.qty,

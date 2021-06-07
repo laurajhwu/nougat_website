@@ -7,6 +7,7 @@ import QuantityBtn from "../../../Components/CartItemsQty";
 import DeleteIcon from "../../../Components/RemoveFromCart";
 import Loading from "../../../Components/LoadingPage";
 import BGImage from "../../../images/products-bg3.png";
+import convertToObj from "../../../utils/arrayToObjectConverter";
 
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
@@ -35,6 +36,7 @@ function AllProducts() {
   const allProducts = useSelector((state) => state.products).sort(
     (first, last) => first.display_order - last.display_order
   );
+  const productsObj = allProducts ? convertToObj(allProducts, "id") : null;
   const member = useSelector((state) => state.member);
   const qty = 1;
   const cartItems = member ? member.cart_items : null;
@@ -191,12 +193,13 @@ function AllProducts() {
                     <Quantity>
                       <QuantityBtn
                         qty={product.qty}
-                        stock={product.stock}
+                        stock={productsObj[product.id].stock}
                         productId={product.id}
                         selectStyle={{
                           "font-size": "18px",
                           color: "#474973",
                           "font-weight": "bold",
+                          width: "65px",
                         }}
                         menuStyle={{
                           "font-size": "16px",

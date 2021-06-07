@@ -19,6 +19,7 @@ if (window.location.pathname === "/cart") {
       },
     },
     select: {
+      width: "60px",
       "&:before": {
         borderColor: "#EFD2CB",
       },
@@ -52,7 +53,6 @@ export default function QuantityBtn(props) {
     product.total = product.qty * product.price;
     Api.updateMember(member.id, "cart_items", cartItems);
   }
-  console.log(props.stock);
 
   return (
     <QuantityBar style={props.containerStyle}>
@@ -70,11 +70,11 @@ export default function QuantityBtn(props) {
         {qtyOptions(props.stock).map((option) => {
           return (
             <MenuItem
-              value={option}
+              value={+option}
               style={props.menuStyle}
               className={classes.option}
             >
-              {option.toFixed(1)}
+              {option}
             </MenuItem>
           );
         })}

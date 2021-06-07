@@ -19,7 +19,7 @@ export const Product = styled.div`
   justify-content: space-evenly;
 `;
 export const Img = styled.img`
-  width: 200px;
+  width: 150px;
 `;
 export const Group = styled.div`
   display: flex;
