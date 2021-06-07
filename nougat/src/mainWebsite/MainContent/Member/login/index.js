@@ -1,10 +1,11 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import Api from "../../../../utils/Api";
 import CreateAccount from "./CreateAccount";
 import LoginAccount from "./ExistingAccount";
 import SocialLogin from "./SocialLogin";
+import { useError, useSuccess } from "../../../../Hooks/useAlert";
 
 import { Container, Email, Existing, Create, SocialMedia } from "./styles";
 
@@ -14,9 +15,11 @@ function useQuery() {
 
 function Login() {
   let verify = useQuery().get("apiKey");
-
+  const history = useHistory();
   const [exist, setExist] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const successAlert = useSuccess("恭喜您", "驗證成功！");
+  const errorAlert = useError("驗證失敗", () => history.push("/member"));
 
   function handleClickCreate() {
     setExist(false);
@@ -35,13 +38,12 @@ function Login() {
             window.localStorage.removeItem("emailForSignIn");
             const user = result.user;
             Api.updateMember(user.uid, "id", user.uid).then(() => {
-              alert("驗證成功！");
+              successAlert();
             });
           }
         })
         .catch((error) => {
-          alert("驗證失敗！");
-          console.log(error.message);
+          errorAlert();
           setIsLoading(false);
         });
     }

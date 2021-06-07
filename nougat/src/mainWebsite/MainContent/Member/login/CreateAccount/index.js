@@ -1,8 +1,8 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PasswordInput from "../../../../../Components/Password";
 import ErrorComponent from "../../../../../Components/Error";
 import Api from "../../../../../utils/Api";
+import { useError, useNotifyEmail } from "../../../../../Hooks/useAlert";
 
 import Input from "@material-ui/core/Input";
 import {
@@ -20,6 +20,7 @@ import {
 
 function CreateAccount() {
   const classes = useStyles();
+  const [errorMsg, setErrorMsg] = useState();
   const [name, setName] = useState();
   const [line_id, setLine] = useState();
   const [email, setEmail] = useState();
@@ -27,6 +28,8 @@ function CreateAccount() {
   const [confirmPW, setConfirmPW] = useState();
   const [register, setRegister] = useState(false);
   const [checkInput, setCheckInput] = useState(false);
+  const errorAlert = useError(errorMsg, () => setErrorMsg(null));
+  const emailSentAlert = useNotifyEmail("已寄出驗證信", "請查看信箱進行驗證");
 
   function handleChange(event, setFunc) {
     setFunc(event.target.value.trim());
@@ -54,24 +57,24 @@ function CreateAccount() {
           Api.sendVerificationEmail(email, actionCodeSettings)
             .then(() => {
               window.localStorage.setItem("emailForSignIn", email);
-              alert("已寄出驗證信囉，請查看信箱進行驗證～");
+              emailSentAlert();
               event.target.reset();
               setRegister(false);
             })
             .catch((error) => {
               const errorCode = error.code;
               const errorMessage = error.message;
-              alert("寄件失敗");
-              console.log(errorCode, errorMessage);
+              setErrorMsg("寄件失敗");
+              throw (errorCode, errorMessage);
             });
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           if (errorCode === "auth/email-already-in-use") {
-            alert("該信箱已有註冊帳號！");
+            setErrorMsg("該信箱已有註冊帳號！");
           } else {
-            alert(`註冊失敗，請在試一次！${errorMessage}(${errorCode})`);
+            setErrorMsg(`註冊失敗，請在試一次`);
           }
         });
     } else {
@@ -95,18 +98,24 @@ function CreateAccount() {
 
   function validateInfo() {
     if (!validEmail()) {
-      alert("信箱格式有誤！");
+      setErrorMsg("信箱格式有誤！");
     } else if (!(name && line_id)) {
-      alert("所有空格皆為必填");
+      setErrorMsg("所有空格皆為必填");
     } else if (!validPassword()) {
-      alert("密碼需至少有6字！");
+      setErrorMsg("密碼需至少有6字！");
     } else if (!validConfirmPW()) {
-      alert("密碼與確認密碼不同！");
+      setErrorMsg("密碼與確認密碼不同！");
     } else {
       return true;
     }
     return false;
   }
+
+  useEffect(() => {
+    if (errorMsg) {
+      errorAlert();
+    }
+  }, [errorMsg]);
 
   return (
     <Container>

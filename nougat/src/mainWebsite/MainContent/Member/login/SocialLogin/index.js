@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from "react";
-import styled from "styled-components";
-
 import Api from "../../../../../utils/Api";
+import { useError } from "../../../../../Hooks/useAlert";
 
 import { FbContainer, GoogleContainer, FbIcon, GoogleIcon } from "./styles";
 
 function SocialLogin(props) {
+  const errorAlert = useError("該信箱已被使用過囉！");
   function login(api) {
     props.setIsLoading(true);
     api()
@@ -30,10 +30,10 @@ function SocialLogin(props) {
         const errorMessage = error.message;
         const email = error.email;
         if (email) {
-          alert("該信箱已被使用過！");
+          errorAlert();
         }
-        console.log(errorCode, errorMessage);
         props.setIsLoading(false);
+        throw (errorCode, errorMessage);
       });
   }
 

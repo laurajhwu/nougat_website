@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import PasswordInput from "../../../../../Components/Password";
 import ErrorComponent from "../../../../../Components/Error";
 import Api from "../../../../../utils/Api";
+import { useError } from "../../../../../Hooks/useAlert";
 
 import Input from "@material-ui/core/Input";
 import {
@@ -18,10 +19,12 @@ import {
 
 function SignIn(props) {
   const classes = useStyles();
+  const [errorMsg, setErrorMsg] = useState();
   const [email, setEmail] = useState("test@test.com");
   const [password, setPassword] = useState("test123");
   const [register, setRegister] = useState(false);
   const [checkInput, setCheckInput] = useState(false);
+  const errorAlert = useError(errorMsg, () => setErrorMsg(null));
 
   function handleChange(event, setFunc) {
     setFunc(event.target.value.trim());
@@ -41,11 +44,11 @@ function SignIn(props) {
           const errorCode = error.code;
           const errorMessage = error.message;
           if (errorCode === "auth/wrong-password") {
-            alert("密碼錯誤");
+            setErrorMsg("密碼錯誤");
           } else if (errorCode === "auth/user-not-found ") {
-            alert("與該信箱相關的會員不存在，請註冊！");
+            setErrorMsg("與該信箱相關的會員不存在，請註冊！");
           } else {
-            alert(`登入失敗${errorCode} ${errorMessage}`);
+            setErrorMsg(`登入失敗`);
           }
           props.setIsLoading(false);
           setRegister(false);
@@ -67,14 +70,20 @@ function SignIn(props) {
 
   function validateInfo() {
     if (!validEmail()) {
-      alert("信箱格式有誤！");
+      setErrorMsg("信箱格式有誤！");
     } else if (!validPassword()) {
-      alert("密碼需至少有6字！");
+      setErrorMsg("密碼需至少有6字！");
     } else {
       return true;
     }
     return false;
   }
+
+  useEffect(() => {
+    if (errorMsg) {
+      errorAlert();
+    }
+  }, [errorMsg]);
 
   return (
     <Container>
