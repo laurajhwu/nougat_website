@@ -10,5 +10,6 @@ export default function updateProductStock(order, allProducts) {
     );
     promises.push(Api.updateProduct(product.id, { stock: stock }));
   });
+  console.log(promises);
   return promises;
 }
