@@ -13,10 +13,12 @@ import RememberMe from "../../../Components/RememberMe";
 import updateProductStock from "../../../utils/updateProductStock";
 import addDays from "../../../utils/addDays";
 import Loading from "../../../Components/LoadingPage";
+import { useConfirmCheckout } from "../../../Hooks/useAlert";
 import ErrorComponent from "../../../Components/Error";
 import BGImage from "../../../images/checkout-bg2.png";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useError } from "../../../Hooks/useAlert";
 
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
@@ -50,6 +52,7 @@ gsap.registerPlugin(ScrollTrigger);
 function CheckOut() {
   const classes = useStyles();
   const history = useHistory();
+  const checkoutAlert = useConfirmCheckout("會員頁面可瀏覽您的訂單");
   const member = useSelector((state) => state.member);
   const dateSettings = useSelector((state) => state.dateTime).date;
   const timeSettings = useSelector((state) => state.dateTime).time;
@@ -58,6 +61,7 @@ function CheckOut() {
     (location) => location.active
   );
   const allProducts = useSelector((state) => state.products);
+  const [errorMsg, setErrorMsg] = useState();
   const [delivery, setDelivery] = useState();
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState();
@@ -75,6 +79,7 @@ function CheckOut() {
   const [personalInfo, setPersonalInfo] = useState({});
   const [remember, setRemember] = useState();
   const [vWidth, setVWidth] = useState();
+  const errorAlert = useError(errorMsg, () => setErrorMsg(null));
   const timeline = gsap.timeline({
     repeat: -1,
     yoyo: true,
@@ -189,7 +194,7 @@ function CheckOut() {
         isClicked = true;
       }
     } else {
-      alert("請選取欲購賣商品！");
+      setErrorMsg("購物車沒有商品唷！");
     }
   }
 
@@ -255,6 +260,12 @@ function CheckOut() {
   }, []);
 
   useEffect(() => {
+    if (errorMsg) {
+      errorAlert(errorMsg);
+    }
+  }, [errorMsg]);
+
+  useEffect(() => {
     const promises = allLocations.map((location) => getGeoInfo(location));
     Promise.all(promises).then((values) => {
       setLocations(values);
@@ -271,10 +282,12 @@ function CheckOut() {
         } else {
           Api.postCheckoutOrder(order, member, (order) =>
             updateProductStock(order, allProducts)
-          );
+          ).then(() => {
+            checkoutAlert();
+          });
         }
       } else {
-        alert("請填入紅框資料！");
+        setErrorMsg("必填項目中有誤！");
         isClicked = false;
       }
     }

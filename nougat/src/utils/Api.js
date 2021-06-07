@@ -261,9 +261,6 @@ class Api {
         Promise.all(updateStock(order)).then(() => {
           if (order.order_info.payment === "line-pay") {
             window.localStorage.removeItem("order");
-          } else {
-            alert("已收到您的訂單!");
-            window.location.href = "/";
           }
           member.cart_items = [];
           this.updateMember(member.id, "cart_items", member.cart_items);
