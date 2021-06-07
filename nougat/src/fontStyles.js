@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import OzCaramel from "./fonts/OzCaramel.ttf";
 import Marshmallow from "./fonts/HanyiSentyMarshmallow.ttf";
-import Chalk from "./fonts/HanyiSentyChalk 2018.ttf";
+import Chalk from "./fonts/HanyiSentyChalk.ttf";
 import Tea from "./fonts/SentyTEA-20190904.ttf";
 
 const FontStyles = createGlobalStyle`

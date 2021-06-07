@@ -253,7 +253,8 @@ class Api {
   }
 
   postCheckoutOrder(order, member, updateStock) {
-    db.collection(this.orders)
+    return db
+      .collection(this.orders)
       .doc(order.id)
       .set(order)
       .then(() => {

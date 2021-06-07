@@ -131,3 +131,12 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
+.swal-button:focus {
+  box-shadow: none !important;
+}
+
+.swal2-image {
+  margin-top: 1em !important;
+  margin-bottom: 1em !important;
+}

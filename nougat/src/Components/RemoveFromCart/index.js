@@ -9,7 +9,9 @@ export default function Delete(props) {
       (item) => item.id !== props.productId
     );
 
-    props.isClickedRef.current = false;
+    if (props.isClickedRef) {
+      props.isClickedRef.current = false;
+    }
 
     Api.updateMember(props.member.id, "cart_items", cartItems).then(() => {
       props.setIsClicked && props.setIsClicked(false);

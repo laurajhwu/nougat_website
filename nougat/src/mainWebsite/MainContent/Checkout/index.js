@@ -58,10 +58,10 @@ function CheckOut() {
     (location) => location.active
   );
   const allProducts = useSelector((state) => state.products);
-  const [delivery, setDelivery] = useState("face-to-face");
+  const [delivery, setDelivery] = useState();
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState();
-  const [payment, setPayment] = useState("cash");
+  const [payment, setPayment] = useState();
   const initTime = timeSettings ? timeSettings.start_time.split(":") : null;
   const [date, setDate] = useState(
     dateSettings
@@ -246,12 +246,6 @@ function CheckOut() {
   }
 
   useEffect(() => {
-    if (btnRef.current) {
-      console.log(btnRef);
-    }
-  }, []);
-
-  useEffect(() => {
     window.addEventListener("resize", handleWindowSizeChange);
     handleWindowSizeChange();
 
@@ -288,7 +282,7 @@ function CheckOut() {
 
   useEffect(() => {
     if (member) {
-      setDelivery(member.order_info.delivery || "select");
+      setDelivery(member.order_info.delivery || "face-to-face");
       setPayment(member.order_info.payment || "cash");
       setRemember({
         order_info: {
