@@ -15,13 +15,15 @@ export const Change = styled(ChangeCircle)`
   width: 20px;
   &:hover {
     cursor: pointer;
+    color: #347285;
   }
 `;
 
 export const Done = styled(CheckmarkDoneCircle)`
-  width: 24px;
+  width: 22px;
   &:hover {
     cursor: pointer;
+    color: green;
   }
 `;
 
@@ -29,6 +31,7 @@ export const Cancel = styled(CancelOutline)`
   width: 24px;
   &:hover {
     cursor: pointer;
+    color: red;
   }
 `;
 

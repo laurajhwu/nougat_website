@@ -8,8 +8,6 @@ export const Container = styled.div((props) => ({
 
 export const Input = styled.input((props) => ({
   ...{
-    border: "1px solid black",
-    "border-color": `${props.notValid ? "red" : "black"}`,
     outline: "none",
   },
   ...props.theme,

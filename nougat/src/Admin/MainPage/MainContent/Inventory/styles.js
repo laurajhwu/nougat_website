@@ -6,7 +6,9 @@ export const Container = styled.div`
   flex-direction: row;
 `;
 
-export const AccordionContainer = styled(Accordion)``;
+export const AccordionContainer = styled(Accordion)`
+  padding: 50px 30px;
+`;
 
 export const CardContainer = styled(Card)``;
 export const CardBody = styled(Card.Body)`

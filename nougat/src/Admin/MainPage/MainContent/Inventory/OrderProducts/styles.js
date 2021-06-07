@@ -49,7 +49,7 @@ export const Success = styled(Alert)`
   display: flex;
   align-items: center;
   position: absolute;
-  top: 57px;
+  top: 25px;
   left: 30px;
 `;
 

@@ -127,7 +127,9 @@ function Calendar(props) {
       minTime={getTimestamp(timeSettings.start_time)}
       maxTime={getTimestamp(timeSettings.end_time)}
       filterTime={filterTimes}
-      customInput={<CustomInput />}
+      customInput={
+        window.location.pathname === "/cart" ? <CustomInput /> : null
+      }
     />
   );
 }
