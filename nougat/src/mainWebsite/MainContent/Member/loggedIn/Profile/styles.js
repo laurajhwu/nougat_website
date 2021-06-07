@@ -17,7 +17,8 @@ export const Container = styled.div`
 
 export const ProfilePage = styled.div`
   margin-top: 30px;
-  width: 400px;
+  min-width: 400px;
+  max-width: 600px;
   background-color: rgba(221, 221, 228, 0.5);
   padding: 10px;
   border-radius: 20px;

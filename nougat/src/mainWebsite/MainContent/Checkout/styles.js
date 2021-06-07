@@ -8,6 +8,7 @@ export const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
+    flexGrow: 1,
   },
   select: {
     fontSize: "18px",
@@ -19,6 +20,7 @@ export const useStyles = makeStyles((theme) => ({
     "&:after": {
       borderColor: "#7e7f9a",
     },
+    width: "100%",
   },
   option: {
     backgroundColor: "#dbe6e6",
@@ -26,21 +28,19 @@ export const useStyles = makeStyles((theme) => ({
     "&$selected": {
       backgroundColor: "#8cabbe",
     },
-    fontSize: "16px",
+    fontSize: "18px",
   },
   icon: { fill: "#584573" },
-  label: { fontSize: "16px" },
+  label: { fontSize: "18px" },
   input: {
     "& .MuiInput-underline:after": {
       borderColor: "#025068",
     },
     "& .MuiInput-underline": {
       color: "#025068",
-      "font-size": "16px",
+      "font-size": "18px",
     },
-    "&:last-child": {
-      width: 300,
-    },
+    flexGrow: 1,
   },
 }));
 
@@ -155,7 +155,7 @@ export const Input = styled.input`
   border-color: ${(props) => (props.notFilled ? "red" : "black")};
 `;
 export const Label = styled.label`
-  font-size: 18px;
+  font-size: 20px;
   color: #711509;
   width: 120px;
   font-weight: 700;

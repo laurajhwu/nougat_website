@@ -175,7 +175,7 @@ function AllProducts() {
                     </CardContent>
                   </CardActionArea>
                   <CardActions
-                    style={{ display: "flex", justifyContent: "space-around" }}
+                    style={{ display: "flex", justifyContent: "space-between" }}
                   >
                     <Delete>
                       <DeleteIcon

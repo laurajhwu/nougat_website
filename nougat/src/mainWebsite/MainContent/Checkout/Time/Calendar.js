@@ -22,15 +22,15 @@ function Calendar(props) {
   );
   const CustomInput = forwardRef(({ value, onClick }, ref) => (
     <Container>
+      <Value>{value}</Value>
       <UseAnimations
         strokeColor="#C78283"
-        size={70}
+        size={50}
         animation={calendar}
         onClick={onClick}
         ref={ref}
         onMouseOver={(event) => (event.target.style.cursor = "pointer")}
       />
-      <Value>{value}</Value>
     </Container>
   ));
 

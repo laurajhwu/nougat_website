@@ -25,12 +25,12 @@ function AllProducts(props) {
 
   const styles = {
     selectStyle: {
-      "font-size": "16px",
+      "font-size": "17px",
       color: "#CC7B82",
       width: "65px",
     },
     containerStyle: {
-      "font-size": "16px",
+      "font-size": "17px",
       color: "#CC7B82",
     },
   };

@@ -6,11 +6,9 @@ export const Container = styled.div`
 `;
 
 export const Value = styled.div`
-  margin-left: 20px;
-  font-size: 20px;
+  margin-right: 10px;
+  font-size: 18px;
   color: #025068;
   font-weight: 700;
   letter-spacing: 2px;
-  padding-bottom: 3px;
-  border-bottom: 2px solid #025068;
 `;

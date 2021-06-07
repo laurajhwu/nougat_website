@@ -12,7 +12,8 @@ export const useStyles = makeStyles((theme) => ({
     "&:after": {
       borderColor: "#B2777C",
     },
-    width: "180px",
+    // width: "180px",
+    flexGrow: 1,
     "padding-right": 25,
     position: "relative",
     marginRight: "5px;",
@@ -23,6 +24,7 @@ export const useStyles = makeStyles((theme) => ({
 export const Container = styled.div`
   display: flex;
   position: relative;
+  flex-grow: 1;
 `;
 
 export const Textarea = styled.textarea``;
@@ -30,17 +32,20 @@ export const Textarea = styled.textarea``;
 export const TextContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  min-width: 200px;
+  width: 100%;
+  /* min-width: 200px; */
 `;
 
 export const Text = styled.div`
   white-space: pre-wrap;
   color: #37323e;
+  flex-grow: 1;
+  line-height: 20px;
 `;
 
 export const Edit = styled(PencilAlt)`
   width: 18px;
-  margin-left: 10px;
+  margin: 0 10px;
   color: #bba0b2;
   &:hover {
     cursor: pointer;

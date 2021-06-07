@@ -101,7 +101,7 @@ export const AddToCartIcon = styled.div`
 export const Cart = styled.div`
   flex-basis: 25%;
   margin-left: 50px;
-  padding: 60px 15px;
+  padding: 70px 15px 50px;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -134,6 +134,7 @@ export const Title = styled.div`
   text-align: center;
   border-radius: 8px;
   z-index: 1;
+  padding: 5px 0;
 `;
 
 export const CartProduct = styled.div`
