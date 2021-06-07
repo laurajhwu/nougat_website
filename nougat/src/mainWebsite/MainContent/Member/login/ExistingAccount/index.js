@@ -35,8 +35,6 @@ function SignIn(props) {
       props.setIsLoading(true);
       Api.signIn(email, password)
         .then((userCredential) => {
-          const user = userCredential.user;
-          props.initMemberState(user.uid);
           setRegister(false);
         })
         .catch((error) => {

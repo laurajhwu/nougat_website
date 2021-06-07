@@ -1,8 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { getMember } from "../../../../redux/actions/member";
 import Api from "../../../../utils/Api";
 import CreateAccount from "./CreateAccount";
 import LoginAccount from "./ExistingAccount";
@@ -16,20 +14,9 @@ function useQuery() {
 
 function Login() {
   let verify = useQuery().get("apiKey");
-  const dispatch = useDispatch();
+
   const [exist, setExist] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-
-  function initMemberState(id) {
-    Api.getMemberInfo(id)
-      .then((data) => {
-        dispatch(getMember(data));
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        throw error.message;
-      });
-  }
 
   function handleClickCreate() {
     setExist(false);
@@ -49,7 +36,6 @@ function Login() {
             const user = result.user;
             Api.updateMember(user.uid, "id", user.uid).then(() => {
               alert("驗證成功！");
-              initMemberState(user.uid);
             });
           }
         })
@@ -68,10 +54,7 @@ function Login() {
     <Container isLoading={isLoading}>
       <Email>
         {exist ? (
-          <LoginAccount
-            initMemberState={initMemberState}
-            setIsLoading={setIsLoading}
-          />
+          <LoginAccount setIsLoading={setIsLoading} />
         ) : (
           <CreateAccount />
         )}
@@ -79,10 +62,7 @@ function Login() {
         <Create onClick={handleClickCreate}>註冊</Create>
       </Email>
       <SocialMedia>
-        <SocialLogin
-          initMemberState={initMemberState}
-          setIsLoading={setIsLoading}
-        />
+        <SocialLogin setIsLoading={setIsLoading} />
       </SocialMedia>
     </Container>
   );

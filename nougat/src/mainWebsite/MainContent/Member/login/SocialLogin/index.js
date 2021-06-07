@@ -12,9 +12,7 @@ function SocialLogin(props) {
       .then((result) => {
         const user = result.user;
         Api.isMember(user.uid).then((isMember) => {
-          if (isMember) {
-            props.initMemberState(user.uid);
-          } else {
+          if (!isMember) {
             Api.addNewMember(user.uid, {
               id: user.uid,
               name: user.displayName,
@@ -23,7 +21,7 @@ function SocialLogin(props) {
               line_id: "",
               cart_items: [],
               order_info: {},
-            }).then(() => props.initMemberState(user.uid));
+            });
           }
         });
       })

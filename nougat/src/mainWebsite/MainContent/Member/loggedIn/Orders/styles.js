@@ -1,10 +1,36 @@
 import styled from "styled-components";
 import { Modal, Button } from "react-bootstrap";
+import { makeStyles } from "@material-ui/core/styles";
+
+export const useStyles = makeStyles((theme) => ({
+  pagination: {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: 20,
+
+    "& .MuiPaginationItem-root": {
+      fontSize: 18,
+      color: "#AC7B7D",
+    },
+  },
+}));
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 20px;
+  & > *:first-child {
+    margin-bottom: 30px;
+    background-color: #844545;
+    color: #eee9e1;
+    letter-spacing: 3px;
+    height: 60px;
+    border-radius: 0;
+  }
+`;
+
+export const OrdersWrapper = styled.div`
+  min-height: 600px;
 `;
 
 export const Order = styled.div`
@@ -15,33 +41,20 @@ export const Order = styled.div`
   background-color: #ffe1c5;
   height: 100px;
   align-items: center;
-  /* border-radius: 0 0 37% 0; */
+
   border-radius: 0 0 55% 0;
   position: relative;
   box-shadow: 50% 30% 5px -2px #888;
   margin-bottom: 20px;
-  &:first-child {
-    margin-bottom: 30px;
-    background-color: #844545;
-    color: #eee9e1;
-    letter-spacing: 3px;
-    height: 60px;
-    border-radius: 0;
-  }
 `;
 
 export const BendMark = styled.div`
   position: absolute;
-  /* right: 2px;
-  bottom: 15px;
-  width: 140px;
-  height: 56px; */
   right: 5px;
   bottom: 23px;
   width: 200px;
   height: 56px;
   overflow: hidden;
-  /* transform: rotate(-8deg); */
   transform: rotate(-12deg);
   opacity: 0.9;
   &:before {
@@ -77,7 +90,7 @@ export const OrderNumLink = styled(Button)`
   outline: none;
   border: none;
   font-family: caramel;
-  font-size: 26px;
+  font-size: 24px;
   letter-spacing: 2px;
   color: #b6174b;
 
