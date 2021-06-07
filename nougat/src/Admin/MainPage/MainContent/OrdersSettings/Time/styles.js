@@ -17,14 +17,15 @@ export const Change = styled(PublishedWithChanges)`
   width: 16px;
   &:hover {
     cursor: pointer;
+    color: #347285;
   }
 `;
 
 export const Done = styled(CheckDouble)`
   width: 20px;
   position: absolute;
-  right: 25px;
-  top: 2.5px;
+  right: 32px;
+  top: 0px;
   &:hover {
     cursor: pointer;
     color: green;

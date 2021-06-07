@@ -4,19 +4,21 @@ import Api from "../../../../../utils/Api";
 
 import { Container, Username, Title, Label, Btn } from "./styles";
 
-const inputTheme = {
+const inputTheme = (invalid) => ({
   height: "50px",
   padding: "5px 15px",
   "font-size": "18px",
   "border-radius": "24px",
   width: "100%",
-};
+  border: `${invalid ? "2px solid #820933;" : "2px solid #474973;"}`,
+});
 
 const iconTheme = {
   position: "absolute",
   right: "10px",
   top: "12.5px",
   width: "25px",
+  color: "#8cabbe",
 };
 
 export default function CreateAdmin() {
@@ -77,10 +79,9 @@ export default function CreateAdmin() {
       <Label htmlFor="password">密碼</Label>
       <Password
         id="password"
-        inputTheme={inputTheme}
+        inputTheme={inputTheme(invalidPassword)}
         iconTheme={iconTheme}
         handleChange={handleChangePassword}
-        notValid={invalidPassword}
       />
       <Btn type="submit" variant="contained">
         註冊

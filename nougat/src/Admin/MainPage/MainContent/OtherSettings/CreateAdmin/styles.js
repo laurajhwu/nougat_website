@@ -15,6 +15,7 @@ export const Title = styled.div`
   letter-spacing: 10px;
   line-height: 36px;
   margin-bottom: 40px;
+  color: #474973;
 `;
 
 export const Username = styled.input`
@@ -24,8 +25,8 @@ export const Username = styled.input`
   border-radius: 24px;
   outline: none;
   margin-bottom: 20px;
-  border: 1px solid black;
-  border-color: ${(props) => (props.notValid ? "red" : "black")};
+  border: ${(props) =>
+    props.notValid ? "2px solid #820933;" : "2px solid #474973;"};
 `;
 
 export const Label = styled.label`
@@ -33,6 +34,7 @@ export const Label = styled.label`
   line-height: 24px;
   letter-spacing: 5px;
   margin-bottom: 5px;
+  color: #474973;
 `;
 
 export const Btn = styled(Button)`
