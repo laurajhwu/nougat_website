@@ -132,8 +132,9 @@ table {
   border-spacing: 0;
 }
 
-.swal-button:focus {
+.swal2-button:focus {
   box-shadow: none !important;
+  outline: none !important;
 }
 
 .swal2-image {

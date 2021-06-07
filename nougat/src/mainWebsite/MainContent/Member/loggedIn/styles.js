@@ -38,6 +38,3 @@ export const Header = styled(Tabs)`
 
 export const ProfilePage = styled(Tab)``;
 export const OrderPage = styled(Tab)``;
-
-export const EmailNotVerified = styled.div``;
-export const Logout = styled.a``;

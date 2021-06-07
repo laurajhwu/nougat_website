@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Api from "../../../../../utils/Api";
 import logout from "../../../../../utils/logout";
 import EditableInput from "../../../../../Components/EditableInput";
 import ProfilePic from "../../../../../images/snail-profile2.svg";
+import { useError } from "../../../../../Hooks/useAlert";
 
 import {
   Container,
@@ -15,18 +16,34 @@ import {
 } from "./styles";
 
 export default function Profile() {
+  const [errorMsg, setErrorMsg] = useState();
   const member = useSelector((state) => state.member);
   const fixedData = useSelector((state) => state.fixedData);
+  const errorAlert = useError(errorMsg, () => setErrorMsg(null));
 
   function handleFinishEdit(prop, data) {
     if (prop === "email") {
       Api.updateMemberAuthEmail(data, () => {
         Api.updateMember(member.id, prop, data);
+      }).catch((error) => {
+        if (error.code === "auth/email-already-in-use") {
+          setErrorMsg("該信箱已被註冊過！");
+        } else if (error.code === "auth/requires-recent-login") {
+          setErrorMsg("因更改敏感資料，請登出後再重新登入試一次");
+        }
+
+        throw error;
       });
     } else {
       Api.updateMember(member.id, prop, data);
     }
   }
+
+  useEffect(() => {
+    if (errorMsg) {
+      errorAlert();
+    }
+  }, [errorMsg]);
 
   return (
     <Container>

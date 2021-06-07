@@ -261,9 +261,6 @@ class Api {
         Promise.all(updateStock(order)).then(() => {
           if (order.order_info.payment === "line-pay") {
             window.localStorage.removeItem("order");
-          } else {
-            alert("已收到您的訂單!");
-            window.location.href = "/";
           }
           member.cart_items = [];
           this.updateMember(member.id, "cart_items", member.cart_items);
@@ -294,20 +291,9 @@ class Api {
   }
 
   updateMemberAuthEmail(email, success) {
-    auth.currentUser
-      .updateEmail(email)
-      .then(() => {
-        success();
-      })
-      .catch((error) => {
-        if (error.code === "auth/email-already-in-use") {
-          alert("該信箱已被註冊過！");
-        } else if (error.code === "auth/requires-recent-login") {
-          alert("因更改敏感資料，請登出後再重新登入試一次");
-        }
-
-        throw error;
-      });
+    return auth.currentUser.updateEmail(email).then(() => {
+      success();
+    });
   }
 
   addNewMember(id, data) {
