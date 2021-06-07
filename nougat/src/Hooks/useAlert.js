@@ -15,6 +15,13 @@ import {
 
 import { TitleError, TextError, CloseError } from "./styles/errorAlert";
 
+import {
+  TitleVerify,
+  TextVerify,
+  ConfirmVerify,
+  LogoutVerify,
+} from "./styles/verifyEmail";
+
 const MySwal = withReactContent(Swal);
 
 export function useConfirmCheckout(message) {
@@ -76,6 +83,42 @@ export function useNotifyEmail(title, message) {
       confirmButtonColor: "#C86D5C",
       closeOnConfirm: true,
       allowOutsideClick: true,
+    });
+  };
+}
+
+export function useVerifyEmail(title, message, callback) {
+  const history = useHistory();
+
+  return () => {
+    MySwal.fire({
+      icon: "question",
+      iconHtml: (
+        <UseAnimations
+          animation={mail}
+          size={75}
+          strokeColor="#474973"
+          autoplay={true}
+          loop={true}
+          speed={0.5}
+        />
+      ),
+      title: <TitleVerify>{title}</TitleVerify>,
+      html: <TextVerify>{message}</TextVerify>,
+      showDenyButton: true,
+      denyButtonText: <LogoutVerify>登出</LogoutVerify>,
+      denyButtonColor: "#9d858d",
+      confirmButtonText: <ConfirmVerify>了解</ConfirmVerify>,
+      confirmButtonColor: "#5d2e46",
+      closeOnConfirm: false,
+      allowOutsideClick: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        history.push("/products");
+      }
+      if (result.isDenied) {
+        callback();
+      }
     });
   };
 }

@@ -8,21 +8,20 @@ import Api from "../../../../utils/Api";
 import { getMemberOrders } from "../../../../redux/actions/order";
 import { getOrderFixedData } from "../../../../redux/actions/fixedData";
 import Loading from "../../../../Components/LoadingPage";
+import { useVerifyEmail } from "../../../../Hooks/useAlert";
 
-import {
-  Container,
-  ProfilePage,
-  OrderPage,
-  EmailNotVerified,
-  Logout,
-  Header,
-} from "./styles";
+import { Container, ProfilePage, OrderPage, Header } from "./styles";
 
 function LoggedIn() {
   const history = useHistory();
   const member = useSelector((state) => state.member);
   const dispatch = useDispatch();
   const [page, setPage] = useState("profile");
+  const verifyEmailAlert = useVerifyEmail(
+    "查看信箱驗證信",
+    "驗證您的信箱後，方可看到會員資料",
+    logout
+  );
 
   function handleClick(page) {
     setPage(page);
@@ -33,6 +32,7 @@ function LoggedIn() {
   }, [page]);
 
   useEffect(() => {
+    verifyEmailAlert();
     if (!member) {
       history.push(`/member`);
     } else if (member.id) {
@@ -70,12 +70,7 @@ function LoggedIn() {
             </OrderPage>
           </Header>
         ) : (
-          <>
-            <EmailNotVerified>
-              請查看您的信箱是否收到驗證信，驗證您的信箱後，方可看到會員資料
-            </EmailNotVerified>
-            <Logout onClick={logout}>登出</Logout>
-          </>
+          <></>
         )}
       </Container>
     );

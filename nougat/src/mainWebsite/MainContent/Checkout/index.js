@@ -261,7 +261,7 @@ function CheckOut() {
 
   useEffect(() => {
     if (errorMsg) {
-      errorAlert(errorMsg);
+      errorAlert();
     }
   }, [errorMsg]);
 
