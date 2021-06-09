@@ -44,12 +44,13 @@ import {
   Design3,
 } from "./styles";
 
-let isClicked = false;
+// let isClicked = false;
 const id = uuid();
 
 gsap.registerPlugin(ScrollTrigger);
 
 function CheckOut() {
+  const isClicked = useRef(false);
   const classes = useStyles();
   const history = useHistory();
   const checkoutAlert = useConfirmCheckout("會員頁面可瀏覽您的訂單");
@@ -167,7 +168,7 @@ function CheckOut() {
 
   function handleCheckout() {
     if (cartItems.length !== 0) {
-      if (!isClicked) {
+      if (!isClicked.current) {
         setOrder({
           order_info: {
             delivery,
@@ -191,7 +192,7 @@ function CheckOut() {
           id,
           member_id: member.id,
         });
-        isClicked = true;
+        isClicked.current = true;
       }
     } else {
       setErrorMsg("購物車沒有商品唷！");
@@ -277,9 +278,11 @@ function CheckOut() {
       if (validateCheckoutInfo()) {
         updateRememberedData();
         if (payment === "line-pay") {
+          isClicked.current = false;
           window.localStorage.setItem("order", JSON.stringify(order));
           history.push("/cart/line-pay");
         } else {
+          isClicked.current = false;
           Api.postCheckoutOrder(order, member, (order) =>
             updateProductStock(order, allProducts)
           ).then(() => {
@@ -288,7 +291,7 @@ function CheckOut() {
         }
       } else {
         setErrorMsg("必填項目中有誤！");
-        isClicked = false;
+        isClicked.current = false;
       }
     }
   }, [order]);

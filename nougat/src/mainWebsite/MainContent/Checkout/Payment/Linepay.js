@@ -1,7 +1,5 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import uuid from "react-uuid";
-import crypto from "crypto-js";
 import Loading from "../../../../Components/LoadingPage";
 import LinepayLogo from "../../../../images/linepay-logo.png";
 import BGImage from "../../../../images/checkout-bg2.png";
@@ -11,7 +9,7 @@ import arrowDown from "react-useanimations/lib/arrowDown";
 import { Pay, Text, Logo } from "./styles";
 
 function Payment() {
-  const requestUri = "/v3/payments/request";
+  const requestUri = process.env.REACT_APP_SERVER;
   const order = JSON.parse(window.localStorage.getItem("order"));
   const amount = order.products.reduce(
     (total, product) => total + product.price * product.qty,
@@ -48,28 +46,9 @@ function Payment() {
   };
   const [paymentLink, setPaymentLink] = useState();
 
-  function getConfigs() {
-    const key = process.env.REACT_APP_LINE_SECRET_KEY;
-    const nonce = uuid();
-    const channelId = process.env.REACT_APP_LINE_CHANNEL_ID;
-    const encrypt = crypto.HmacSHA256(
-      key + requestUri + JSON.stringify(data) + nonce,
-      key
-    );
-    const hmacBase64 = crypto.enc.Base64.stringify(encrypt);
-    return {
-      headers: {
-        "Content-Type": "application/json",
-        "X-LINE-ChannelId": channelId,
-        "X-LINE-Authorization-Nonce": nonce,
-        "X-LINE-Authorization": hmacBase64,
-      },
-    };
-  }
-
   useEffect(() => {
     axios
-      .post(requestUri, data, getConfigs())
+      .post(requestUri, data)
       .then((response) => {
         setPaymentLink(response.data.info.paymentUrl.web);
       })

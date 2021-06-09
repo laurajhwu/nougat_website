@@ -74,7 +74,9 @@ export default function SearchLocations(props) {
               district = component.long_name;
               break;
             case "street_number":
-              address = component.long_name + "號";
+              address = component.long_name.includes("號")
+                ? component.long_name
+                : `${component.long_name}號`;
               break;
             case "route":
               address = component.long_name + address;

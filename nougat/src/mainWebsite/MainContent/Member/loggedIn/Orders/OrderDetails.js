@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Modal from "react-bootstrap/Modal";
+import { stringDate, stringTime } from "../../../../../utils/dateTimeFormat";
 import {
   ModalContainer,
   DetailTitle,
@@ -17,6 +18,7 @@ import {
 function OrderDetails(props) {
   const order = props.order;
   const fixedData = props.fixedData;
+  const deliveryTime = order.order_info.delivery_time.toDate();
   return (
     <>
       <ModalContainer
@@ -46,6 +48,12 @@ function OrderDetails(props) {
             <DetailInfo>
               <div>面交地點：</div>
               <span>{order.order_info.delivery_address}</span>
+            </DetailInfo>
+            <DetailInfo>
+              <div>面交時間：</div>
+              <span>{`${stringDate(deliveryTime)} - ${stringTime(
+                deliveryTime
+              )}`}</span>
             </DetailInfo>
             <DetailInfo>
               <div>付款方式：</div>
