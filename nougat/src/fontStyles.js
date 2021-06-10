@@ -3,6 +3,7 @@ import OzCaramel from "./fonts/OzCaramel.ttf";
 import Marshmallow from "./fonts/HanyiSentyMarshmallow.ttf";
 import Chalk from "./fonts/HanyiSentyChalk.ttf";
 import Tea from "./fonts/SentyTEA-20190904.ttf";
+import Lotus from "./fonts/HanyiSentyLotus.ttf";
 
 const FontStyles = createGlobalStyle`
 
@@ -22,6 +23,11 @@ const FontStyles = createGlobalStyle`
 @font-face {
   font-family: 'tea';
   src: url(${Tea})    
+}
+
+@font-face {
+  font-family: 'lotus';
+  src: url(${Lotus})    
 }
 `;
 

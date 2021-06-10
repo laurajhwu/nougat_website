@@ -2,7 +2,8 @@ import React, { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { renderPage } from "../../redux/actions/renderPage";
-import LogoIcon from "../../images/logo.png";
+// import LogoIcon from "../../images/logo.png";
+import LogoIcon from "../../images/logo2.png";
 import { gsap } from "gsap";
 import ContactInfo from "./ContactUs";
 import { Modal } from "semantic-ui-react";
@@ -59,7 +60,7 @@ function Header() {
         <Logo src={LogoIcon} ref={logoRef} />
       </Link>
       <Nav ref={navRef}>
-        <Link to="/">首頁</Link>
+        {/* <Link to="/">首頁</Link> */}
         <Link to="/products">所有產品</Link>
 
         <Modal

@@ -98,8 +98,10 @@ function ProductDetails() {
   if (product) {
     return (
       <Product url={BGImage}>
-        <Img src={product.image} ref={imageRef} helperImage={true} />
-        <Img src={product.image} />
+        <div>
+          <Img src={product.image} ref={imageRef} helperImage={true} />
+          <Img src={product.image} />
+        </div>
         <Info>
           <Name>{product.name}</Name>
           <Description>{product.description}</Description>
@@ -119,6 +121,7 @@ function ProductDetails() {
                       icon: classes.icon,
                     },
                   }}
+                  disableUnderline
                 >
                   {qtyOptions(product.stock).map((option) => {
                     return (
