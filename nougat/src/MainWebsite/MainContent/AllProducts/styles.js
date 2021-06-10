@@ -141,14 +141,21 @@ export const Cart = styled.div`
   max-height: 1500px;
   z-index: 2;
   overflow-y: scroll;
+  position: relative;
+  /* visibility: hidden; */
   /* display: ${(props) => (props.showCart ? "block" : "none")}; */
-  display: none;
+  /* display: none; */
+  /* flex-basis: 0;
+  padding: 0;
+  min-width: 0px; */
   & * {
     font-family: chalk;
   }
 `;
 
 export const Title = styled.div`
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
   position: fixed !important;
   top: 210px;
   background-color: #bd8989;
@@ -167,7 +174,8 @@ export const Title = styled.div`
   color: #f0e5e5;
   line-height: 32px;
   letter-spacing: 3px;
-
+  /* visibility: visible; */
+  right: 0px;
   &:hover {
     cursor: pointer;
     color: #f0e5e5;
@@ -176,7 +184,7 @@ export const Title = styled.div`
   &.helper {
     right: 0;
     /* display: ${(props) => (props.showCart ? "none" : "block")}; */
-    display: block;
+    /* display: block; */
   }
 `;
 
@@ -190,6 +198,7 @@ export const CartProduct = styled.div`
   background-color: rgba(189, 137, 137, 0.05) !important;
   height: 200px;
   position: relative;
+  /* display: none; */
   &:last-child {
     opacity: ${(props) => props.opacity};
   }

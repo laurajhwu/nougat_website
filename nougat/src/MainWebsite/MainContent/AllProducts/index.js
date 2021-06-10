@@ -76,33 +76,38 @@ function AllProducts() {
   }
 
   function handleShowCart() {
-    if (showCart === null) {
-      setShowCart(true);
-    } else {
-      setShowCart(!showCart);
-    }
+    setShowCart(!showCart);
   }
 
   function showCartAnimation() {
+    const titleRef = cartRef.current.children[0];
     const timeline = gsap
-      .timeline()
-      .set(cartRef.current.children[0], { position: "fixed" })
+      .timeline({ defaults: { duration: 0.5, ease: "power1.inOut" } })
+      .set(titleRef, { position: "fixed" })
       .addLabel("start");
     if (showCart) {
       timeline
-        .to(cartRef.current, { display: "block", duration: 0.5 })
-        .from(cartRef.current, { x: 300, duration: 0.5 }, "start")
-        .to(".helper", { display: "none", duration: 0.1 }, "start");
+        .to(cartRef.current, {
+          "flex-basis": "25%",
+          "min-width": "160px",
+          padding: "80px 15px 50px",
+        })
+        .to(".cart-items", { x: 0 }, "start")
+        .to(titleRef, { right: "auto" }, "start");
     } else {
       timeline
-        .to(cartRef.current, { display: "none", x: 300, duration: 0.5 })
-        .to(cartRef.current, { x: 0, duration: 0.1 })
-        .to(".helper", { display: "block", duration: 0.1 }, "start");
+        .to(cartRef.current, {
+          "flex-basis": "0%",
+          padding: "0px",
+          "min-width": " 0px",
+        })
+        .to(".cart-items", { x: 300 }, "start")
+        .to(titleRef, { right: "0px" }, "start");
     }
   }
 
   useEffect(() => {
-    if (cartRef.current && showCart !== null) {
+    if (cartRef.current) {
       showCartAnimation();
     }
   }, [showCart]);
@@ -177,6 +182,8 @@ function AllProducts() {
                         setAddEvent={setAddEvent}
                         setIsClicked={setIsClicked}
                         isClickedRef={isClickedRef}
+                        showCart={showCart}
+                        setShowCart={setShowCart}
                       />
                     </AddToCartIcon>
                   </IconButton>
@@ -185,10 +192,6 @@ function AllProducts() {
             </Product>
           ))}
         </Products>
-        <Title className="helper" showCart={showCart} onClick={handleShowCart}>
-          購物車(
-          {cartLength || cartLength === 0 ? cartLength : cartItems.length})
-        </Title>
         <Cart ref={cartRef} showCart={showCart}>
           <Title onClick={handleShowCart}>
             購物車(
@@ -200,6 +203,7 @@ function AllProducts() {
                 <CartProduct
                   ref={index === cartItems.length - 1 ? cartItemRef : undefined}
                   opacity={isClicked || isClickedRef.current ? 0 : 1}
+                  className="cart-items"
                 >
                   <CardActionArea>
                     {/* <CartImg src={product.image} /> */}

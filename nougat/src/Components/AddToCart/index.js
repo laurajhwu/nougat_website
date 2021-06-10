@@ -18,7 +18,14 @@ export default function AddToCart(props) {
   const addedAlert = useAddedAlert();
   const errorAlert = useError("請先登入！");
   const dispatch = useDispatch();
-  const { setAddEvent, setIsClicked, addToCartAnimation, isClickedRef } = props;
+  const {
+    setAddEvent,
+    setIsClicked,
+    addToCartAnimation,
+    isClickedRef,
+    showCart,
+    setShowCart,
+  } = props;
   const path = window.location.pathname;
   const cartItems = props.member ? props.member.cart_items : null;
   const cartObject = cartItems ? convertArrToObj(cartItems, "id") : {};
@@ -51,6 +58,9 @@ export default function AddToCart(props) {
             if (path === "/products") {
               setAddEvent(product.id);
               setIsClicked(true);
+              if (!showCart) {
+                setShowCart(true);
+              }
             } else {
               addToCartAnimation();
             }
