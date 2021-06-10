@@ -14,7 +14,8 @@ export const useStyles = makeStyles((theme) => ({
     "padding-right": 25,
     position: "relative",
     marginRight: "5px;",
-    fontSize: "16px",
+    fontSize: "20px",
+    fontFamily: "chalk",
   },
 }));
 
@@ -51,12 +52,12 @@ export const Password = styled(Parent)`
 `;
 
 export const Label = styled.label`
-  width: 100px;
+  width: 130px;
   color: #c44536;
-  font-size: 19px;
+  font-size: 22px;
   letter-spacing: 3px;
   font-weight: 700;
-  line-height: 19px;
+  line-height: 22px;
   margin-right: 5px;
 `;
 
@@ -65,7 +66,7 @@ export const Register = styled.button`
   background-color: #99a4ad;
   outline: none;
   border: 3px solid transparent;
-  font-size: 20px;
+  font-size: 22px;
   letter-spacing: 5px;
   padding: 10px 5px 10px 10px;
   color: #f5f5f5;

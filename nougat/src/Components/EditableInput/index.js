@@ -54,7 +54,7 @@ export default function EditableInput(props) {
         </>
       ) : (
         <TextContainer>
-          <Text>{props.initValue}</Text>
+          <Text notes={props.notes}>{props.initValue}</Text>
           <Edit onClick={handleClick} />
         </TextContainer>
       )}

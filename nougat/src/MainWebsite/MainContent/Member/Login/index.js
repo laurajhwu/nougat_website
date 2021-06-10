@@ -54,6 +54,9 @@ function Login() {
 
   return (
     <Container isLoading={isLoading}>
+      <SocialMedia>
+        <SocialLogin setIsLoading={setIsLoading} />
+      </SocialMedia>
       <Email>
         {exist ? (
           <LoginAccount setIsLoading={setIsLoading} />
@@ -63,9 +66,6 @@ function Login() {
         <Existing onClick={handleClickExist}>會員</Existing>
         <Create onClick={handleClickCreate}>註冊</Create>
       </Email>
-      <SocialMedia>
-        <SocialLogin setIsLoading={setIsLoading} />
-      </SocialMedia>
     </Container>
   );
 }

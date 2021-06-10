@@ -17,7 +17,8 @@ export const useStyles = makeStyles((theme) => ({
     "padding-right": 25,
     position: "relative",
     marginRight: "5px;",
-    fontSize: "18px",
+    fontSize: "20px",
+    fontFamily: "chalk",
   },
 }));
 
@@ -41,6 +42,7 @@ export const Text = styled.div`
   color: #37323e;
   flex-grow: 1;
   line-height: 20px;
+  font-family: ${(props) => (props.notes ? "" : "chalk")};
 `;
 
 export const Edit = styled(PencilAlt)`

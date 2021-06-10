@@ -133,7 +133,7 @@ function AllProducts() {
     }
   }, [cartItems]);
 
-  if (allProducts.length !== 0 && cols && cartItems) {
+  if (allProducts.length !== 0 && cols) {
     return (
       <Container url={BGImage}>
         <Products
@@ -195,7 +195,12 @@ function AllProducts() {
         <Cart ref={cartRef} showCart={showCart}>
           <Title onClick={handleShowCart}>
             購物車(
-            {cartLength || cartLength === 0 ? cartLength : cartItems.length})
+            {cartItems
+              ? cartLength || cartLength === 0
+                ? cartLength
+                : cartItems.length
+              : 0}
+            )
           </Title>
           {cartItems ? (
             <>
@@ -259,7 +264,7 @@ function AllProducts() {
               ))}
             </>
           ) : (
-            <Title>購物車({0})</Title>
+            <></>
           )}
         </Cart>
       </Container>

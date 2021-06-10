@@ -9,8 +9,9 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: 20,
 
     "& .MuiPaginationItem-root": {
-      fontSize: 18,
+      fontSize: 20,
       color: "#AC7B7D",
+      fontFamily: "chalk",
     },
   },
 }));
@@ -73,8 +74,9 @@ export const BendMark = styled.div`
 export const Title = styled.div`
   text-align: center;
   width: 25%;
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 700;
+  font-family: chalk;
 `;
 
 export const OrderInfo = styled.div`

@@ -13,8 +13,9 @@ export const Header = styled(Tabs)`
   border-bottom: 1px solid #b2777c;
   line-height: 25px;
   & > * {
-    font-size: 22px;
-    line-height: 25px;
+    font-family: lotus;
+    font-size: 45px;
+    line-height: 40px;
     color: #b2777c;
     font-weight: 700;
     letter-spacing: 10px;
