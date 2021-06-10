@@ -31,6 +31,7 @@ import {
   Delete,
   Quantity,
 } from "./styles";
+import gsap from "gsap";
 
 function AllProducts() {
   const allProducts = useSelector((state) => state.products).sort(
@@ -45,6 +46,7 @@ function AllProducts() {
   const isClickedRef = useRef(false);
   const [cols, setCols] = useState();
   const [addEvent, setAddEvent] = useState();
+  const [showCart, setShowCart] = useState(false);
   const cartRef = useRef();
   const productsRef = useRef();
   const imageRef = useRef();
@@ -64,7 +66,7 @@ function AllProducts() {
   });
 
   function handleColsRWD() {
-    if (window.innerWidth > 1200) {
+    if (window.innerWidth > 1300) {
       setCols(3);
     } else if (window.innerWidth > 780) {
       setCols(2);
@@ -72,6 +74,38 @@ function AllProducts() {
       setCols(1);
     }
   }
+
+  function handleShowCart() {
+    if (showCart === null) {
+      setShowCart(true);
+    } else {
+      setShowCart(!showCart);
+    }
+  }
+
+  function showCartAnimation() {
+    const timeline = gsap
+      .timeline()
+      .set(cartRef.current.children[0], { position: "fixed" })
+      .addLabel("start");
+    if (showCart) {
+      timeline
+        .to(cartRef.current, { display: "block", duration: 0.5 })
+        .from(cartRef.current, { x: 300, duration: 0.5 }, "start")
+        .to(".helper", { display: "none", duration: 0.1 }, "start");
+    } else {
+      timeline
+        .to(cartRef.current, { display: "none", x: 300, duration: 0.5 })
+        .to(cartRef.current, { x: 0, duration: 0.1 })
+        .to(".helper", { display: "block", duration: 0.1 }, "start");
+    }
+  }
+
+  useEffect(() => {
+    if (cartRef.current && showCart !== null) {
+      showCartAnimation();
+    }
+  }, [showCart]);
 
   useEffect(() => {
     window.addEventListener("resize", handleColsRWD);
@@ -94,7 +128,7 @@ function AllProducts() {
     }
   }, [cartItems]);
 
-  if (allProducts.length !== 0 && cols) {
+  if (allProducts.length !== 0 && cols && cartItems) {
     return (
       <Container url={BGImage}>
         <Products
@@ -151,14 +185,17 @@ function AllProducts() {
             </Product>
           ))}
         </Products>
-        <Cart ref={cartRef}>
+        <Title className="helper" showCart={showCart} onClick={handleShowCart}>
+          購物車(
+          {cartLength || cartLength === 0 ? cartLength : cartItems.length})
+        </Title>
+        <Cart ref={cartRef} showCart={showCart}>
+          <Title onClick={handleShowCart}>
+            購物車(
+            {cartLength || cartLength === 0 ? cartLength : cartItems.length})
+          </Title>
           {cartItems ? (
             <>
-              <Title>
-                購物車(
-                {cartLength || cartLength === 0 ? cartLength : cartItems.length}
-                )
-              </Title>
               {cartItems.map((product, index) => (
                 <CartProduct
                   ref={index === cartItems.length - 1 ? cartItemRef : undefined}
@@ -183,7 +220,7 @@ function AllProducts() {
                         productId={product.id}
                         setIsClicked={setIsClicked}
                         styles={{
-                          color: "#7e7f9a",
+                          color: "#805e6e",
                           "&:hover": { color: "#820933" },
                           width: "28px",
                         }}
@@ -197,9 +234,10 @@ function AllProducts() {
                         productId={product.id}
                         selectStyle={{
                           "font-size": "18px",
-                          color: "#474973",
+                          color: "#805e6e",
                           "font-weight": "bold",
                           width: "65px",
+                          fontFamily: "chalk",
                         }}
                         menuStyle={{
                           "font-size": "16px",
@@ -208,7 +246,7 @@ function AllProducts() {
                         }}
                         containerStyle={{
                           "font-size": "18px",
-                          color: "#474973",
+                          color: "#805e6e",
                         }}
                       />
                     </Quantity>

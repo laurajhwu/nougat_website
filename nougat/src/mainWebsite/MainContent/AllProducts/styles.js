@@ -12,7 +12,7 @@ export const Container = styled.div`
   left: 0;
   margin: 0 auto;
   padding: 40px 100px 100px;
-
+  justify-content: center;
   &::before {
     content: "";
     position: absolute;
@@ -32,10 +32,15 @@ export const Container = styled.div`
 
 export const Products = styled(GridList)`
   flex-basis: 75%;
-  max-width: 900px;
+  /* max-width: 900px; */
   min-width: 250px;
   max-height: 1050px;
   height: 600px !important;
+  justify-content: center;
+  & * {
+    font-family: chalk;
+  }
+
   @media only screen and (max-width: 1200px) {
     height: auto !important;
     width: 500px !important;
@@ -53,8 +58,17 @@ export const Products = styled(GridList)`
 `;
 
 export const Product = styled(GridListTile)`
-  height: 270px !important;
-  width: 270px;
+  height: 20vw !important;
+  width: 20vw !important;
+
+  & > ${".MuiGridListTile-tile"} {
+    border-radius: 15px;
+    border: 2px solid #bb8a89;
+  }
+  @media only screen and (max-width: 1500px) {
+    height: 270px !important;
+    width: 270px !important;
+  }
 
   @media only screen and (max-width: 1000px) {
     height: 250px !important;
@@ -67,13 +81,20 @@ export const Product = styled(GridListTile)`
     align-self: center;
   }
 `;
+
 export const Img = styled.img`
-  width: ${(props) => (props.helperImage ? "270px" : "100%")};
-  height: 270px;
+  height: 20vw;
+  width: 100%;
   position: ${(props) => (props.helperImage ? "fixed" : "unset")};
   visibility: ${(props) => (props.helperImage ? "hidden" : "visible")};
   z-index: ${(props) => (props.helperImage ? 2 : 0)};
   opacity: ${(props) => (props.helperImage ? 0 : 1)};
+
+  @media only screen and (max-width: 1500px) {
+    width: ${(props) => (props.helperImage ? "270px" : "100%")};
+    height: 270px;
+  }
+
   @media only screen and (max-width: 1000px) {
     height: 250px;
     width: 250px;
@@ -82,15 +103,24 @@ export const Img = styled.img`
     height: 200px;
     width: 200px;
   }
+  &:hover {
+    transform: scale(1.01);
+  }
 `;
 
-export const ProductInfo = styled(GridListTileBar)``;
+export const ProductInfo = styled(GridListTileBar)`
+  padding: 5px 0px 10px;
+  &:hover {
+    transform: scale(1.01);
+  }
+`;
 export const Name = styled.div`
-  font-size: 20px;
+  font-size: 22px;
 `;
 export const Price = styled.div`
-  margin-top: 10px;
-  font-size: 16px;
+  margin-top: 5px;
+  font-size: 18px;
+  line-height: 25px;
 `;
 export const AddToCartIcon = styled.div`
   color: white;
@@ -101,46 +131,63 @@ export const AddToCartIcon = styled.div`
 export const Cart = styled.div`
   flex-basis: 25%;
   margin-left: 50px;
-  padding: 70px 15px 50px;
+  padding: 80px 15px 50px;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  max-width: 300px;
+  max-width: 250px;
   min-width: 160px;
   min-height: 500px;
   max-height: 1500px;
   z-index: 2;
   overflow-y: scroll;
-  position: relative;
+  /* display: ${(props) => (props.showCart ? "block" : "none")}; */
+  display: none;
+  & * {
+    font-family: chalk;
+  }
 `;
 
 export const Title = styled.div`
-  font-size: 24px;
-  color: #7e4e53;
-  position: fixed;
+  position: fixed !important;
   top: 210px;
-  background: rgb(255, 252, 227);
-  background: radial-gradient(
-    circle,
-    rgba(255, 252, 227, 0.89) 0%,
-    rgba(226, 189, 138, 0.7637429971988796) 65%,
-    rgba(185, 54, 0, 0.77) 100%
-  );
-  line-height: 32px;
-  letter-spacing: 3px;
+  background-color: #bd8989;
   width: 15%;
   min-width: 120px;
   max-width: 200px;
   text-align: center;
   border-radius: 8px;
   z-index: 1;
-  padding: 5px 0;
+  padding: 10px 0;
+
+  width: 100%;
+  font-family: Lotus;
+  font-size: 40px;
+  font-weight: 700;
+  color: #f0e5e5;
+  line-height: 32px;
+  letter-spacing: 3px;
+
+  &:hover {
+    cursor: pointer;
+    color: #f0e5e5;
+  }
+
+  &.helper {
+    right: 0;
+    /* display: ${(props) => (props.showCart ? "none" : "block")}; */
+    display: block;
+  }
 `;
 
 export const CartProduct = styled.div`
+  border-top: thick double #ac7b7d;
+  border-bottom: thick double #ac7b7d;
+  border-radius: 0 0 10px 10px;
+  border-radius: 10px;
   width: 100%;
   margin-bottom: 20px;
-  background-color: rgba(241, 249, 246, 0.7) !important;
+  background-color: rgba(189, 137, 137, 0.05) !important;
   height: 200px;
   position: relative;
   &:last-child {
@@ -155,24 +202,27 @@ export const CartImg = styled.img`
   top: 10px;
 `;
 export const CartName = styled.div`
-  color: #584573;
-  font-size: 24px;
+  color: #a66590;
+  font-size: 26px;
   margin-bottom: 10px;
 `;
 export const CartPrice = styled.div`
-  font-size: 16px;
+  font-size: 18px;
   margin-bottom: 10px;
-  border-bottom: 2px solid #025068;
+  border-bottom: 2px solid #805e6e;
   padding-bottom: 10px;
+  color: #805e6e;
 `;
 
 export const Total = styled.div`
   font-size: 18px;
   font-weight: bold;
   text-align: right;
+  color: #805e6e;
 `;
 
 export const Quantity = styled.div``;
+
 export const Delete = styled(IconButton)`
   position: absolute;
   top: 0;
