@@ -28,10 +28,15 @@ function AllProducts(props) {
       "font-size": "17px",
       color: "#CC7B82",
       width: "65px",
+      fontFamily: "chalk",
     },
     containerStyle: {
       "font-size": "17px",
       color: "#CC7B82",
+      fontFamily: "chalk",
+    },
+    menuStyle: {
+      fontFamily: "chalk",
     },
   };
 
@@ -71,6 +76,7 @@ function AllProducts(props) {
                   productId={product.id}
                   containerStyle={styles.containerStyle}
                   selectStyle={styles.selectStyle}
+                  menuStyle={styles.menuStyle}
                 />
               </Group>
               <Group>

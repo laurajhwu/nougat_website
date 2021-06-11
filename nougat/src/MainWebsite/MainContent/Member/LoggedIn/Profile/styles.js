@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
 export const doneIconStyle = {
+  width: "18px",
+  margin: "0 0 0 10px",
   color: "#bba0b2",
   "&:hover": {
     cursor: "pointer",
@@ -17,8 +19,8 @@ export const Container = styled.div`
 
 export const ProfilePage = styled.div`
   margin-top: 30px;
-  min-width: 400px;
-  max-width: 600px;
+  min-width: 450px;
+  width: auto;
   background-color: rgba(255, 255, 255, 0.2);
   padding: 20px;
   border-radius: 20px;
@@ -30,8 +32,11 @@ export const Picture = styled.img`
 
 export const Info = styled.div`
   display: flex;
-  margin-bottom: 20px;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 5px;
   font-size: 24px;
+  line-height: 45px;
   & > * {
     &:first-child {
       display: inline-block;
@@ -40,10 +45,12 @@ export const Info = styled.div`
       font-weight: 700;
       color: #9d858d;
       font-family: chalk;
+      vertical-align: middle;
     }
     &:last-child {
       color: #37323e;
       font-family: chalk;
+      flex-grow: 1;
     }
   }
 `;

@@ -34,7 +34,11 @@ export function useConfirmCheckout(message) {
       imageUrl: HappySnail,
       imageWidth: 120,
       title: <TitleCheckout>感謝您的購物</TitleCheckout>,
-      html: <TextCheckout>{message}</TextCheckout>,
+      html: (
+        <TextCheckout>
+          {typeof message === "string" ? message : message(MySwal)}
+        </TextCheckout>
+      ),
       confirmButtonText: <ConfirmCheckout>確認</ConfirmCheckout>,
       confirmButtonColor: "#C86D5C",
       background: "#f5f1ec",

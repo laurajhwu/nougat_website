@@ -76,7 +76,9 @@ function AllProducts() {
   }
 
   function handleShowCart() {
-    setShowCart(!showCart);
+    if (cartItems && cartItems.length !== 0) {
+      setShowCart(!showCart);
+    }
   }
 
   function showCartAnimation() {
@@ -129,6 +131,10 @@ function AllProducts() {
         }, 2100);
       } else {
         setCartLength(cartItems.length);
+      }
+
+      if (cartItems.length === 0 && showCart) {
+        setShowCart(false);
       }
     }
   }, [cartItems]);

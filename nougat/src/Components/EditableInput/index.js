@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Input from "@material-ui/core/Input";
 
 import {
@@ -15,6 +15,12 @@ export default function EditableInput(props) {
   const classes = useStyles();
   const [isEditing, setIsEditing] = useState(false);
   const [data, setData] = useState(props.initValue);
+  const [width, setWidth] = useState();
+  const textRef = useCallback((node) => {
+    if (node) {
+      setWidth(node.getBoundingClientRect().width);
+    }
+  }, []);
 
   function handleClick() {
     setIsEditing(!isEditing);
@@ -47,6 +53,9 @@ export default function EditableInput(props) {
               isEditing={isEditing}
               onChange={handleChange}
               className={classes.input}
+              style={{
+                width: width,
+              }}
             />
           )}
 
@@ -54,7 +63,9 @@ export default function EditableInput(props) {
         </>
       ) : (
         <TextContainer>
-          <Text notes={props.notes}>{props.initValue}</Text>
+          <Text notes={props.notes} ref={textRef}>
+            {props.initValue}
+          </Text>
           <Edit onClick={handleClick} />
         </TextContainer>
       )}

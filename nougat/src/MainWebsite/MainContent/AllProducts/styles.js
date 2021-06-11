@@ -40,6 +40,12 @@ export const Products = styled(GridList)`
   & * {
     font-family: chalk;
   }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   @media only screen and (max-width: 1200px) {
     height: auto !important;
@@ -84,7 +90,7 @@ export const Product = styled(GridListTile)`
 
 export const Img = styled.img`
   height: 20vw;
-  width: 100%;
+  width: 20vw;
   position: ${(props) => (props.helperImage ? "fixed" : "unset")};
   visibility: ${(props) => (props.helperImage ? "hidden" : "visible")};
   z-index: ${(props) => (props.helperImage ? 2 : 0)};
@@ -129,27 +135,27 @@ export const AddToCartIcon = styled.div`
 `;
 
 export const Cart = styled.div`
-  flex-basis: 25%;
   margin-left: 50px;
-  padding: 80px 15px 50px;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   max-width: 250px;
-  min-width: 160px;
   min-height: 500px;
   max-height: 1500px;
   z-index: 2;
   overflow-y: scroll;
   position: relative;
-  /* visibility: hidden; */
-  /* display: ${(props) => (props.showCart ? "block" : "none")}; */
-  /* display: none; */
-  /* flex-basis: 0;
+  flex-basis: 0;
   padding: 0;
-  min-width: 0px; */
+  min-width: 0px;
   & * {
     font-family: chalk;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 
@@ -158,6 +164,7 @@ export const Title = styled.div`
   transform: translate3d(0, 0, 0);
   position: fixed !important;
   top: 210px;
+  right: 0;
   background-color: #bd8989;
   width: 15%;
   min-width: 120px;
@@ -174,17 +181,10 @@ export const Title = styled.div`
   color: #f0e5e5;
   line-height: 32px;
   letter-spacing: 3px;
-  /* visibility: visible; */
   right: 0px;
   &:hover {
     cursor: pointer;
     color: #f0e5e5;
-  }
-
-  &.helper {
-    right: 0;
-    /* display: ${(props) => (props.showCart ? "none" : "block")}; */
-    /* display: block; */
   }
 `;
 
@@ -198,7 +198,6 @@ export const CartProduct = styled.div`
   background-color: rgba(189, 137, 137, 0.05) !important;
   height: 200px;
   position: relative;
-  /* display: none; */
   &:last-child {
     opacity: ${(props) => props.opacity};
   }

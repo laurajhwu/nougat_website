@@ -12,13 +12,21 @@ export const useStyles = makeStyles((theme) => ({
     "&:after": {
       borderColor: "#B2777C",
     },
-    // width: "180px",
+    "& > .MuiInputBase-input": {
+      width: 0,
+      flexGrow: 1,
+      overflow: "visible",
+    },
+    // display: "flex",
     flexGrow: 1,
-    "padding-right": 25,
+    width: "100%",
+    // "padding-right": 25,
     position: "relative",
-    marginRight: "5px;",
-    fontSize: "20px",
+    // marginRight: "5px;",
+    overflow: "visible",
+    fontSize: "24px",
     fontFamily: "chalk",
+    lineHeight: " 30px",
   },
 }));
 
@@ -26,6 +34,7 @@ export const Container = styled.div`
   display: flex;
   position: relative;
   flex-grow: 1;
+  justify-content: space-between;
 `;
 
 export const Textarea = styled.textarea``;
@@ -34,20 +43,22 @@ export const TextContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  /* min-width: 200px; */
 `;
 
 export const Text = styled.div`
   white-space: pre-wrap;
   color: #37323e;
-  flex-grow: 1;
-  line-height: 20px;
+  padding: 6px 0 7px;
+  border-bottom: 2px solid transparent;
+  line-height: 30px;
+  width: calc(100% + 7px);
   font-family: ${(props) => (props.notes ? "" : "chalk")};
 `;
 
 export const Edit = styled(PencilAlt)`
   width: 18px;
-  margin: 0 10px;
+  font-size: 18px;
+  margin: 0 0 0 10px;
   color: #bba0b2;
   &:hover {
     cursor: pointer;
@@ -57,7 +68,7 @@ export const Edit = styled(PencilAlt)`
 
 export const Done = styled(CheckCircleFill)((props) => ({
   ...{
-    width: "20px",
+    width: "18px",
     "&:hover": {
       cursor: "pointer",
     },

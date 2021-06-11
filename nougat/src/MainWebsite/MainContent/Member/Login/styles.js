@@ -4,6 +4,7 @@ export const Container = styled.div`
   display: flex;
   margin: 100px auto;
   justify-content: center;
+  /* align-items: center; */
   width: 100%;
   height: 100%;
   min-width: 400px;
@@ -19,16 +20,17 @@ export const Container = styled.div`
 `;
 
 export const Email = styled.div`
-  /* border-right: 1px solid #59594a; */
   display: flex;
   flex-flow: row wrap;
   align-items: center;
-  align-content: space-between;
+  justify-content: center;
   min-width: 400px;
-  margin-top: 40px;
+  margin-top: 180px;
+  padding: 10px 0;
   & * {
     font-family: chalk;
   }
+  position: relative;
 `;
 
 const BtnStyle = styled.div`
@@ -54,12 +56,23 @@ export const Create = styled(BtnStyle)``;
 
 export const Existing = styled(BtnStyle)``;
 
-export const SocialMedia = styled.div`
-  border-bottom: thick double #bd8989;
+export const BtnContainer = styled.div`
+  position: absolute;
   display: flex;
-  flex-flow: row nowrap;
+  justify-content: center;
+  /* margin: 0 auto; */
+  width: 100%;
+  top: -120px;
+`;
+
+export const SocialMedia = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 200px;
+  top: 170px;
+  padding: 10px 0px;
+  min-width: 400px;
+  border-bottom: thick double #9d858d;
 `;

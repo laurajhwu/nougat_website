@@ -7,7 +7,14 @@ import LoginAccount from "./ExistingAccount";
 import SocialLogin from "./SocialLogin";
 import { useError, useSuccess } from "../../../../Hooks/useAlert";
 
-import { Container, Email, Existing, Create, SocialMedia } from "./styles";
+import {
+  Container,
+  Email,
+  Existing,
+  Create,
+  SocialMedia,
+  BtnContainer,
+} from "./styles";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -63,8 +70,10 @@ function Login() {
         ) : (
           <CreateAccount />
         )}
-        <Existing onClick={handleClickExist}>會員</Existing>
-        <Create onClick={handleClickCreate}>註冊</Create>
+        <BtnContainer>
+          <Existing onClick={handleClickExist}>會員</Existing>
+          <Create onClick={handleClickCreate}>註冊</Create>
+        </BtnContainer>
       </Email>
     </Container>
   );

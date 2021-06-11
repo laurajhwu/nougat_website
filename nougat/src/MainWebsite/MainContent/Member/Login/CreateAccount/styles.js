@@ -14,7 +14,7 @@ export const useStyles = makeStyles((theme) => ({
     "padding-right": 25,
     position: "relative",
     marginRight: "5px;",
-    fontSize: "20px",
+    fontSize: "22px",
     fontFamily: "chalk",
   },
 }));
@@ -24,6 +24,7 @@ export const iconTheme = {
   left: "195px",
   width: "25px",
   color: "#B2777C",
+  top: "7px",
 };
 
 export const Container = styled.div`
@@ -35,6 +36,10 @@ export const Form = styled.form`
   flex-flow: column nowrap;
   justify-content: space-between;
   height: 300px;
+  align-items: center;
+  & > * {
+    align-items: center;
+  }
 `;
 
 const Parent = styled.div`
@@ -59,6 +64,10 @@ export const Label = styled.label`
   font-weight: 700;
   line-height: 22px;
   margin-right: 5px;
+  font-family: chalk;
+  display: flex;
+  align-items: flex-end;
+  padding: 6px 0 7px;
 `;
 
 export const Register = styled.button`

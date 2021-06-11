@@ -7,7 +7,7 @@ const Container = styled.div`
   padding: 10px 20px;
   margin-bottom: 10px;
   & > div {
-    width: 180px;
+    width: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -46,13 +46,13 @@ export const GoogleContainer = styled(Container)`
 `;
 
 export const FbIcon = styled(Facebook)`
-  width: 40px;
+  width: 42px;
   margin-right: 10px;
   color: #2d68db;
 `;
 
 export const GoogleIcon = styled.img`
-  width: 40px;
+  width: 42px;
   margin-right: 10px;
   color: #d85140;
 `;
