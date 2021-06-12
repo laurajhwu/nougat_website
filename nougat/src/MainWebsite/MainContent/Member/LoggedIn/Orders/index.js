@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { stringDate } from "../../../../../utils/dateTimeFormat";
 import pageSplitter from "../../../../../utils/pageSplitter";
 import Loading from "../../../../../Components/LoadingPage";
+import Pagination from "../../../../../Components/Pagination";
 import OrderDetails from "./OrderDetails";
 import { gsap } from "gsap";
 
-import Pagination from "@material-ui/lab/Pagination";
 import {
   Container,
   Order,
@@ -19,7 +19,6 @@ import {
 } from "./styles";
 
 export default function Orders() {
-  const classes = useStyles();
   const orders = useSelector((state) => state.orders).sort(
     (earliest, latest) => latest.timestamp.seconds - earliest.timestamp.seconds
   );
@@ -52,10 +51,6 @@ export default function Orders() {
         duration: 1.5,
       })
       .to(refs.order, { "border-radius": "0 0 37% 0", duration: 1.5 }, "start");
-  }
-
-  function changePage(event, value) {
-    setPage(value);
   }
 
   useEffect(() => {
@@ -93,11 +88,11 @@ export default function Orders() {
           ))}
         </OrdersWrapper>
         <Pagination
-          count={Math.ceil(orders.length / 5)}
-          className={classes.pagination}
-          size="large"
           page={page}
-          onChange={changePage}
+          setPage={setPage}
+          array={orders}
+          itemsPerPage={5}
+          useStyles={useStyles}
         />
       </Container>
     );

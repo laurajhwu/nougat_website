@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import Api from "../../../../../utils/Api";
 import { useError } from "../../../../../Hooks/useAlert";
+import GoogleImage from "../../../../../images/google-logo.svg";
 
 import { FbContainer, GoogleContainer, FbIcon, GoogleIcon } from "./styles";
 
@@ -44,7 +45,7 @@ function SocialLogin(props) {
         <div onClick={() => login(Api.facebookLogin)}>Facebook 登入</div>
       </FbContainer>
       <GoogleContainer>
-        <GoogleIcon />
+        <GoogleIcon src={GoogleImage} />
         <div onClick={() => login(Api.googleLogin)}>Google 登入</div>
       </GoogleContainer>
     </>

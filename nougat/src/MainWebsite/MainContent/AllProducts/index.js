@@ -6,8 +6,11 @@ import AddToCart from "../../../Components/AddToCart";
 import QuantityBtn from "../../../Components/CartItemsQty";
 import DeleteIcon from "../../../Components/RemoveFromCart";
 import Loading from "../../../Components/LoadingPage";
+import Pagination from "../../../Components/Pagination";
 import BGImage from "../../../images/products-bg3.png";
 import convertToObj from "../../../utils/arrayToObjectConverter";
+import pageSplitter from "../../../utils/pageSplitter";
+import gsap from "gsap";
 
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
@@ -30,6 +33,7 @@ import {
   Total,
   Delete,
   Quantity,
+  useStyles,
 } from "./styles";
 
 function AllProducts() {
@@ -44,7 +48,9 @@ function AllProducts() {
   const [isClicked, setIsClicked] = useState(false);
   const isClickedRef = useRef(false);
   const [cols, setCols] = useState();
+  const [page, setPage] = useState(1);
   const [addEvent, setAddEvent] = useState();
+  const [showCart, setShowCart] = useState(false);
   const cartRef = useRef();
   const productsRef = useRef();
   const imageRef = useRef();
@@ -64,7 +70,7 @@ function AllProducts() {
   });
 
   function handleColsRWD() {
-    if (window.innerWidth > 1200) {
+    if (window.innerWidth > 1300) {
       setCols(3);
     } else if (window.innerWidth > 780) {
       setCols(2);
@@ -72,6 +78,45 @@ function AllProducts() {
       setCols(1);
     }
   }
+
+  function handleShowCart() {
+    if (cartItems && cartItems.length !== 0) {
+      setShowCart(!showCart);
+    }
+  }
+
+  function showCartAnimation() {
+    const titleRef = cartRef.current.children[0];
+    const timeline = gsap
+      .timeline({ defaults: { duration: 0.5, ease: "power1.inOut" } })
+      .set(titleRef, { position: "fixed" })
+      .addLabel("start");
+    if (showCart) {
+      timeline
+        .to(cartRef.current, {
+          "flex-basis": "25%",
+          "min-width": "160px",
+          padding: "80px 15px 50px",
+        })
+        .to(".cart-items", { x: 0 }, "start")
+        .to(titleRef, { right: "auto" }, "start");
+    } else {
+      timeline
+        .to(cartRef.current, {
+          "flex-basis": "0%",
+          padding: "0px",
+          "min-width": " 0px",
+        })
+        .to(".cart-items", { x: 300 }, "start")
+        .to(titleRef, { right: "0px" }, "start");
+    }
+  }
+
+  useEffect(() => {
+    if (cartRef.current) {
+      showCartAnimation();
+    }
+  }, [showCart]);
 
   useEffect(() => {
     window.addEventListener("resize", handleColsRWD);
@@ -91,6 +136,10 @@ function AllProducts() {
       } else {
         setCartLength(cartItems.length);
       }
+
+      if (cartItems.length === 0 && showCart) {
+        setShowCart(false);
+      }
     }
   }, [cartItems]);
 
@@ -103,7 +152,7 @@ function AllProducts() {
           spacing={20}
           ref={productsRef}
         >
-          {allProducts.map((product) => (
+          {pageSplitter(allProducts, 12)[page - 1].map((product) => (
             <Product id={product.id} key={product.id}>
               <Link
                 to={`/product?id=${product.id}`}
@@ -143,6 +192,8 @@ function AllProducts() {
                         setAddEvent={setAddEvent}
                         setIsClicked={setIsClicked}
                         isClickedRef={isClickedRef}
+                        showCart={showCart}
+                        setShowCart={setShowCart}
                       />
                     </AddToCartIcon>
                   </IconButton>
@@ -151,18 +202,23 @@ function AllProducts() {
             </Product>
           ))}
         </Products>
-        <Cart ref={cartRef}>
+        <Cart ref={cartRef} showCart={showCart}>
+          <Title onClick={handleShowCart}>
+            購物車(
+            {cartItems
+              ? cartLength || cartLength === 0
+                ? cartLength
+                : cartItems.length
+              : 0}
+            )
+          </Title>
           {cartItems ? (
             <>
-              <Title>
-                購物車(
-                {cartLength || cartLength === 0 ? cartLength : cartItems.length}
-                )
-              </Title>
               {cartItems.map((product, index) => (
                 <CartProduct
                   ref={index === cartItems.length - 1 ? cartItemRef : undefined}
                   opacity={isClicked || isClickedRef.current ? 0 : 1}
+                  className="cart-items"
                 >
                   <CardActionArea>
                     {/* <CartImg src={product.image} /> */}
@@ -183,7 +239,7 @@ function AllProducts() {
                         productId={product.id}
                         setIsClicked={setIsClicked}
                         styles={{
-                          color: "#7e7f9a",
+                          color: "#805e6e",
                           "&:hover": { color: "#820933" },
                           width: "28px",
                         }}
@@ -197,9 +253,10 @@ function AllProducts() {
                         productId={product.id}
                         selectStyle={{
                           "font-size": "18px",
-                          color: "#474973",
+                          color: "#805e6e",
                           "font-weight": "bold",
                           width: "65px",
+                          fontFamily: "chalk",
                         }}
                         menuStyle={{
                           "font-size": "16px",
@@ -208,7 +265,7 @@ function AllProducts() {
                         }}
                         containerStyle={{
                           "font-size": "18px",
-                          color: "#474973",
+                          color: "#805e6e",
                         }}
                       />
                     </Quantity>
@@ -217,9 +274,16 @@ function AllProducts() {
               ))}
             </>
           ) : (
-            <Title>購物車({0})</Title>
+            <></>
           )}
         </Cart>
+        <Pagination
+          page={page}
+          setPage={setPage}
+          array={allProducts}
+          itemsPerPage={12}
+          useStyles={useStyles}
+        />
       </Container>
     );
   } else {

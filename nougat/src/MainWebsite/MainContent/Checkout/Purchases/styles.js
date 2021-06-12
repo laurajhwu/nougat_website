@@ -20,6 +20,7 @@ export const Product = styled.div`
 `;
 export const Img = styled.img`
   width: 150px;
+  border-radius: 10px;
 `;
 export const Group = styled.div`
   display: flex;

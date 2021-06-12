@@ -4,18 +4,19 @@ import { Facebook, Google } from "@styled-icons/bootstrap";
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 20px 50px;
-  margin-bottom: 20px;
+  padding: 10px 20px;
+  margin-bottom: 10px;
   & > div {
     width: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: 22px;
     border-radius: 20px;
+    font-family: chalk;
     &:hover {
       cursor: pointer;
-      font-size: 21px;
+      font-size: 23px;
     }
   }
 `;
@@ -34,26 +35,24 @@ export const FbContainer = styled(Container)`
 
 export const GoogleContainer = styled(Container)`
   & > div {
-    background: rgb(216, 81, 64);
+    background: rgb(221, 75, 57);
     background: linear-gradient(
-      90deg,
-      rgba(216, 81, 64, 1) 0%,
-      rgba(228, 135, 65, 1) 50%,
-      rgba(233, 155, 65, 1) 83%,
-      rgba(241, 191, 66, 1) 100%
+      84deg,
+      rgba(221, 75, 57, 1) 0%,
+      rgba(244, 113, 103, 1) 100%
     );
     color: #fff;
   }
 `;
 
 export const FbIcon = styled(Facebook)`
-  width: 45px;
+  width: 42px;
   margin-right: 10px;
   color: #2d68db;
 `;
 
-export const GoogleIcon = styled(Google)`
-  width: 45px;
+export const GoogleIcon = styled.img`
+  width: 42px;
   margin-right: 10px;
   color: #d85140;
 `;

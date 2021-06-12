@@ -32,7 +32,7 @@ export const About = styled.div`
 export const AboutContent = styled.div`
   width: 30%;
   height: 30%;
-  min-width: 400px;
+  min-width: 500px;
   position: absolute;
   background-color: #dddde4;
   opacity: 0.6;
@@ -51,18 +51,19 @@ export const Slogan = styled.div`
   grid-template-columns: repeat(7, 1fr);
   gap: 30px 10px;
   & * {
-    font-size: 28px;
+    font-size: 35px;
     font-style: italic;
-    font-weight: bolder;
+    font-weight: 700;
     color: #820933;
     opacity: 1;
+    font-family: scholar;
   }
 `;
 
 export const MoreInfo = styled.div`
   margin-top: 40px;
-
-  font-size: 24px;
+  font-family: lotus;
+  font-size: 40px;
   padding: 15px 20px;
   border: 5px solid white;
   font-weight: bold;
@@ -135,4 +136,5 @@ export const Product = styled.div`
   border-radius: 50%;
   background-position: center;
   background-size: cover;
+  border: thick double #b2777c;
 `;

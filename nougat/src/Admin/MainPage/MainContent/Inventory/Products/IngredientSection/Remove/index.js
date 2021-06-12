@@ -5,7 +5,7 @@ import { RemoveIcon, RemoveContainer } from "./styles";
 export default function Remove(props) {
   function handleRemove() {
     if (props.noValue) {
-      props.setAddeNew(false);
+      props.setAddNew(false);
     } else {
       const index = props.prodIngredient.findIndex(
         (ingredient) => ingredient.id === props.ingredientId

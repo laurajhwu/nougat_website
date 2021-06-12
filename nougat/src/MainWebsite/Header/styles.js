@@ -19,43 +19,21 @@ export const Nav = styled.nav`
   margin-left: 110px;
   padding: 0 50px;
   border-radius: 50px;
-  background-color: #fcefee;
+  background-color: #efe6e8;
   position: relative;
   & > * {
     margin-left: 50px;
-    font-size: 24px;
+    font-size: 45px;
     font-weight: 700;
     line-height: 26px;
     transition: transform 0.2s;
-    /* color: #7f7594; */
-    background: #7f7594;
-    background: -webkit-linear-gradient(
-      to right,
-      #7f7594 0%,
-      #ad6495 50%,
-      #b05d8c 50%,
-      #7f7594 100%
-    );
-    background: -moz-linear-gradient(
-      to right,
-      #7f7594 0%,
-      #ad6495 50%,
-      #b05d8c 50%,
-      #7f7594 100%
-    );
-    background: linear-gradient(
-      to right,
-      #7f7594 0%,
-      #ad6495 50%,
-      #b05d8c 50%,
-      #7f7594 100%
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #ad6495;
+    font-family: lotus;
   }
 
   & > *:hover {
     transform: scale(1.2) !important;
+    color: #ad6495;
   }
 `;
 
@@ -68,6 +46,7 @@ export const Logo = styled.img`
   position: absolute;
   top: 6px;
   z-index: 2;
+  border: 5px solid #e7dadc;
 `;
 
 export const ContactModal = {
@@ -86,33 +65,12 @@ export const ContactUs = styled.div`
 
 export const CartIcon = styled.i`
   font-size: 28px;
-  &::before {
-    background: #ff9e9e;
-    background: radial-gradient(
-      circle farthest-corner at center center,
-      #ff9e9e 0%,
-      #775a94 50%,
-      #048fba 100%
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+  color: #ad6495;
 `;
 
 export const MemberIcon = styled.i`
   font-size: 32px;
-  &::before {
-    background: #ff9e9e;
-    background: radial-gradient(
-      circle farthest-corner at center center,
-      #ff9e9e 0%,
-      #775a94 50%,
-      #048fba 100%
-    );
-
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+  color: #ad6495;
 `;
 
 export const Bubble = styled.div`

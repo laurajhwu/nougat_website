@@ -14,7 +14,8 @@ export const useStyles = makeStyles((theme) => ({
     "padding-right": 25,
     position: "relative",
     marginRight: "5px;",
-    fontSize: "16px",
+    fontSize: "22px",
+    fontFamily: "chalk",
   },
 }));
 
@@ -23,6 +24,7 @@ export const iconTheme = {
   left: "195px",
   width: "25px",
   color: "#B2777C",
+  top: "7px",
 };
 
 export const Container = styled.div`
@@ -34,6 +36,10 @@ export const Form = styled.form`
   flex-flow: column nowrap;
   justify-content: space-between;
   height: 300px;
+  align-items: center;
+  & > * {
+    align-items: center;
+  }
 `;
 
 const Parent = styled.div`
@@ -51,13 +57,17 @@ export const Password = styled(Parent)`
 `;
 
 export const Label = styled.label`
-  width: 100px;
+  width: 130px;
   color: #c44536;
-  font-size: 19px;
+  font-size: 22px;
   letter-spacing: 3px;
   font-weight: 700;
-  line-height: 19px;
+  line-height: 22px;
   margin-right: 5px;
+  font-family: chalk;
+  display: flex;
+  align-items: flex-end;
+  padding: 6px 0 7px;
 `;
 
 export const Register = styled.button`
@@ -65,7 +75,7 @@ export const Register = styled.button`
   background-color: #99a4ad;
   outline: none;
   border: 3px solid transparent;
-  font-size: 20px;
+  font-size: 22px;
   letter-spacing: 5px;
   padding: 10px 5px 10px 10px;
   color: #f5f5f5;

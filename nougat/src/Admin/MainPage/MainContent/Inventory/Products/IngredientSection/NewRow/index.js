@@ -12,7 +12,7 @@ export default function NewRow(props) {
         props.product.ingredients,
         "id"
       );
-      props.setAddeNew(false);
+      props.setAddNew(false);
       props.prodIngredient.push({
         id: event.target.value,
         amount: originalIngredientsObj[event.target.value]
@@ -25,7 +25,7 @@ export default function NewRow(props) {
 
   function addNewProductIngredient(event) {
     if (event.target.value !== "choose") {
-      props.setAddeNew(false);
+      props.setAddNew(false);
 
       props.setProdIngredient([
         ...props.prodIngredient,
@@ -73,7 +73,7 @@ export default function NewRow(props) {
         <Remove
           prodIngredient={props.prodIngredient}
           setProdIngredient={props.setProdIngredient}
-          setAddeNew={props.setAddeNew}
+          setAddNew={props.setAddNew}
           noValue={true}
         />
       ) : (

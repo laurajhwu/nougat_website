@@ -60,13 +60,6 @@ export default function Ingredients() {
     }
   }
 
-  useEffect(() => {
-    console.log(
-      "🚀 ~ file: index.js ~ line 66 ~ Ingredients ~ deleteItems",
-      deleteItems
-    );
-  }, [deleteItems]);
-
   if (ingredients) {
     return (
       <ProductsTable striped bordered hover responsive variant="dark">

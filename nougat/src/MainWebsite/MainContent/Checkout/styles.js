@@ -11,8 +11,9 @@ export const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   select: {
-    fontSize: "18px",
+    fontSize: "20px",
     paddingTop: "0px",
+    fontFamily: "chalk",
     color: "#025068",
     "&:before": {
       borderColor: "#584573",
@@ -24,22 +25,25 @@ export const useStyles = makeStyles((theme) => ({
   },
   option: {
     backgroundColor: "#dbe6e6",
+    fontFamily: "chalk",
+    fontSize: "20px",
     "&:hover": { backgroundColor: "#8cabbe" },
     "&$selected": {
       backgroundColor: "#8cabbe",
     },
-    fontSize: "18px",
   },
   icon: { fill: "#584573" },
-  label: { fontSize: "18px" },
+  label: { fontSize: "20px" },
   input: {
     "& .MuiInput-underline:after": {
       borderColor: "#025068",
     },
-    "& .MuiInput-underline": {
+    "& .MuiInputBase-input": {
       color: "#025068",
-      "font-size": "18px",
+      "font-size": "20px",
+      fontFamily: "chalk",
     },
+
     flexGrow: 1,
   },
 }));
@@ -52,6 +56,9 @@ export const Container = styled.div`
   padding: 30px 30px;
   position: relative;
   max-height: 1600px;
+  & * {
+    font-family: chalk;
+  }
 
   &::before {
     content: "";
@@ -81,7 +88,7 @@ export const Total = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
   color: #b6174b;
 
@@ -90,7 +97,7 @@ export const Total = styled.div`
     text-align: center;
     line-height: 30px;
     &:last-child {
-      font-size: 30px;
+      font-size: 32px;
       margin-top: 10px;
       font-style: italic;
       padding-bottom: 10px;
@@ -155,7 +162,7 @@ export const Input = styled.input`
   border-color: ${(props) => (props.notFilled ? "red" : "black")};
 `;
 export const Label = styled.label`
-  font-size: 20px;
+  font-size: 22px;
   color: #711509;
   width: 150px;
   font-weight: 700;
@@ -171,18 +178,16 @@ export const Payment = styled.div`
 
 export const CheckoutBtn = styled.div`
   display: flex;
-  /* margin: 0 auto; */
   margin-right: 100px;
   margin-bottom: 60px;
   width: 200px;
-  /* line-height: 50px; */
   height: 200px;
   border-radius: 50%;
   color: #fff;
   background-color: rgba(238, 174, 202, 0.3);
   justify-content: center;
   align-items: center;
-  font-size: 30px;
+  font-size: 34px;
   letter-spacing: 5px;
   border: 30px solid rgba(148, 187, 233, 0.3);
   &:hover {

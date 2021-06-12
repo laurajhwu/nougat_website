@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, Router, Link } from "react-router-dom";
 import { setMinutes, setHours } from "date-fns";
 import Api from "../../../utils/Api";
 import CartItems from "./Purchases/CartItems";
@@ -53,7 +53,21 @@ function CheckOut() {
   const isClicked = useRef(false);
   const classes = useStyles();
   const history = useHistory();
-  const checkoutAlert = useConfirmCheckout("會員頁面可瀏覽您的訂單");
+  const checkoutAlert = useConfirmCheckout((swal) => (
+    <>
+      <span
+        style={{ color: "#AC7B7D", "text-decoration": "underline" }}
+        onClick={() => {
+          swal.close();
+          history.push("/member");
+        }}
+        onMouseEnter={(event) => (event.target.style.cursor = "pointer")}
+      >
+        會員頁面
+      </span>
+      可瀏覽您的訂單
+    </>
+  ));
   const member = useSelector((state) => state.member);
   const dateSettings = useSelector((state) => state.dateTime).date;
   const timeSettings = useSelector((state) => state.dateTime).time;

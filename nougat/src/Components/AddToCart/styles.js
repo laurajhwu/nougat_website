@@ -25,14 +25,15 @@ export const CartDisableIcon = styled(CartX)`
 export const CartButton = styled.div`
   outline: none;
   padding-left: 5px;
-  font-size: 22px;
-  letter-spacing: 5px;
+  padding: 5px 5px 5px 0;
+  letter-spacing: 7px;
   line-height: 40px;
   background-color: transparent;
   border: 3px solid #99a4ad;
   color: #b2777c;
   transition: all 0.5s;
   text-align: center;
+  border-radius: 5px;
   &:hover {
     background-color: #99a4ad;
     border: 3px solid transparent;

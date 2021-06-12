@@ -31,11 +31,22 @@ if (window.location.pathname === "/cart") {
   }));
 } else {
   useStyles = makeStyles((theme) => ({
-    option: {
-      backgroundColor: "#dbe6e6",
-      "&:hover": {
-        backgroundColor: "#f1f9f6",
+    select: {
+      "&:before": {
+        borderColor: "#9d858d",
       },
+      "&:after": {
+        borderColor: "#bba0b2",
+      },
+    },
+    option: {
+      color: "#710627",
+      backgroundColor: "#bba0b2",
+      "&:hover": {
+        backgroundColor: "#e7dadc",
+      },
+      fontFamily: "chalk",
+      "& *": {},
     },
   }));
 }

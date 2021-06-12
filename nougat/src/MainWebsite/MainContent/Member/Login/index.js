@@ -7,7 +7,14 @@ import LoginAccount from "./ExistingAccount";
 import SocialLogin from "./SocialLogin";
 import { useError, useSuccess } from "../../../../Hooks/useAlert";
 
-import { Container, Email, Existing, Create, SocialMedia } from "./styles";
+import {
+  Container,
+  Email,
+  Existing,
+  Create,
+  SocialMedia,
+  BtnContainer,
+} from "./styles";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -18,15 +25,18 @@ function Login() {
   const history = useHistory();
   const [exist, setExist] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [selected, setSelected] = useState("login");
   const successAlert = useSuccess("恭喜您", "驗證成功！");
   const errorAlert = useError("驗證失敗", () => history.push("/member"));
 
   function handleClickCreate() {
     setExist(false);
+    setSelected("register");
   }
 
   function handleClickExist() {
     setExist(true);
+    setSelected("login");
   }
 
   useEffect(() => {
@@ -54,18 +64,27 @@ function Login() {
 
   return (
     <Container isLoading={isLoading}>
+      <SocialMedia>
+        <SocialLogin setIsLoading={setIsLoading} />
+      </SocialMedia>
       <Email>
         {exist ? (
           <LoginAccount setIsLoading={setIsLoading} />
         ) : (
           <CreateAccount />
         )}
-        <Existing onClick={handleClickExist}>會員</Existing>
-        <Create onClick={handleClickCreate}>註冊</Create>
+        <BtnContainer>
+          <Existing onClick={handleClickExist} selected={selected === "login"}>
+            會員
+          </Existing>
+          <Create
+            onClick={handleClickCreate}
+            selected={selected === "register"}
+          >
+            註冊
+          </Create>
+        </BtnContainer>
       </Email>
-      <SocialMedia>
-        <SocialLogin setIsLoading={setIsLoading} />
-      </SocialMedia>
     </Container>
   );
 }

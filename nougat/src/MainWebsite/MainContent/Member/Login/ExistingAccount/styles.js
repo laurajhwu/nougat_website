@@ -14,7 +14,8 @@ export const useStyles = makeStyles((theme) => ({
     "padding-right": 25,
     position: "relative",
     marginRight: "5px;",
-    fontSize: "16px",
+    fontSize: "22px",
+    fontFamily: "chalk",
   },
 }));
 
@@ -23,6 +24,7 @@ export const iconTheme = {
   left: "225px",
   width: "25px",
   color: "#B2777C",
+  top: "7px",
 };
 
 export const Container = styled.div`
@@ -33,7 +35,11 @@ export const Form = styled.form`
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
+  align-items: center;
   height: 200px;
+  & > * {
+    align-items: center;
+  }
 `;
 
 export const Email = styled.div`
@@ -48,20 +54,24 @@ export const Password = styled.div`
   }
 `;
 export const Label = styled.label`
-  width: 50px;
+  width: 100px;
   color: #c44536;
-  font-size: 19px;
+  font-size: 22px;
   letter-spacing: 3px;
   font-weight: 700;
-  line-height: 19px;
+  line-height: 22px;
   margin-right: 5px;
+  font-family: chalk;
+  display: flex;
+  align-items: flex-end;
+  padding: 6px 0 7px;
 `;
 export const Register = styled.button`
   align-self: center;
   background-color: #99a4ad;
   outline: none;
   border: 3px solid transparent;
-  font-size: 20px;
+  font-size: 22px;
   letter-spacing: 5px;
   padding: 10px 5px 10px 10px;
   color: #f5f5f5;
