@@ -3,6 +3,25 @@ import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
+import { makeStyles } from "@material-ui/core/styles";
+
+export const useStyles = makeStyles((theme) => ({
+  pagination: {
+    display: "flex",
+    justifyContent: "center",
+    margin: 20,
+    // position: "absolute",
+    // top: 140,
+    // left: "20vw",
+    padding: 10,
+    width: "100%",
+    "& .MuiPaginationItem-root": {
+      fontSize: 20,
+      color: "#820933",
+      fontFamily: "chalk",
+    },
+  },
+}));
 
 export const Container = styled.div`
   display: flex;
@@ -11,8 +30,9 @@ export const Container = styled.div`
   top: 0;
   left: 0;
   margin: 0 auto;
-  padding: 40px 100px 100px;
+  padding: 20px 100px 100px;
   justify-content: center;
+  flex-flow: row wrap;
   &::before {
     content: "";
     position: absolute;
@@ -34,9 +54,9 @@ export const Products = styled(GridList)`
   flex-basis: 75%;
   /* max-width: 900px; */
   min-width: 250px;
-  max-height: 1050px;
-  height: 600px !important;
-  justify-content: center;
+  /* max-height: 1050px; */
+  height: 500px !important;
+  /* justify-content: center; */
   & * {
     font-family: chalk;
   }
@@ -115,7 +135,7 @@ export const Img = styled.img`
 `;
 
 export const ProductInfo = styled(GridListTileBar)`
-  padding: 5px 0px 10px;
+  padding: 15px 0px;
   &:hover {
     transform: scale(1.01);
   }

@@ -8,7 +8,7 @@ import { Img, File } from "./styles";
 
 export default function Edit(props) {
   const product = props.product;
-  const [prodIngredient, setProdIngredient] = useState(copyIngredients());
+  const [prodIngredient, setProdIngredient] = useState();
   const [invalid, setInvalid] = useState({});
   const [changes, setChanges] = useState({});
   const [image, setImage] = useState(product.image);
@@ -167,6 +167,12 @@ export default function Edit(props) {
       submitEdit();
     }
   }, [invalid]);
+
+  useEffect(() => {
+    if (product) {
+      setProdIngredient(copyIngredients());
+    }
+  }, [product]);
 
   if (prodIngredient) {
     return (

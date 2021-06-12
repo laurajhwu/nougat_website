@@ -4,7 +4,6 @@ export const Container = styled.div`
   display: flex;
   margin: 100px auto;
   justify-content: center;
-  /* align-items: center; */
   width: 100%;
   height: 100%;
   min-width: 400px;
@@ -42,7 +41,6 @@ const BtnStyle = styled.div`
   letter-spacing: 20px;
   line-height: 50px;
   border: 5px solid #f5f5f5;
-  color: #99a4ad;
   font-weight: 700;
   font-family: lotus;
   &:hover {
@@ -52,9 +50,13 @@ const BtnStyle = styled.div`
   }
 `;
 
-export const Create = styled(BtnStyle)``;
+export const Create = styled(BtnStyle)`
+  color: ${(props) => (props.selected ? "#b2777c" : "#99a4ad")};
+`;
 
-export const Existing = styled(BtnStyle)``;
+export const Existing = styled(BtnStyle)`
+  color: ${(props) => (props.selected ? "#b2777c" : "#99a4ad")};
+`;
 
 export const BtnContainer = styled.div`
   position: absolute;

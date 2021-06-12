@@ -2,7 +2,7 @@ import { createGlobalStyle } from "styled-components";
 import OzCaramel from "./fonts/OzCaramel.ttf";
 import Marshmallow from "./fonts/HanyiSentyMarshmallow.ttf";
 import Chalk from "./fonts/HanyiSentyChalk.ttf";
-import Tea from "./fonts/SentyTEA-20190904.ttf";
+import Scholar from "./fonts/HanyiSentyScholar.ttf";
 import Lotus from "./fonts/HanyiSentyLotus.ttf";
 
 const FontStyles = createGlobalStyle`
@@ -21,8 +21,8 @@ const FontStyles = createGlobalStyle`
 }
 
 @font-face {
-  font-family: 'tea';
-  src: url(${Tea})    
+  font-family: 'scholar';
+  src: url(${Scholar})    
 }
 
 @font-face {

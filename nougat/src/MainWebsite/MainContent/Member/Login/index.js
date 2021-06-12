@@ -25,15 +25,18 @@ function Login() {
   const history = useHistory();
   const [exist, setExist] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [selected, setSelected] = useState("login");
   const successAlert = useSuccess("恭喜您", "驗證成功！");
   const errorAlert = useError("驗證失敗", () => history.push("/member"));
 
   function handleClickCreate() {
     setExist(false);
+    setSelected("register");
   }
 
   function handleClickExist() {
     setExist(true);
+    setSelected("login");
   }
 
   useEffect(() => {
@@ -71,8 +74,15 @@ function Login() {
           <CreateAccount />
         )}
         <BtnContainer>
-          <Existing onClick={handleClickExist}>會員</Existing>
-          <Create onClick={handleClickCreate}>註冊</Create>
+          <Existing onClick={handleClickExist} selected={selected === "login"}>
+            會員
+          </Existing>
+          <Create
+            onClick={handleClickCreate}
+            selected={selected === "register"}
+          >
+            註冊
+          </Create>
         </BtnContainer>
       </Email>
     </Container>

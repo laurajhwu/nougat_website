@@ -6,8 +6,11 @@ import AddToCart from "../../../Components/AddToCart";
 import QuantityBtn from "../../../Components/CartItemsQty";
 import DeleteIcon from "../../../Components/RemoveFromCart";
 import Loading from "../../../Components/LoadingPage";
+import Pagination from "../../../Components/Pagination";
 import BGImage from "../../../images/products-bg3.png";
 import convertToObj from "../../../utils/arrayToObjectConverter";
+import pageSplitter from "../../../utils/pageSplitter";
+import gsap from "gsap";
 
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
@@ -30,8 +33,8 @@ import {
   Total,
   Delete,
   Quantity,
+  useStyles,
 } from "./styles";
-import gsap from "gsap";
 
 function AllProducts() {
   const allProducts = useSelector((state) => state.products).sort(
@@ -45,6 +48,7 @@ function AllProducts() {
   const [isClicked, setIsClicked] = useState(false);
   const isClickedRef = useRef(false);
   const [cols, setCols] = useState();
+  const [page, setPage] = useState(1);
   const [addEvent, setAddEvent] = useState();
   const [showCart, setShowCart] = useState(false);
   const cartRef = useRef();
@@ -148,7 +152,7 @@ function AllProducts() {
           spacing={20}
           ref={productsRef}
         >
-          {allProducts.map((product) => (
+          {pageSplitter(allProducts, 12)[page - 1].map((product) => (
             <Product id={product.id} key={product.id}>
               <Link
                 to={`/product?id=${product.id}`}
@@ -273,6 +277,13 @@ function AllProducts() {
             <></>
           )}
         </Cart>
+        <Pagination
+          page={page}
+          setPage={setPage}
+          array={allProducts}
+          itemsPerPage={12}
+          useStyles={useStyles}
+        />
       </Container>
     );
   } else {

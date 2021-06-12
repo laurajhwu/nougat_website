@@ -235,7 +235,7 @@ export default function LandingPage() {
             <Slogan ref={sloganRef}>
               <div>用</div>
               <div>心</div>
-              <div>の</div>
+              <div>的</div>
               <div>點</div>
               <div>心</div>
               <div></div>
@@ -244,7 +244,7 @@ export default function LandingPage() {
               <div>嚐</div>
               <div>手</div>
               <div>工</div>
-              <div>の</div>
+              <div>的</div>
               <div>清</div>
               <div>新</div>
             </Slogan>

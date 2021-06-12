@@ -8,7 +8,9 @@ export default function ContactUs(props) {
   const { handleClose } = props;
   return (
     <>
-      <Modal.Header style={{ color: "#00B900", "font-size": "28px" }}>
+      <Modal.Header
+        style={{ color: "#00B900", "font-size": "28px", fontFamily: "chalk" }}
+      >
         加入官方Line
       </Modal.Header>
       <Modal.Content
@@ -17,7 +19,7 @@ export default function ContactUs(props) {
           background: "rgb(0,185,0)",
           background:
             "linear-gradient(156deg, rgba(0,185,0,1) 0%, rgba(134,230,178,1) 100%)",
-          "font-size": "18px",
+          "font-size": "20px",
         }}
       >
         <Image size="small" src={LineQR} wrapped />
@@ -27,7 +29,8 @@ export default function ContactUs(props) {
             display: "flex",
             "flex-flow": "column nowrap",
             margin: "auto 0",
-            "font-size": "16px",
+            "font-size": "18px",
+            fontFamily: "chalk",
           }}
         >
           <Header
@@ -36,11 +39,12 @@ export default function ContactUs(props) {
               "border-bottom": "3px solid white",
               "padding-bottom": "5px",
               "margin-top": "5px",
+              fontFamily: "chalk",
             }}
           >
-            或搜尋Line ID
+            搜尋Line ID
           </Header>
-          <p>@921gopso</p>
+          <p style={{ fontFamily: "chalk" }}>@921gopso</p>
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
@@ -50,6 +54,7 @@ export default function ContactUs(props) {
           icon="checkmark"
           onClick={handleClose}
           positive
+          style={{ fontFamily: "chalk" }}
         />
       </Modal.Actions>
     </>
