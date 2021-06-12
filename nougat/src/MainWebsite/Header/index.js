@@ -2,12 +2,13 @@ import React, { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { renderPage } from "../../redux/actions/renderPage";
-// import LogoIcon from "../../images/logo.png";
 import LogoIcon from "../../images/logo2.png";
 import { gsap } from "gsap";
 import ContactInfo from "./ContactUs";
 import { Modal } from "semantic-ui-react";
 import { useError } from "../../Hooks/useAlert";
+import UseAnimations from "react-useanimations";
+import menu3 from "react-useanimations/lib/menu3";
 
 import {
   Nav,
@@ -18,15 +19,20 @@ import {
   ContactUs,
   ContactModal,
   Bubble,
+  Hamburger,
 } from "./styles";
+import { GifSharp } from "@material-ui/icons";
 
 function Header() {
   const dispatch = useDispatch();
   const member = useSelector((state) => state.member);
   const qtyDiff = useSelector((state) => state.qtyDiff);
   const [open, setOpen] = useState(false);
+  const [showNav, setShowNav] = useState(false);
+  const [vw, setVw] = useState(window.innerWidth);
   const logoRef = useRef();
   const navRef = useRef();
+  const init = useRef(true);
   const errorAlert = useError("請先登入！");
 
   function clickMemberPage() {
@@ -48,11 +54,59 @@ function Header() {
     );
   }
 
+  function hamburgerOnClick() {
+    setShowNav(!showNav);
+  }
+
+  function handleNavAnimation() {
+    const timeline = gsap.timeline({ defaults: { ease: "power1.inOut" } });
+    if (showNav) {
+      timeline
+        .to(".products-nav, .contact-nav", { display: "block", duration: 0.1 })
+        .to(".products-nav", { opacity: 1, duration: 0.3 })
+        .to(".contact-nav", { opacity: 1, duration: 0.3 });
+    } else {
+      timeline.to(".products-nav, .contact-nav", {
+        display: "none",
+        opacity: 0,
+        duration: 0.1,
+      });
+    }
+  }
+
+  function handleWidthChange() {
+    setVw(window.innerWidth);
+  }
+
   useEffect(() => {
     if (logoRef.current && window.location.pathname === "/") {
       headerAnimation();
     }
   }, [logoRef]);
+
+  useEffect(() => {
+    if (!init.current) {
+      if (vw < 760) {
+        gsap.set(".products-nav, .contact-nav", {
+          display: "none",
+          opacity: 0,
+        });
+        handleNavAnimation();
+      } else {
+        gsap.set(".products-nav, .contact-nav", {
+          display: "block",
+          opacity: 1,
+        });
+      }
+    }
+  }, [showNav, vw]);
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWidthChange);
+    init.current = false;
+
+    return () => window.removeEventListener("resize", handleWidthChange);
+  }, []);
 
   return (
     <Container>
@@ -61,13 +115,29 @@ function Header() {
       </Link>
       <Nav ref={navRef}>
         {/* <Link to="/">首頁</Link> */}
-        <Link to="/products">所有產品</Link>
+
+        <UseAnimations
+          animation={menu3}
+          size={40}
+          strokeColor="#ad6495"
+          reverse={showNav}
+          onClick={hamburgerOnClick}
+          render={(eventProps, animationProps) => (
+            <Hamburger {...eventProps}>
+              <div {...animationProps} />
+            </Hamburger>
+          )}
+        />
+
+        <Link to="/products" className="products-nav">
+          所有產品
+        </Link>
 
         <Modal
           onClose={() => setOpen(false)}
           onOpen={() => setOpen(true)}
           open={open}
-          trigger={<ContactUs>聯絡我們</ContactUs>}
+          trigger={<ContactUs className="contact-nav">聯絡我們</ContactUs>}
           centered={false}
           size="mini"
           style={ContactModal}
@@ -81,8 +151,6 @@ function Header() {
         >
           <ContactInfo handleClose={() => setOpen(false)} />
         </Modal>
-
-        {/* <Link to="/event">特別活動</Link> */}
         <Link to="/member" onClick={clickMemberPage}>
           <MemberIcon className="fas fa-user-circle" />
         </Link>
