@@ -68,6 +68,32 @@ export const Nav = styled.nav`
         border-radius: 0 0 20px 20px;
       }
     }
+
+    @media only screen and (max-width: 500px) {
+      &.products-nav,
+      &.contact-nav {
+        left: 20px;
+      }
+
+      &.products-nav {
+        top: 50px;
+      }
+      &.contact-nav {
+        top: 110px;
+      }
+
+      margin-left: 20px;
+      &:first-child {
+        margin-left: 50px;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 500px) {
+    height: 50px;
+    margin-left: 50px;
+    padding: 0 30px;
+    width: auto;
   }
 
   & > *:hover {
@@ -86,6 +112,11 @@ export const Logo = styled.img`
   top: 6px;
   z-index: 2;
   border: 5px solid #e7dadc;
+
+  @media only screen and (max-width: 500px) {
+    width: 120px;
+    top: 15px;
+  }
 `;
 
 export const ContactModal = {

@@ -66,11 +66,16 @@ function Header() {
         .to(".products-nav", { opacity: 1, duration: 0.3 })
         .to(".contact-nav", { opacity: 1, duration: 0.3 });
     } else {
-      timeline.to(".products-nav, .contact-nav", {
-        display: "none",
-        opacity: 0,
-        duration: 0.1,
-      });
+      timeline
+        .to(".products-nav, .contact-nav", {
+          display: "none",
+          opacity: 0,
+          duration: 0.5,
+        })
+        .to(".products-nav, .contact-nav", {
+          display: "none",
+          duration: 0.1,
+        });
     }
   }
 
@@ -86,11 +91,12 @@ function Header() {
 
   useEffect(() => {
     if (!init.current) {
-      if (vw < 760) {
+      if (vw === 760) {
         gsap.set(".products-nav, .contact-nav", {
           display: "none",
           opacity: 0,
         });
+      } else if (vw < 760) {
         handleNavAnimation();
       } else {
         gsap.set(".products-nav, .contact-nav", {
