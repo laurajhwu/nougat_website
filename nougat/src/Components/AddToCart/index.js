@@ -58,9 +58,9 @@ export default function AddToCart(props) {
             if (path === "/products") {
               setAddEvent(product.id);
               setIsClicked(true);
-              if (!showCart) {
-                setShowCart(true);
-              }
+              // if (!showCart) {
+              //   setShowCart(true);
+              // }
             } else {
               addToCartAnimation();
             }

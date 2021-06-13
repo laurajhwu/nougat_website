@@ -6,20 +6,28 @@ export const Add = styled.div`
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
   transition: all 0.5s;
   &:hover {
-    cursor: pointer;
     transform: scale(1.1);
     color: #c44536;
   }
 `;
 
 export const CartPlusIcon = styled(CartPlus)`
-  width: 30px;
+  width: 28px;
+  @media only screen and (max-width: 740px) {
+    width: 25px;
+  }
 `;
 export const CartPlusFillIcon = styled(CartPlusFill)`
-  width: 30px;
+  width: 28px;
+  @media only screen and (max-width: 740px) {
+    width: 25px;
+  }
 `;
 export const CartDisableIcon = styled(CartX)`
-  width: 30px;
+  width: 28px;
+  @media only screen and (max-width: 740px) {
+    width: 25px;
+  }
 `;
 
 export const CartButton = styled.div`
@@ -38,6 +46,6 @@ export const CartButton = styled.div`
     background-color: #99a4ad;
     border: 3px solid transparent;
     color: #f5f5f5;
-    cursor: pointer;
+    cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   }
 `;

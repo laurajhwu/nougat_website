@@ -29,4 +29,8 @@ export const TitleAdded = styled.div`
   letter-spacing: 5px;
   color: #9d858d;
   font-family: lotus;
+
+  @media screen and (max-width: 760px) {
+    font-size: 30px;
+  }
 `;

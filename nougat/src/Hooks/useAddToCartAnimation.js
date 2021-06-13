@@ -5,7 +5,7 @@ import cartTitleAnimation from "../utils/shakeAnimation";
 
 gsap.registerPlugin(ScrollToPlugin);
 
-export default function useAddToCartAnimation(event, refs) {
+export default function useAddToCartAnimation(event, refs, showCart) {
   const ref = useCallback(
     (node) => {
       if (node !== null && refs.imageRef.current) {
@@ -40,6 +40,7 @@ export default function useAddToCartAnimation(event, refs) {
             opacity: 0,
             duration: 0.7,
           })
+          .add(showCart, "-=0.25")
           .add(cartTitleAnimation(cartRef.children[0]), "-=0.25")
           .to(cartRef, {
             duration: 0.3,
