@@ -15,9 +15,16 @@ export const SearchIcon = styled(GlobeSearch)`
 `;
 
 export const SearchInput = styled(TextField)`
-  width: 400px;
+  width: 100%;
+
+  &.MuiFormControl-root {
+    margin: 0 10px 0 0;
+    min-width: 200px;
+    max-width: 350px;
+  }
   & ${".MuiOutlinedInput-root.Mui-focused fieldset"} {
     border-color: #420039;
+    margin-left: 10px;
   }
   & ${"label.Mui-focused"} {
     color: #420039;

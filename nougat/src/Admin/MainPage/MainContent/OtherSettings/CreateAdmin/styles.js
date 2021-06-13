@@ -5,8 +5,8 @@ export const Container = styled.form`
   display: flex;
   flex-direction: column;
   /* margin-top: 150px; */
-  padding: 0px 200px 0 100px;
-  border-right: 1px solid #99a4ad;
+  padding: 0px 100px;
+  /* border-right: 1px solid #99a4ad; */
 `;
 
 export const Title = styled.div`

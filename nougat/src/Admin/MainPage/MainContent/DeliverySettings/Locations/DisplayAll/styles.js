@@ -13,10 +13,20 @@ export const Locations = styled(List)`
 
 export const Address = styled(ListItemText)`
   opacity: ${(props) => (props.active ? 1 : 0.7)};
+  & ${".MuiListItemText-primary"} {
+    width: auto;
+    @media screen and (max-width: 1200px) {
+      width: 200px;
+    }
+
+    @media screen and (max-width: 1000px) {
+      width: 150px;
+    }
+  }
 `;
 
 export const Action = styled(ListItemSecondaryAction)`
-  min-width: 100px;
+  width: 100px;
   margin-left: 10px;
 `;
 

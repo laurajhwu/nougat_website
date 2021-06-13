@@ -97,7 +97,7 @@ export default function OrdersSettings() {
                   <TableCell align="center">
                     <Status order={order} />
                   </TableCell>
-                  <TableCell align="center">
+                  <TableCell align="center" style={{ width: "210px" }}>
                     <Time order={order} />
                   </TableCell>
                   <TableCell align="left">

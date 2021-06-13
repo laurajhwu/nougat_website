@@ -59,6 +59,10 @@ export const Times = styled.div`
   grid-template-columns: repeat(10, 1fr);
   outline: 1px solid black;
   padding: 10px 10px;
+
+  @media screen and (max-width: 1100px) {
+    grid-template-columns: repeat(7, 1fr);
+  }
 `;
 
 export const Time = styled.div`

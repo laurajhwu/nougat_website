@@ -125,7 +125,7 @@ export default function Filter(props) {
           <FilterIcon />
           <FilterOptions selected="" onChange={onChangeFilter} filter={filter}>
             <FilterOption value="">全部</FilterOption>
-            <FilterOption value="email">信箱</FilterOption>
+            {/* <FilterOption value="email">信箱</FilterOption> */}
             <FilterOption value="personal_info line_id">Line ID</FilterOption>
             <FilterOption value="timestamp">下單日期</FilterOption>
             <FilterOption value="order_info delivery_time">
