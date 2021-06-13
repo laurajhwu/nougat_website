@@ -19,15 +19,22 @@ export const Container = styled.div`
 
 export const ProfilePage = styled.div`
   margin-top: 30px;
-  min-width: 450px;
   width: auto;
   background-color: rgba(255, 255, 255, 0.2);
   padding: 20px;
   border-radius: 20px;
+  @media only screen and (max-width: 560px) {
+    font-size: 20px;
+    line-height: 40px;
+    letter-spacing: 0px;
+  }
 `;
 
 export const Picture = styled.img`
   width: 200px;
+  @media only screen and (max-width: 560px) {
+    width: 150px;
+  }
 `;
 
 export const Info = styled.div`
@@ -46,12 +53,23 @@ export const Info = styled.div`
       color: #9d858d;
       font-family: chalk;
       vertical-align: middle;
+
+      @media only screen and (max-width: 560px) {
+        width: 130px;
+        letter-spacing: 1px;
+      }
     }
     &:last-child {
       color: #37323e;
       font-family: chalk;
       flex-grow: 1;
     }
+  }
+
+  @media only screen and (max-width: 560px) {
+    font-size: 20px;
+    line-height: 40px;
+    letter-spacing: 0px;
   }
 `;
 
@@ -74,5 +92,12 @@ export const Logout = styled.div`
     border: 3px solid #99a4ad;
     color: #b2777c;
     cursor: pointer;
+  }
+
+  @media only screen and (max-width: 560px) {
+    padding-left: 15px;
+    font-size: 40px;
+    letter-spacing: 15px;
+    line-height: 40px;
   }
 `;

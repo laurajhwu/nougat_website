@@ -12,6 +12,17 @@ export const Container = styled.header`
   z-index: 1000;
 `;
 
+export const Hamburger = styled.div`
+  display: none;
+
+  @media only screen and (max-width: 760px) {
+    display: unset;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+`;
+
 export const Nav = styled.nav`
   height: 70px;
   display: flex;
@@ -25,10 +36,75 @@ export const Nav = styled.nav`
     margin-left: 50px;
     font-size: 45px;
     font-weight: 700;
-    line-height: 26px;
     transition: transform 0.2s;
     color: #ad6495;
     font-family: lotus;
+    &.products-nav,
+    &.contact-nav {
+      margin-left: 50px;
+      font-size: 45px;
+      font-weight: 700;
+      transition: transform 0.2s;
+      color: #ad6495;
+      font-family: lotus;
+      display: block;
+      opacity: 1;
+    }
+
+    @media only screen and (max-width: 960px) {
+      font-size: 40px;
+    }
+    @media only screen and (max-width: 760px) {
+      &.products-nav,
+      &.contact-nav {
+        font-size: 40px;
+        position: absolute;
+        background-color: #efe6e8;
+        line-height: 60px;
+        padding: 0 10px;
+        left: 0px;
+        display: none;
+        opacity: 0;
+        &:hover {
+          transform: scale(1) !important;
+          text-decoration: underline;
+        }
+      }
+
+      &.products-nav {
+        top: 70px;
+      }
+      &.contact-nav {
+        top: 130px;
+        border-radius: 0 0 20px 20px;
+      }
+    }
+
+    @media only screen and (max-width: 500px) {
+      &.products-nav,
+      &.contact-nav {
+        left: 20px;
+      }
+
+      &.products-nav {
+        top: 50px;
+      }
+      &.contact-nav {
+        top: 110px;
+      }
+
+      margin-left: 20px;
+      &:first-child {
+        margin-left: 50px;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 500px) {
+    height: 50px;
+    margin-left: 50px;
+    padding: 0 30px;
+    width: auto;
   }
 
   & > *:hover {
@@ -47,6 +123,11 @@ export const Logo = styled.img`
   top: 6px;
   z-index: 2;
   border: 5px solid #e7dadc;
+
+  @media only screen and (max-width: 500px) {
+    width: 120px;
+    top: 15px;
+  }
 `;
 
 export const ContactModal = {
@@ -66,18 +147,43 @@ export const ContactUs = styled.div`
 export const CartIcon = styled.i`
   font-size: 28px;
   color: #ad6495;
+  @media only screen and (max-width: 960px) {
+    font-size: 26px;
+  }
 `;
 
 export const MemberIcon = styled.i`
   font-size: 32px;
   color: #ad6495;
+  @media only screen and (max-width: 960px) {
+    font-size: 30px;
+  }
 `;
 
 export const Bubble = styled.div`
   position: absolute;
-  font-size: 20px;
-  background-color: #bba0b2;
-  color: #fff;
+  font-size: 30px;
+  background: #ff9e9e;
+  background: -webkit-linear-gradient(
+    to top right,
+    #ff9e9e 0%,
+    #775a94 50%,
+    #048fba 100%
+  );
+  background: -moz-linear-gradient(
+    to top right,
+    #ff9e9e 0%,
+    #775a94 50%,
+    #048fba 100%
+  );
+  background: linear-gradient(
+    to top right,
+    #ff9e9e 0%,
+    #775a94 50%,
+    #048fba 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   top: 5px;
   right: 2px;
   width: 40px;

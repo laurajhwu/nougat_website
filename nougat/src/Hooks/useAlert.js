@@ -154,13 +154,31 @@ export function useError(message, func = () => {}) {
 }
 
 export function useAddedAlert() {
+  const width = () => {
+    if (window.innerWidth > 760) {
+      return "400px";
+    } else {
+      return "200px";
+    }
+  };
+
+  const text = () => {
+    if (window.innerWidth > 760) {
+      return "已加入購物車";
+    } else {
+      return "已加入";
+    }
+  };
   return MySwal.mixin({
     toast: true,
     icon: "success",
-    title: <TitleAdded>已加入購物車</TitleAdded>,
+    title: <TitleAdded>{text()}</TitleAdded>,
     animation: true,
     position: "top-right",
     showConfirmButton: false,
     timer: 2000,
+    heightAuto: false,
+    width: width(),
+    background: "rgba(246, 244, 244, 0.5)",
   });
 }

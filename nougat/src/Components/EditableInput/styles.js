@@ -24,9 +24,9 @@ export const useStyles = makeStyles((theme) => ({
     position: "relative",
     // marginRight: "5px;",
     overflow: "visible",
-    fontSize: "24px",
+    fontSize: window.innerWidth <= 560 ? "20px" : "24px",
     fontFamily: "chalk",
-    lineHeight: " 30px",
+    lineHeight: window.innerWidth <= 560 ? "25px" : "30px",
   },
 }));
 

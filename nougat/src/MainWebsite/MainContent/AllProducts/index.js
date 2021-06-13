@@ -51,6 +51,8 @@ function AllProducts() {
   const [page, setPage] = useState(1);
   const [addEvent, setAddEvent] = useState();
   const [showCart, setShowCart] = useState(false);
+  const [disableCart, setDisableCart] = useState(false);
+  const [vw, setVw] = useState(window.innerWidth);
   const cartRef = useRef();
   const productsRef = useRef();
   const imageRef = useRef();
@@ -63,40 +65,54 @@ function AllProducts() {
     },
     [addEvent]
   );
-  const cartItemRef = useAddToCartAnimation(addEvent, {
-    cartRef: cartRef.current,
-    productsRef: productsRef.current,
-    imageRef: imageRef,
-  });
+  const cartItemRef = useAddToCartAnimation(
+    addEvent,
+    {
+      cartRef: cartRef.current,
+      productsRef: productsRef.current,
+      imageRef: imageRef,
+    },
+    () => (showCart ? "" : setShowCart(true))
+  );
 
   function handleColsRWD() {
     if (window.innerWidth > 1300) {
       setCols(3);
-    } else if (window.innerWidth > 780) {
-      setCols(2);
     } else {
-      setCols(1);
+      setCols(2);
+    }
+    setVw(window.innerWidth);
+
+    if (window.innerWidth <= 620) {
+      setDisableCart(true);
+    } else {
+      setDisableCart(false);
     }
   }
 
   function handleShowCart() {
-    if (cartItems && cartItems.length !== 0) {
-      setShowCart(!showCart);
+    if (!disableCart) {
+      if (cartItems && cartItems.length !== 0) {
+        setShowCart(!showCart);
+      }
     }
   }
 
   function showCartAnimation() {
     const titleRef = cartRef.current.children[0];
     const timeline = gsap
-      .timeline({ defaults: { duration: 0.5, ease: "power1.inOut" } })
+      .timeline({
+        defaults: { duration: 0.5, ease: "power1.inOut" },
+      })
       .set(titleRef, { position: "fixed" })
       .addLabel("start");
-    if (showCart) {
+    if (showCart && !disableCart) {
       timeline
         .to(cartRef.current, {
           "flex-basis": "25%",
           "min-width": "160px",
-          padding: "80px 15px 50px",
+          padding: "60px 0px 0 0px",
+          height: "500px",
         })
         .to(".cart-items", { x: 0 }, "start")
         .to(titleRef, { right: "auto" }, "start");
@@ -106,9 +122,10 @@ function AllProducts() {
           "flex-basis": "0%",
           padding: "0px",
           "min-width": " 0px",
+          height: "0px",
         })
         .to(".cart-items", { x: 300 }, "start")
-        .to(titleRef, { right: "0px" }, "start");
+        .to(titleRef, { right: disableCart ? "5px" : "0px" }, "start");
     }
   }
 
@@ -116,7 +133,7 @@ function AllProducts() {
     if (cartRef.current) {
       showCartAnimation();
     }
-  }, [showCart]);
+  }, [showCart, disableCart]);
 
   useEffect(() => {
     window.addEventListener("resize", handleColsRWD);
@@ -182,7 +199,23 @@ function AllProducts() {
                   <Price>{`$${product.price} / ${product.unit}`}</Price>
                 }
                 actionIcon={
-                  <IconButton>
+                  <IconButton
+                    style={{
+                      padding: vw <= 740 ? "7px" : "10px",
+                      ...(vw <= 740
+                        ? {
+                            position: "absolute",
+                            right: "10px",
+                            bottom: "5px",
+                          }
+                        : {
+                            position: "absolute",
+                            right: "5px",
+                            bottom: "5px",
+                          }),
+                    }}
+                    disabled={product.stock === 0}
+                  >
                     <AddToCartIcon>
                       <AddToCart
                         productId={product.id}
@@ -221,8 +254,7 @@ function AllProducts() {
                   className="cart-items"
                 >
                   <CardActionArea>
-                    {/* <CartImg src={product.image} /> */}
-                    <CardContent>
+                    <CardContent style={{ paddingBottom: "10px" }}>
                       <CartName>{product.name}</CartName>
                       <CartPrice>單價：${product.price}</CartPrice>
                       <Total>
@@ -231,7 +263,10 @@ function AllProducts() {
                     </CardContent>
                   </CardActionArea>
                   <CardActions
-                    style={{ display: "flex", justifyContent: "space-between" }}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
                   >
                     <Delete>
                       <DeleteIcon
@@ -241,7 +276,7 @@ function AllProducts() {
                         styles={{
                           color: "#805e6e",
                           "&:hover": { color: "#820933" },
-                          width: "28px",
+                          width: vw < 740 ? "24px" : "28px",
                         }}
                         isClickedRef={isClickedRef}
                       />
@@ -252,10 +287,11 @@ function AllProducts() {
                         stock={productsObj[product.id].stock}
                         productId={product.id}
                         selectStyle={{
-                          "font-size": "18px",
+                          "font-size": vw < 740 ? "16px" : "18px",
                           color: "#805e6e",
                           "font-weight": "bold",
-                          width: "65px",
+                          width: vw < 740 ? "60px" : "65px",
+
                           fontFamily: "chalk",
                         }}
                         menuStyle={{
@@ -264,7 +300,7 @@ function AllProducts() {
                           "max-height": "300px",
                         }}
                         containerStyle={{
-                          "font-size": "18px",
+                          "font-size": vw < 740 ? "16px" : "18px",
                           color: "#805e6e",
                         }}
                       />

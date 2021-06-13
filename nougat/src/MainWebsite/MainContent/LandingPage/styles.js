@@ -43,6 +43,19 @@ export const AboutContent = styled.div`
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
+
+  @media screen and (max-width: 650px) {
+    left: 50px;
+    min-width: 350px;
+    align-items: flex-start;
+    padding-left: 20px;
+  }
+
+  @media screen and (max-width: 500px) {
+    min-width: 300px;
+    left: 30px;
+    padding-left: 10px;
+  }
 `;
 
 export const Slogan = styled.div`
@@ -57,6 +70,18 @@ export const Slogan = styled.div`
     color: #820933;
     opacity: 1;
     font-family: scholar;
+    @media screen and (max-width: 500px) {
+      gap: 5px 10px;
+    }
+  }
+  @media screen and (max-width: 650px) {
+    & * {
+      font-size: 30px;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    gap: 30px 5px;
   }
 `;
 
@@ -77,6 +102,13 @@ export const MoreInfo = styled.div`
     border-color: #584573;
     cursor: pointer;
   }
+  @media screen and (max-width: 650px) {
+    align-self: center;
+  }
+
+  @media screen and (max-width: 500px) {
+    font-size: 30px;
+  }
 `;
 
 export const Animation = styled.div`
@@ -87,12 +119,24 @@ export const Animation = styled.div`
   justify-content: center;
   overflow-y: hidden;
   background-color: transparent;
+
+  @media screen and (max-width: 500px) {
+    width: 100%;
+  }
 `;
 
 export const Bowl = styled.img`
   width: 500px;
   position: absolute;
   bottom: 0px;
+
+  @media screen and (max-width: 760px) {
+    width: 400px;
+  }
+
+  @media screen and (max-width: 500px) {
+    width: 300px;
+  }
 `;
 
 export const Whisk = styled.img`
@@ -100,6 +144,18 @@ export const Whisk = styled.img`
   align-self: flex-end;
   margin-bottom: 250px;
   margin-left: 400px;
+
+  @media screen and (max-width: 760px) {
+    width: 250px;
+    margin-bottom: 200px;
+    margin-left: 330px;
+  }
+
+  @media screen and (max-width: 500px) {
+    width: 150px;
+    margin-bottom: 150px;
+    margin-left: 200px;
+  }
 `;
 
 export const SplashArea = styled.div`
@@ -137,4 +193,9 @@ export const Product = styled.div`
   background-position: center;
   background-size: cover;
   border: thick double #b2777c;
+
+  @media screen and (max-width: 500px) {
+    width: 50px;
+    height: 50px;
+  }
 `;

@@ -10,19 +10,19 @@ export const useStyles = makeStyles((theme) => ({
     "&:after": {
       borderColor: "#B2777C",
     },
-    width: "250px",
+    width: window.innerWidth <= 430 ? "200px" : "250px",
     "padding-right": 25,
     position: "relative",
     marginRight: "5px;",
-    fontSize: "22px",
+    fontSize: window.innerWidth <= 430 ? "20px" : "22px",
     fontFamily: "chalk",
   },
 }));
 
 export const iconTheme = {
   position: "absolute",
-  left: "225px",
-  width: "25px",
+  left: window.innerWidth <= 430 ? "180px" : "225px",
+  width: window.innerWidth <= 430 ? "20px" : "25px",
   color: "#B2777C",
   top: "7px",
 };
@@ -65,7 +65,12 @@ export const Label = styled.label`
   display: flex;
   align-items: flex-end;
   padding: 6px 0 7px;
+  @media only screen and (max-width: 430px) {
+    font-size: 20px;
+    width: 80px;
+  }
 `;
+
 export const Register = styled.button`
   align-self: center;
   background-color: #99a4ad;
@@ -80,5 +85,9 @@ export const Register = styled.button`
     background-color: transparent;
     border: 3px solid #99a4ad;
     color: #b2777c;
+  }
+
+  @media only screen and (max-width: 430px) {
+    font-size: 20px;
   }
 `;

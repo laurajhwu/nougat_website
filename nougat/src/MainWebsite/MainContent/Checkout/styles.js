@@ -43,7 +43,7 @@ export const useStyles = makeStyles((theme) => ({
       "font-size": "20px",
       fontFamily: "chalk",
     },
-
+    minWidth: 0,
     flexGrow: 1,
   },
 }));
@@ -55,7 +55,7 @@ export const Container = styled.div`
   margin: 0 auto;
   padding: 30px 30px;
   position: relative;
-  max-height: 1600px;
+  min-height: 100vh;
   & * {
     font-family: chalk;
   }
@@ -80,6 +80,10 @@ export const Container = styled.div`
 export const Products = styled.div`
   padding: 10px 20px;
   display: flex;
+  position: relative;
+  @media only screen and (max-width: 570px) {
+    justify-content: center;
+  }
 `;
 
 export const Total = styled.div`
@@ -102,9 +106,43 @@ export const Total = styled.div`
       font-style: italic;
       padding-bottom: 10px;
       border-bottom: thick double #b6174b;
+      @media only screen and (max-width: 760px) {
+        font-size: 26px;
+      }
+      @media only screen and (max-width: 660px) {
+        font-size: 22px;
+        border-bottom: none;
+      }
+      @media only screen and (max-width: 570px) {
+        font-size: 20px;
+      }
     }
   }
+
+  @media only screen and (max-width: 760px) {
+    font-size: 26px;
+    font-style: italic;
+    position: absolute;
+    bottom: 10px;
+    left: 480px;
+  }
+
+  @media only screen and (max-width: 660px) {
+    font-size: 22px;
+    font-style: italic;
+    position: absolute;
+    bottom: -25px;
+    left: 320px;
+    flex-direction: row;
+  }
+
+  @media only screen and (max-width: 570px) {
+    bottom: -30px;
+    font-size: 20px;
+    left: 130px;
+  }
 `;
+
 export const Options = styled(Select)``;
 export const Option = styled(MenuItem)``;
 
@@ -115,20 +153,35 @@ export const Delivery = styled.div`
   align-items: center;
   padding: 0 20px;
   margin-top: 50px;
+  width: auto;
 
   & > * {
     &:first-child {
       & > div {
         display: flex;
         align-items: center;
+
         margin-bottom: 30px;
+        margin-right: 20px;
+        @media screen and (max-width: 530px) {
+          display: flex;
+          flex-wrap: wrap;
+          & > label {
+            width: 90%;
+          }
+        }
+      }
+    }
+    @media screen and (max-width: 875px) {
+      &:last-child {
+        margin-top: 20px;
       }
     }
   }
 
-  /* @media screen and (max-width: 600px) {
+  @media screen and (max-width: 875px) {
     flex-direction: column;
-  } */
+  }
 `;
 
 export const Group = styled.div`
@@ -136,25 +189,52 @@ export const Group = styled.div`
   justify-content: space-between;
   align-items: center;
   margin: 150px 0 100px;
+
   & > * {
     &:first-child {
       padding: 10px 20px 20px;
       background-color: rgba(255, 250, 227, 0.5);
       border-radius: 20px;
+      @media screen and (max-width: 960px) {
+        width: 450px;
+      }
     }
+  }
+
+  @media screen and (max-width: 760px) {
+    margin: 50px auto 180px;
+    justify-content: center;
   }
 `;
 
 export const Calendar = styled.div`
   display: flex;
   align-items: center;
+
+  @media screen and (max-width: 960px) {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    & > label {
+      width: 90%;
+      align-self: flex-start;
+    }
+  }
 `;
 
 export const PersonalInfo = styled.div``;
+
 export const Info = styled.div`
   margin-top: 20px;
   display: flex;
   align-items: center;
+  @media screen and (max-width: 960px) {
+    display: flex;
+    flex-flow: row wrap;
+    & > label {
+      width: 90%;
+    }
+  }
 `;
 
 export const Input = styled.input`
@@ -170,10 +250,18 @@ export const Label = styled.label`
   line-height: 20px;
   margin-left: ${(props) => (props.id ? "20px" : 0)};
 `;
+
 export const Payment = styled.div`
   display: flex;
   align-items: center;
   margin-top: 20px;
+  @media screen and (max-width: 960px) {
+    display: flex;
+    flex-flow: row wrap;
+    & > label {
+      width: 90%;
+    }
+  }
 `;
 
 export const CheckoutBtn = styled.div`
@@ -196,9 +284,26 @@ export const CheckoutBtn = styled.div`
     color: #c78283;
   }
 
+  @media screen and (max-width: 1300px) {
+    margin-right: 150px;
+    margin-bottom: 50px;
+  }
+
   @media screen and (max-width: 1200px) {
     margin-right: 120px;
     margin-bottom: 50px;
+  }
+
+  @media screen and (max-width: 875px) {
+    margin-bottom: 0px;
+    margin-top: 5vw;
+    margin-right: auto;
+    margin-left: 20px;
+  }
+
+  @media screen and (max-width: 760px) {
+    position: absolute;
+    bottom: 0;
   }
 `;
 
@@ -234,6 +339,16 @@ export const Design1 = styled.div`
       rgba(241, 232, 238, 0.5) 50%,
       rgba(241, 232, 238, 0.7) 100%
     );
+  }
+
+  @media only screen and (max-width: 1000px) {
+    /* width: 250px; */
+    right: 100px;
+    left: auto;
+  }
+
+  @media only screen and (max-width: 440px) {
+    left: 60px;
   }
 `;
 
@@ -278,5 +393,18 @@ export const Design3 = styled.div`
   );
   @media screen and (max-width: 1200px) {
     top: 1120px;
+  }
+
+  @media screen and (max-width: 960px) {
+    top: 1180px;
+  }
+
+  @media screen and (max-width: 875px) {
+    top: 1600px;
+  }
+
+  @media screen and (max-width: 760px) {
+    top: 1400px;
+    width: 700px;
   }
 `;

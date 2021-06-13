@@ -18,6 +18,11 @@ const Container = styled.div`
       cursor: pointer;
       font-size: 23px;
     }
+
+    @media only screen and (max-width: 430px) {
+      font-size: 20px;
+      width: 165px;
+    }
   }
 `;
 
@@ -49,10 +54,17 @@ export const FbIcon = styled(Facebook)`
   width: 42px;
   margin-right: 10px;
   color: #2d68db;
+
+  @media only screen and (max-width: 430px) {
+    width: 35px;
+  }
 `;
 
 export const GoogleIcon = styled.img`
   width: 42px;
   margin-right: 10px;
   color: #d85140;
+  @media only screen and (max-width: 430px) {
+    width: 35px;
+  }
 `;
