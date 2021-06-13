@@ -151,9 +151,28 @@ export const MemberIcon = styled.i`
 
 export const Bubble = styled.div`
   position: absolute;
-  font-size: 20px;
-  background-color: #bba0b2;
-  color: #fff;
+  font-size: 30px;
+  background: #ff9e9e;
+  background: -webkit-linear-gradient(
+    to top right,
+    #ff9e9e 0%,
+    #775a94 50%,
+    #048fba 100%
+  );
+  background: -moz-linear-gradient(
+    to top right,
+    #ff9e9e 0%,
+    #775a94 50%,
+    #048fba 100%
+  );
+  background: linear-gradient(
+    to top right,
+    #ff9e9e 0%,
+    #775a94 50%,
+    #048fba 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   top: 5px;
   right: 2px;
   width: 40px;

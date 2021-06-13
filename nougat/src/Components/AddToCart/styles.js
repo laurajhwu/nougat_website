@@ -48,4 +48,8 @@ export const CartButton = styled.div`
     color: #f5f5f5;
     cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   }
+
+  @media only screen and (max-width: 760px) {
+    line-height: 30px;
+  }
 `;
