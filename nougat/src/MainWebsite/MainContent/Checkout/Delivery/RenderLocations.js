@@ -35,17 +35,18 @@ const LandMark = styled.div`
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    maxWidth: 360,
+    maxWidth: 460,
+    minWidth: 340,
     backgroundColor: "transparent",
     maxHeight: 350,
     height: "100%",
     overflowY: "auto",
     marginTop: 10,
     [theme.breakpoints.down("md")]: {
-      maxWidth: 400,
+      maxWidth: 360,
     },
     [theme.breakpoints.down("lg")]: {
-      maxWidth: 460,
+      maxWidth: 400,
     },
   },
   avatar: {

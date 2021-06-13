@@ -24,7 +24,7 @@ function MainMap(props) {
     } else if (window.innerWidth > 960) {
       setMapSize({ width: "450px", height: "400px" });
     } else if (window.innerWidth > 600) {
-      setMapSize({ width: "400px", height: "400px" });
+      setMapSize({ width: "350px", height: "350px" });
     }
   }
 
