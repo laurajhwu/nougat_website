@@ -80,6 +80,7 @@ export const Container = styled.div`
 export const Products = styled.div`
   padding: 10px 20px;
   display: flex;
+  position: relative;
 `;
 
 export const Total = styled.div`
@@ -102,9 +103,43 @@ export const Total = styled.div`
       font-style: italic;
       padding-bottom: 10px;
       border-bottom: thick double #b6174b;
+      @media only screen and (max-width: 760px) {
+        font-size: 26px;
+      }
+      @media only screen and (max-width: 660px) {
+        font-size: 22px;
+        border-bottom: none;
+      }
+      @media only screen and (max-width: 570px) {
+        font-size: 20px;
+      }
     }
   }
+
+  @media only screen and (max-width: 760px) {
+    font-size: 26px;
+    font-style: italic;
+    position: absolute;
+    bottom: 10px;
+    left: 480px;
+  }
+
+  @media only screen and (max-width: 660px) {
+    font-size: 22px;
+    font-style: italic;
+    position: absolute;
+    bottom: -25px;
+    left: 320px;
+    flex-direction: row;
+  }
+
+  @media only screen and (max-width: 570px) {
+    bottom: -30px;
+    font-size: 20px;
+    left: 130px;
+  }
 `;
+
 export const Options = styled(Select)``;
 export const Option = styled(MenuItem)``;
 
@@ -234,6 +269,15 @@ export const Design1 = styled.div`
       rgba(241, 232, 238, 0.5) 50%,
       rgba(241, 232, 238, 0.7) 100%
     );
+  }
+
+  @media only screen and (max-width: 1000px) {
+    width: 250px;
+    right: 100px;
+  }
+
+  @media only screen and (max-width: 440px) {
+    left: 100px;
   }
 `;
 

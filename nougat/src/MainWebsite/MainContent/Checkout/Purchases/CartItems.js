@@ -25,13 +25,13 @@ function AllProducts(props) {
 
   const styles = {
     selectStyle: {
-      "font-size": "17px",
+      "font-size": window.innerWidth <= 760 ? "14px" : "17px",
       color: "#CC7B82",
-      width: "65px",
+      width: window.innerWidth <= 760 ? "60px" : "65px",
       fontFamily: "chalk",
     },
     containerStyle: {
-      "font-size": "17px",
+      "font-size": window.innerWidth <= 760 ? "14px" : "17px",
       color: "#CC7B82",
       fontFamily: "chalk",
     },

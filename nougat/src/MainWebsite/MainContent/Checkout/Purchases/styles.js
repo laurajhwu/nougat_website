@@ -7,8 +7,18 @@ export const Container = styled.div`
   overflow: auto;
   padding: 10px 15px;
   width: 60%;
+  min-width: 500px;
   background-color: rgba(239, 210, 203, 0.2);
   border-radius: 15px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  @media only screen and (max-width: 570px) {
+    min-width: 320px;
+  }
 `;
 
 export const Product = styled.div`
@@ -18,10 +28,20 @@ export const Product = styled.div`
   border-bottom: 2px solid #cc7b82;
   justify-content: space-evenly;
 `;
+
 export const Img = styled.img`
   width: 150px;
+  height: 150px;
   border-radius: 10px;
+  @media only screen and (max-width: 1000px) {
+    width: 100px;
+    height: 100px;
+  }
+  @media only screen and (max-width: 570px) {
+    display: none;
+  }
 `;
+
 export const Group = styled.div`
   display: flex;
   flex-flow: column nowrap;
@@ -34,11 +54,21 @@ export const Group = styled.div`
     color: #613a3a;
     font-weight: 700;
     margin-right: 10px;
+    @media only screen and (max-width: 760px) {
+      font-size: 14px;
+    }
   }
 `;
 export const Name = styled.div`
   font-size: 20px;
+  @media only screen and (max-width: 1000px) {
+    font-size: 18px;
+  }
+  @media only screen and (max-width: 760px) {
+    font-size: 16px;
+  }
 `;
+
 export const Price = styled.div``;
 export const Total = styled.div`
   font-style: italic;

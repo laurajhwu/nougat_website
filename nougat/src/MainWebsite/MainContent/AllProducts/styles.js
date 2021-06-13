@@ -187,9 +187,6 @@ export const Cart = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-  /* @media only screen and (max-width: 1170px) and (min-width: 900px) {
-   
-  } */
 `;
 
 export const Title = styled.div`
