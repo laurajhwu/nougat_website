@@ -16,6 +16,9 @@ export const Container = styled.div`
     padding: 15px 30px 15px 0;
     flex-basis: 50%;
   }
+  @media only screen and (max-width: 430px) {
+    padding: 20px 30px;
+  }
 `;
 
 export const Email = styled.div`
@@ -30,6 +33,10 @@ export const Email = styled.div`
     font-family: chalk;
   }
   position: relative;
+
+  @media only screen and (max-width: 430px) {
+    min-width: 250px;
+  }
 `;
 
 const BtnStyle = styled.div`
@@ -43,10 +50,20 @@ const BtnStyle = styled.div`
   border: 5px solid #f5f5f5;
   font-weight: 700;
   font-family: lotus;
+  min-width: 150px;
   &:hover {
     font-size: 50px;
     color: #b2777c;
     cursor: pointer;
+  }
+  @media only screen and (max-width: 430px) {
+    font-size: 35px;
+    letter-spacing: 15px;
+    line-height: 40px;
+    min-width: 90px;
+    &:hover {
+      font-size: 36px;
+    }
   }
 `;
 
@@ -77,4 +94,7 @@ export const SocialMedia = styled.div`
   padding: 10px 0px;
   min-width: 400px;
   border-bottom: thick double #9d858d;
+  @media only screen and (max-width: 430px) {
+    min-width: 250px;
+  }
 `;

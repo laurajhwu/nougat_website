@@ -21,7 +21,6 @@ import {
   Bubble,
   Hamburger,
 } from "./styles";
-import { GifSharp } from "@material-ui/icons";
 
 function Header() {
   const dispatch = useDispatch();
@@ -91,17 +90,24 @@ function Header() {
 
   useEffect(() => {
     if (!init.current) {
-      if (vw === 760) {
+      if (vw <= 760) {
+        handleNavAnimation();
         gsap.set(".products-nav, .contact-nav", {
           display: "none",
           opacity: 0,
         });
-      } else if (vw < 760) {
-        handleNavAnimation();
+        gsap.set(".hamburger", {
+          display: "block",
+          opacity: 1,
+        });
       } else {
         gsap.set(".products-nav, .contact-nav", {
           display: "block",
           opacity: 1,
+        });
+        gsap.set(".hamburger", {
+          display: "none",
+          opacity: 0,
         });
       }
     }
@@ -129,7 +135,7 @@ function Header() {
           reverse={showNav}
           onClick={hamburgerOnClick}
           render={(eventProps, animationProps) => (
-            <Hamburger {...eventProps}>
+            <Hamburger {...eventProps} className="hamburger">
               <div {...animationProps} />
             </Hamburger>
           )}

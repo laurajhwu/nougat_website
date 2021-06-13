@@ -39,6 +39,17 @@ export const Nav = styled.nav`
     transition: transform 0.2s;
     color: #ad6495;
     font-family: lotus;
+    &.products-nav,
+    &.contact-nav {
+      margin-left: 50px;
+      font-size: 45px;
+      font-weight: 700;
+      transition: transform 0.2s;
+      color: #ad6495;
+      font-family: lotus;
+      display: block;
+      opacity: 1;
+    }
 
     @media only screen and (max-width: 960px) {
       font-size: 40px;

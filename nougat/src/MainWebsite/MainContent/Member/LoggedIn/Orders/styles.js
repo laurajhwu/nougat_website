@@ -9,7 +9,7 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: 20,
 
     "& .MuiPaginationItem-root": {
-      fontSize: 20,
+      fontSize: window.innerWidth <= 650 ? 18 : 20,
       color: "#AC7B7D",
       fontFamily: "chalk",
     },
@@ -47,6 +47,10 @@ export const Order = styled.div`
   position: relative;
   box-shadow: 50% 30% 5px -2px #888;
   margin-bottom: 20px;
+
+  @media only screen and (max-width: 650px) {
+    min-width: 400px;
+  }
 `;
 
 export const BendMark = styled.div`
@@ -77,6 +81,13 @@ export const Title = styled.div`
   font-size: 22px;
   font-weight: 700;
   font-family: chalk;
+  @media only screen and (max-width: 740px) {
+    font-size: 20px;
+  }
+
+  @media only screen and (max-width: 560px) {
+    font-size: 16px;
+  }
 `;
 
 export const OrderInfo = styled.div`
@@ -84,6 +95,14 @@ export const OrderInfo = styled.div`
   flex-basis: 25%;
   font-family: caramel;
   font-size: 26px;
+
+  @media only screen and (max-width: 740px) {
+    font-size: 24px;
+  }
+
+  @media only screen and (max-width: 650px) {
+    font-size: 16px;
+  }
 `;
 
 export const OrderNumLink = styled(Button)`
@@ -105,9 +124,21 @@ export const OrderNumLink = styled(Button)`
   &:hover {
     color: #820933;
   }
+
+  @media only screen and (max-width: 1000px) {
+    font-size: 22px;
+  }
+  @media only screen and (max-width: 740px) {
+    font-size: 18px;
+  }
+
+  @media only screen and (max-width: 650px) {
+    font-size: 16px;
+  }
 `;
 
 export const ModalContainer = styled(Modal)`
+  min-width: 360px;
   & * {
     font-family: "marshmallow";
     background-color: #ffe9d6;
@@ -137,6 +168,9 @@ export const GeneralInfo = styled.div`
     & > div {
       background-color: #f8e9dd;
       width: 150px;
+      @media only screen and (max-width: 400px) {
+        width: 120px;
+      }
     }
     & > span {
       display: inline-block;
@@ -144,6 +178,10 @@ export const GeneralInfo = styled.div`
       margin-left: 10px;
       color: #796465;
     }
+  }
+
+  @media only screen and (max-width: 400px) {
+    font-size: 24px;
   }
 `;
 
@@ -163,6 +201,9 @@ export const Products = styled.div`
     margin-bottom: 10px;
     color: #bf827d;
     background-color: #f8e9dd;
+    @media only screen and (max-width: 400px) {
+      font-size: 24px;
+    }
   }
 `;
 
@@ -176,6 +217,9 @@ export const Product = styled.div`
 export const ProductImage = styled.img`
   width: 120px;
   border-radius: 10px;
+  @media only screen and (max-width: 400px) {
+    width: 90px;
+  }
 `;
 
 export const ProductDetails = styled.div`
@@ -183,11 +227,17 @@ export const ProductDetails = styled.div`
   & * {
     &:first-child {
       font-size: 26px;
+      @media only screen and (max-width: 400px) {
+        font-size: 22px;
+      }
     }
     &:last-child {
       font-size: 24px;
       margin-top: 10px;
       text-align: center;
+      @media only screen and (max-width: 400px) {
+        font-size: 20px;
+      }
     }
   }
 `;
@@ -200,6 +250,9 @@ export const Total = styled.div`
   margin-top: 20px;
   border-top: 3px solid #cb8589;
   color: #710627;
+  @media only screen and (max-width: 400px) {
+    font-size: 24px;
+  }
 `;
 
 export const ConfirmBtn = styled(Button)`
@@ -210,5 +263,8 @@ export const ConfirmBtn = styled(Button)`
   padding-top: 10px;
   &:hover {
     background-color: #796465;
+  }
+  @media only screen and (max-width: 400px) {
+    font-size: 24px;
   }
 `;

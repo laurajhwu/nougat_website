@@ -6,12 +6,14 @@ export const Container = styled.div`
   max-width: 1016px;
   margin: auto;
   padding: 20px;
+  overflow-x: auto;
 `;
 
 export const Header = styled(Tabs)`
   width: 100%;
   border-bottom: 1px solid #b2777c;
   line-height: 25px;
+  min-width: 400px;
   & > * {
     font-family: lotus;
     font-size: 45px;
@@ -22,6 +24,12 @@ export const Header = styled(Tabs)`
     &:hover {
       border: 3px solid #b2777c !important;
       color: #b2777c;
+    }
+
+    @media only screen and (max-width: 560px) {
+      font-size: 34px;
+      line-height: 30px;
+      letter-spacing: 5px;
     }
   }
 
