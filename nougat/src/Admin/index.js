@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Route, useHistory, useRouteMatch } from "react-router-dom";
+import { Route, useHistory, useRouteMatch, Switch } from "react-router-dom";
 import Login from "./Login";
 import Main from "./MainPage";
+import Page404 from "../Components/Page404";
 
 const Container = styled.div``;
 
@@ -21,12 +22,15 @@ function Admin() {
 
   return (
     <Container>
-      <Route exact path={`${match.url}/login`}>
-        <Login setIsLogin={setIsLogin} />
-      </Route>
-      <Route path={`${match.url}/auth`}>
-        <Main setIsLogin={setIsLogin} />
-      </Route>
+      <Switch>
+        <Route exact path={`${match.url}/login`}>
+          <Login setIsLogin={setIsLogin} />
+        </Route>
+        <Route path={`${match.url}/auth`}>
+          <Main setIsLogin={setIsLogin} />
+        </Route>
+        <Route path="" component={Page404} />
+      </Switch>
     </Container>
   );
 }
