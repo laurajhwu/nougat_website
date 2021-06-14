@@ -9,6 +9,7 @@ import Confirm from "./Checkout/Payment/Confirm";
 import Cancel from "./Checkout/Payment/Cancel";
 import Member from "./Member";
 import LandingPage from "./LandingPage";
+import Page404 from "../../Components/Page404";
 
 const Main = styled.main`
   width: 100vw;
@@ -28,6 +29,9 @@ function MainContent() {
         <Route path="/cart/line-pay/confirm-order" component={Confirm} />
         <Route path="/cart/line-pay/cancel-payment" component={Cancel} />
         <Route path="/member" component={Member} />
+        <Switch>
+          <Route path="" component={Page404} />
+        </Switch>
       </Switch>
     </Main>
   );

@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Header from "./Header";
 import MainContent from "./MainContent";
 import Api from "../utils/Api";
-import { getMember, updateMember } from "../redux/actions/member";
+
+import { getMember } from "../redux/actions/member";
 
 import { Container } from "./styles";
 
