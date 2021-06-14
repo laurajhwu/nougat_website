@@ -7,8 +7,12 @@ import {
 } from "@styled-icons/fluentui-system-filled";
 import { Notepad, Edit } from "@styled-icons/boxicons-regular/";
 
+export const Search = styled.div`
+  margin-top: 10px;
+`;
+
 export const ProductsTable = styled(Table)`
-  margin-top: 30px;
+  margin-top: 20px;
 `;
 
 export const Th = styled.th`
@@ -75,6 +79,7 @@ export const UpdateIcon = styled(Edit)`
 
 export const Add = styled(AddSquare)`
   width: 24px;
+  margin-left: 12px;
   &:hover {
     cursor: pointer;
   }

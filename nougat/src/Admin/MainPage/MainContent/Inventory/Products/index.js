@@ -5,6 +5,7 @@ import ShowDetails from "./Details";
 import Update from "./Edit/UpdateProduct";
 import AddNewProduct from "./Edit/AddProduct";
 import Delete from "../DeleteIventory";
+import SearchBar from "../../../../../Components/SearchBar";
 
 import {
   ProductsTable,
@@ -15,6 +16,7 @@ import {
   Details,
   UpdateIcon,
   Add,
+  Search,
 } from "./styles";
 
 export default function Products() {
@@ -24,6 +26,7 @@ export default function Products() {
   const [details, setDetails] = useState(false);
   const [update, setUpdate] = useState(false);
   const [add, setAdd] = useState(false);
+  const [search, setSearch] = useState();
 
   const handleCloseDetails = () => setDetails(false);
   const handleShowDetails = (id) => setDetails(id);
@@ -66,72 +69,84 @@ export default function Products() {
     }
   }
 
+  function handleSearch(products) {
+    if (search) {
+      return products.filter((product) => product.name.includes(search));
+    }
+    return products;
+  }
+
   if (orders && products.length !== 0) {
     return (
-      <ProductsTable striped bordered hover responsive>
-        <Thead>
-          <Tr>
-            <Th>
-              <Delete
-                deleteItems={deleteItems}
-                handleDelete={handleDeleteProduct}
-              />
-            </Th>
-            <Th>產品名</Th>
-            <Th>售價</Th>
-            <Th>總產量</Th>
-            <Th>已售量</Th>
-            <Th>剩餘庫存</Th>
-            <Th>詳情</Th>
-            <Th>編輯</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {products
-            .sort((old, recent) => old.created_time - recent.created_time)
-            .map((product) => {
-              const sold = getSoldAmount(orders, product.id);
-              const stock = product.stock;
-              return (
-                <Tr key={product.id}>
-                  <td>
-                    <input
-                      type="checkbox"
-                      onChange={(event) => handleChecked(event, product.id)}
-                    />
-                  </td>
-                  <td>{product.name}</td>
-                  <td>{`$${product.price} /${product.unit}`}</td>
-                  <td>{`${sold + stock} ${product.unit}`}</td>
-                  <td>{sold + ` ${product.unit}`}</td>
-                  <td>{stock + ` ${product.unit}`}</td>
-                  <td>
-                    <Details onClick={() => handleShowDetails(product.id)} />
-                    <ShowDetails
-                      product={product}
-                      handleClose={handleCloseDetails}
-                      show={details === product.id}
-                    />
-                  </td>
-                  <td>
-                    <UpdateIcon onClick={() => handleShowEdit(product.id)} />
-                    <Update
-                      product={product}
-                      handleClose={handleCloseEdit}
-                      show={update === product.id}
-                    />
-                  </td>
-                </Tr>
-              );
-            })}
-          <Tr>
-            <td colSpan="8">
-              <Add onClick={handleShowAdd} />
-              <AddNewProduct handleClose={handleCloseAdd} show={add} />
-            </td>
-          </Tr>
-        </Tbody>
-      </ProductsTable>
+      <>
+        <Search>
+          <SearchBar setSearchValue={setSearch} searchValue={search} />
+        </Search>
+        <ProductsTable striped bordered hover responsive>
+          <Thead>
+            <Tr>
+              <Th>
+                <Delete
+                  deleteItems={deleteItems}
+                  handleDelete={handleDeleteProduct}
+                />
+              </Th>
+              <Th>產品名</Th>
+              <Th>售價</Th>
+              <Th>總產量</Th>
+              <Th>已售量</Th>
+              <Th>剩餘庫存</Th>
+              <Th>詳情</Th>
+              <Th>編輯</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {handleSearch(products)
+              .sort((old, recent) => old.created_time - recent.created_time)
+              .map((product) => {
+                const sold = getSoldAmount(orders, product.id);
+                const stock = product.stock;
+                return (
+                  <Tr key={product.id}>
+                    <td>
+                      <input
+                        type="checkbox"
+                        onChange={(event) => handleChecked(event, product.id)}
+                      />
+                    </td>
+                    <td>{product.name}</td>
+                    <td>{`$${product.price} /${product.unit}`}</td>
+                    <td>{`${sold + stock} ${product.unit}`}</td>
+                    <td>{sold + ` ${product.unit}`}</td>
+                    <td>{stock + ` ${product.unit}`}</td>
+                    <td>
+                      <Details onClick={() => handleShowDetails(product.id)} />
+                      <ShowDetails
+                        product={product}
+                        handleClose={handleCloseDetails}
+                        show={details === product.id}
+                      />
+                    </td>
+                    <td>
+                      <UpdateIcon onClick={() => handleShowEdit(product.id)} />
+                      <Update
+                        product={product}
+                        handleClose={handleCloseEdit}
+                        show={update === product.id}
+                      />
+                    </td>
+                  </Tr>
+                );
+              })}
+            <Tr>
+              <td colSpan="8" style={{ textAlign: "left" }}>
+                <Add onClick={handleShowAdd} />
+                <AddNewProduct handleClose={handleCloseAdd} show={add} />
+              </td>
+            </Tr>
+          </Tbody>
+        </ProductsTable>
+      </>
     );
   } else {
     return <>Loading...</>;
