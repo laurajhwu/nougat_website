@@ -23,7 +23,7 @@ import {
 } from "./styles";
 
 export default function Filter(props) {
-  const { orders, filteredOrders, setFilteredOrders } = props;
+  const { orders, filteredOrders, setFilteredOrders, setPage } = props;
   const fixedData = useSelector((state) => state.fixedData);
   const [filter, setFilter] = useState("");
   const [selectOptions, setSelectOptions] = useState();
@@ -112,6 +112,7 @@ export default function Filter(props) {
 
   useEffect(() => {
     searchOrders();
+    setPage(0);
   }, [searchValue]);
 
   useEffect(() => {

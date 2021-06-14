@@ -100,7 +100,11 @@ export default function Edit(props) {
     >
       <Modal.Header closeButton>
         <Modal.Title>{ingredient.name}</Modal.Title>
-        <small>{ingredient.id}</small>
+        <small
+          style={{ alignSelf: "flex-end", marginLeft: 10, color: "#59594A" }}
+        >
+          {ingredient.id}
+        </small>
       </Modal.Header>
       <Form onSubmit={handOnSubmit}>
         <Modal.Body>

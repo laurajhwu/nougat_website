@@ -21,6 +21,7 @@ import {
   PopoverContent,
   Add,
   Search,
+  HasNote,
 } from "./styles";
 
 export default function Ingredients() {
@@ -151,20 +152,13 @@ export default function Ingredients() {
                       overlay={
                         <Popover id={`popover-positioned-top`}>
                           <Popover.Title as="h4">{`備註`}</Popover.Title>
-                          <PopoverContent>
-                            <EditableInput
-                              notes={true}
-                              initValue={ingredient.notes}
-                              handleFinishEdit={(data) =>
-                                handleNoteEdit(ingredient.id, data)
-                              }
-                            />
-                          </PopoverContent>
+                          <PopoverContent>{ingredient.notes}</PopoverContent>
                         </Popover>
                       }
                     >
                       <Notes />
                     </OverlayTrigger>
+                    {ingredient.notes ? <HasNote /> : ""}
                   </td>
                   <td>
                     <UpdateIcon
