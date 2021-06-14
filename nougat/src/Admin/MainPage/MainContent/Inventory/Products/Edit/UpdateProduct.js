@@ -184,7 +184,11 @@ export default function Edit(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title>{product.name}</Modal.Title>
-          <small>{product.id}</small>
+          <small
+            style={{ alignSelf: "flex-end", marginLeft: 10, color: "#59594A" }}
+          >
+            {product.id}
+          </small>
         </Modal.Header>
         <Form onSubmit={handOnSubmit}>
           <Modal.Body>

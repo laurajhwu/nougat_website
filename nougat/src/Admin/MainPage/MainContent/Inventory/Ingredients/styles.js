@@ -7,8 +7,12 @@ import {
 } from "@styled-icons/fluentui-system-filled";
 import { Notepad, Edit } from "@styled-icons/boxicons-regular/";
 
+export const Search = styled.div`
+  margin-top: 10px;
+`;
+
 export const ProductsTable = styled(Table)`
-  margin-top: 30px;
+  margin-top: 20px;
 `;
 
 export const Th = styled.th`
@@ -34,6 +38,7 @@ export const Tr = styled.tr`
     text-align: center;
     padding: 10px 5px !important;
     vertical-align: middle;
+    position: relative;
   }
 
   &:last-child td {
@@ -42,7 +47,7 @@ export const Tr = styled.tr`
 `;
 
 export const PopoverContent = styled(Popover.Content)`
-  height: 100px;
+  height: auto;
 `;
 
 export const DisableRemove = styled(DeleteOff)`
@@ -66,6 +71,16 @@ export const Notes = styled(Notepad)`
   }
 `;
 
+export const HasNote = styled.div`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #820933;
+  position: absolute;
+  left: 53%;
+  bottom: 7px;
+`;
+
 export const UpdateIcon = styled(Edit)`
   width: 24px;
   &:hover {
@@ -75,6 +90,7 @@ export const UpdateIcon = styled(Edit)`
 
 export const Add = styled(AddSquare)`
   width: 24px;
+  margin-left: 12px;
   &:hover {
     cursor: pointer;
   }

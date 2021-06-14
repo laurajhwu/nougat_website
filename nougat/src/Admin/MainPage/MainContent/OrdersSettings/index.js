@@ -66,6 +66,7 @@ export default function OrdersSettings() {
           orders={orders}
           filteredOrders={filteredOrders}
           setFilteredOrders={setFilteredOrders}
+          setPage={setPage}
         />
         <TableContainer component={Paper}>
           <Table>

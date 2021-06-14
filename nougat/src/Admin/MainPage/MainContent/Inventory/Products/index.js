@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Api from "../../../../../utils/Api";
 import ShowDetails from "./Details";
 import Update from "./Edit/UpdateProduct";
 import AddNewProduct from "./Edit/AddProduct";
 import Delete from "../DeleteIventory";
+import SearchBar from "../../../../../Components/SearchBar";
+import pageSplitter from "../../../../../utils/pageSplitter";
 
+import TablePagination from "@material-ui/core/TablePagination";
 import {
   ProductsTable,
   Thead,
@@ -15,6 +18,7 @@ import {
   Details,
   UpdateIcon,
   Add,
+  Search,
 } from "./styles";
 
 export default function Products() {
@@ -24,6 +28,9 @@ export default function Products() {
   const [details, setDetails] = useState(false);
   const [update, setUpdate] = useState(false);
   const [add, setAdd] = useState(false);
+  const [search, setSearch] = useState();
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleCloseDetails = () => setDetails(false);
   const handleShowDetails = (id) => setDetails(id);
@@ -66,32 +73,62 @@ export default function Products() {
     }
   }
 
+  function handleChangePage(event, newPage) {
+    setPage(newPage);
+  }
+
+  function handleChangeRowsPerPage(event) {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  }
+
+  function handleSearch(products) {
+    if (search) {
+      return products.filter((product) => product.name.includes(search));
+    }
+    return products;
+  }
+
+  useEffect(() => {
+    setPage(0);
+  }, [search]);
+
   if (orders && products.length !== 0) {
     return (
-      <ProductsTable striped bordered hover responsive>
-        <Thead>
-          <Tr>
-            <Th>
-              <Delete
-                deleteItems={deleteItems}
-                handleDelete={handleDeleteProduct}
-              />
-            </Th>
-            <Th>產品名</Th>
-            <Th>售價</Th>
-            <Th>總產量</Th>
-            <Th>已售量</Th>
-            <Th>剩餘庫存</Th>
-            <Th>詳情</Th>
-            <Th>編輯</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {products
-            .sort((old, recent) => old.created_time - recent.created_time)
-            .map((product) => {
+      <>
+        <Search>
+          <SearchBar setSearchValue={setSearch} searchValue={search} />
+        </Search>
+        <ProductsTable striped bordered hover responsive>
+          <Thead>
+            <Tr>
+              <Th>
+                <Delete
+                  deleteItems={deleteItems}
+                  handleDelete={handleDeleteProduct}
+                />
+              </Th>
+              <Th>產品名</Th>
+              <Th>售價</Th>
+              <Th>總產量</Th>
+              <Th>已售量</Th>
+              <Th>剩餘庫存</Th>
+              <Th>詳情</Th>
+              <Th>編輯</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {(
+              pageSplitter(
+                handleSearch(products).sort(
+                  (old, recent) => old.created_time - recent.created_time
+                ),
+                rowsPerPage
+              )[page] || []
+            ).map((product) => {
               const sold = getSoldAmount(orders, product.id);
               const stock = product.stock;
+
               return (
                 <Tr key={product.id}>
                   <td>
@@ -124,14 +161,23 @@ export default function Products() {
                 </Tr>
               );
             })}
-          <Tr>
-            <td colSpan="8">
-              <Add onClick={handleShowAdd} />
-              <AddNewProduct handleClose={handleCloseAdd} show={add} />
-            </td>
-          </Tr>
-        </Tbody>
-      </ProductsTable>
+            <Tr>
+              <td colSpan="8" style={{ textAlign: "left" }}>
+                <Add onClick={handleShowAdd} />
+                <AddNewProduct handleClose={handleCloseAdd} show={add} />
+              </td>
+            </Tr>
+          </Tbody>
+        </ProductsTable>
+        <TablePagination
+          component="div"
+          count={handleSearch(products).length}
+          page={page}
+          onChangePage={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+      </>
     );
   } else {
     return <>Loading...</>;
