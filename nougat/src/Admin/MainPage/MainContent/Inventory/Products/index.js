@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Api from "../../../../../utils/Api";
 import ShowDetails from "./Details";
@@ -6,7 +6,9 @@ import Update from "./Edit/UpdateProduct";
 import AddNewProduct from "./Edit/AddProduct";
 import Delete from "../DeleteIventory";
 import SearchBar from "../../../../../Components/SearchBar";
+import pageSplitter from "../../../../../utils/pageSplitter";
 
+import TablePagination from "@material-ui/core/TablePagination";
 import {
   ProductsTable,
   Thead,
@@ -27,6 +29,8 @@ export default function Products() {
   const [update, setUpdate] = useState(false);
   const [add, setAdd] = useState(false);
   const [search, setSearch] = useState();
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleCloseDetails = () => setDetails(false);
   const handleShowDetails = (id) => setDetails(id);
@@ -69,12 +73,25 @@ export default function Products() {
     }
   }
 
+  function handleChangePage(event, newPage) {
+    setPage(newPage);
+  }
+
+  function handleChangeRowsPerPage(event) {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  }
+
   function handleSearch(products) {
     if (search) {
       return products.filter((product) => product.name.includes(search));
     }
     return products;
   }
+
+  useEffect(() => {
+    setPage(0);
+  }, [search]);
 
   if (orders && products.length !== 0) {
     return (
@@ -101,43 +118,49 @@ export default function Products() {
             </Tr>
           </Thead>
           <Tbody>
-            {handleSearch(products)
-              .sort((old, recent) => old.created_time - recent.created_time)
-              .map((product) => {
-                const sold = getSoldAmount(orders, product.id);
-                const stock = product.stock;
-                return (
-                  <Tr key={product.id}>
-                    <td>
-                      <input
-                        type="checkbox"
-                        onChange={(event) => handleChecked(event, product.id)}
-                      />
-                    </td>
-                    <td>{product.name}</td>
-                    <td>{`$${product.price} /${product.unit}`}</td>
-                    <td>{`${sold + stock} ${product.unit}`}</td>
-                    <td>{sold + ` ${product.unit}`}</td>
-                    <td>{stock + ` ${product.unit}`}</td>
-                    <td>
-                      <Details onClick={() => handleShowDetails(product.id)} />
-                      <ShowDetails
-                        product={product}
-                        handleClose={handleCloseDetails}
-                        show={details === product.id}
-                      />
-                    </td>
-                    <td>
-                      <UpdateIcon onClick={() => handleShowEdit(product.id)} />
-                      <Update
-                        product={product}
-                        handleClose={handleCloseEdit}
-                        show={update === product.id}
-                      />
-                    </td>
-                  </Tr>
-                );
-              })}
+            {(
+              pageSplitter(
+                handleSearch(products).sort(
+                  (old, recent) => old.created_time - recent.created_time
+                ),
+                rowsPerPage
+              )[page] || []
+            ).map((product) => {
+              const sold = getSoldAmount(orders, product.id);
+              const stock = product.stock;
+
+              return (
+                <Tr key={product.id}>
+                  <td>
+                    <input
+                      type="checkbox"
+                      onChange={(event) => handleChecked(event, product.id)}
+                    />
+                  </td>
+                  <td>{product.name}</td>
+                  <td>{`$${product.price} /${product.unit}`}</td>
+                  <td>{`${sold + stock} ${product.unit}`}</td>
+                  <td>{sold + ` ${product.unit}`}</td>
+                  <td>{stock + ` ${product.unit}`}</td>
+                  <td>
+                    <Details onClick={() => handleShowDetails(product.id)} />
+                    <ShowDetails
+                      product={product}
+                      handleClose={handleCloseDetails}
+                      show={details === product.id}
+                    />
+                  </td>
+                  <td>
+                    <UpdateIcon onClick={() => handleShowEdit(product.id)} />
+                    <Update
+                      product={product}
+                      handleClose={handleCloseEdit}
+                      show={update === product.id}
+                    />
+                  </td>
+                </Tr>
+              );
+            })}
             <Tr>
               <td colSpan="8" style={{ textAlign: "left" }}>
                 <Add onClick={handleShowAdd} />
@@ -146,6 +169,14 @@ export default function Products() {
             </Tr>
           </Tbody>
         </ProductsTable>
+        <TablePagination
+          component="div"
+          count={handleSearch(products).length}
+          page={page}
+          onChangePage={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
       </>
     );
   } else {

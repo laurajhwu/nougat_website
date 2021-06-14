@@ -7,7 +7,9 @@ import Update from "./Edit/UpdateIngredient";
 import AddIngredient from "./Edit/AddIngredient";
 import Delete from "../DeleteIventory";
 import SearchBar from "../../../../../Components/SearchBar";
+import pageSplitter from "../../../../../utils/pageSplitter";
 
+import TablePagination from "@material-ui/core/TablePagination";
 import {
   ProductsTable,
   Thead,
@@ -28,6 +30,8 @@ export default function Ingredients() {
   const [showUpdate, setShowUpdate] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
   const [search, setSearch] = useState();
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleCloseUpdate = () => setShowUpdate(false);
   const handleShowUpdate = (id) => setShowUpdate(id);
@@ -80,6 +84,19 @@ export default function Ingredients() {
     return ingredients;
   }
 
+  function handleChangePage(event, newPage) {
+    setPage(newPage);
+  }
+
+  function handleChangeRowsPerPage(event) {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  }
+
+  useEffect(() => {
+    setPage(0);
+  }, [search]);
+
   if (ingredients) {
     return (
       <>
@@ -104,61 +121,64 @@ export default function Ingredients() {
             </Tr>
           </Thead>
           <Tbody>
-            {Object.values(handleSearch(ingredients))
-              .sort((least, most) => least.stock - most.stock)
-              .map((ingredient) => {
-                const stock = ingredient.stock;
-                const used = ingredient.used;
-                return (
-                  <Tr key={ingredient.id}>
-                    <td>
-                      <input
-                        type="checkbox"
-                        onChange={(event) =>
-                          handleChecked(event, ingredient.id)
-                        }
-                      />
-                    </td>
-                    <td>{ingredient.name}</td>
-                    <td>{`${stock + used} 克`}</td>
-                    <td>{`${used} 克`}</td>
-                    <td>{`${stock} 克`}</td>
-                    <td>
-                      <OverlayTrigger
-                        trigger="click"
-                        key="top"
-                        placement="top"
-                        overlay={
-                          <Popover id={`popover-positioned-top`}>
-                            <Popover.Title as="h4">{`備註`}</Popover.Title>
-                            <PopoverContent>
-                              <EditableInput
-                                notes={true}
-                                initValue={ingredient.notes}
-                                handleFinishEdit={(data) =>
-                                  handleNoteEdit(ingredient.id, data)
-                                }
-                              />
-                            </PopoverContent>
-                          </Popover>
-                        }
-                      >
-                        <Notes />
-                      </OverlayTrigger>
-                    </td>
-                    <td>
-                      <UpdateIcon
-                        onClick={() => handleShowUpdate(ingredient.id)}
-                      />
-                      <Update
-                        ingredient={ingredient}
-                        handleClose={handleCloseUpdate}
-                        show={showUpdate === ingredient.id}
-                      />
-                    </td>
-                  </Tr>
-                );
-              })}
+            {(
+              pageSplitter(
+                Object.values(handleSearch(ingredients)).sort(
+                  (least, most) => least.stock - most.stock
+                ),
+                rowsPerPage
+              )[page] || []
+            ).map((ingredient) => {
+              const stock = ingredient.stock;
+              const used = ingredient.used;
+              return (
+                <Tr key={ingredient.id}>
+                  <td>
+                    <input
+                      type="checkbox"
+                      onChange={(event) => handleChecked(event, ingredient.id)}
+                    />
+                  </td>
+                  <td>{ingredient.name}</td>
+                  <td>{`${stock + used} 克`}</td>
+                  <td>{`${used} 克`}</td>
+                  <td>{`${stock} 克`}</td>
+                  <td>
+                    <OverlayTrigger
+                      trigger="click"
+                      key="top"
+                      placement="top"
+                      overlay={
+                        <Popover id={`popover-positioned-top`}>
+                          <Popover.Title as="h4">{`備註`}</Popover.Title>
+                          <PopoverContent>
+                            <EditableInput
+                              notes={true}
+                              initValue={ingredient.notes}
+                              handleFinishEdit={(data) =>
+                                handleNoteEdit(ingredient.id, data)
+                              }
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      }
+                    >
+                      <Notes />
+                    </OverlayTrigger>
+                  </td>
+                  <td>
+                    <UpdateIcon
+                      onClick={() => handleShowUpdate(ingredient.id)}
+                    />
+                    <Update
+                      ingredient={ingredient}
+                      handleClose={handleCloseUpdate}
+                      show={showUpdate === ingredient.id}
+                    />
+                  </td>
+                </Tr>
+              );
+            })}
             <Tr>
               <td colSpan="7" style={{ textAlign: "left" }}>
                 <Add onClick={handleShowAdd} />
@@ -167,6 +187,14 @@ export default function Ingredients() {
             </Tr>
           </Tbody>
         </ProductsTable>
+        <TablePagination
+          component="div"
+          count={Object.values(handleSearch(ingredients)).length}
+          page={page}
+          onChangePage={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
       </>
     );
   } else {
