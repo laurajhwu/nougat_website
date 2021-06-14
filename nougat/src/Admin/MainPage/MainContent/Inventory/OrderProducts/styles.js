@@ -7,7 +7,7 @@ export const Container = styled(Jumbotron)`
   margin: 10px 0;
   padding: 5px;
   width: 100%;
-  height: 95%;
+  height: auto;
   min-width: 800px;
   display: grid;
   grid-template-columns: repeat(1);
@@ -23,7 +23,7 @@ export const DropArea = styled.section`
 `;
 
 export const Product = styled.div`
-  max-height: 200px;
+  min-height: 200px;
   height: 100%;
   margin: auto 0;
   display: flex;

@@ -20,7 +20,7 @@ export default function Edit(props) {
     const value = isNaN(Number(rawValue)) ? rawValue : Number(rawValue);
 
     if (ingredient[prop] !== value) {
-      if (value) {
+      if (value || value === 0) {
         changes[prop] = value;
       } else {
         changes[prop] = "empty";
@@ -42,9 +42,9 @@ export default function Edit(props) {
       ...invalid,
       ...{
         name: !name ? false : name === "empty",
-        used: !used && used !== 0 ? false : used === "empty" || isNaN(used),
+        used: !used || used === 0 ? false : used === "empty" || isNaN(used),
         stock:
-          !stock && stock !== 0 ? false : stock === "empty" || isNaN(stock),
+          !stock || stock === 0 ? false : stock === "empty" || isNaN(stock),
       },
     });
   }

@@ -6,11 +6,31 @@ import { Cancel } from "@styled-icons/material-outlined";
 export const Container = styled.div`
   display: flex;
   flex-direction: row;
+  width: 200px;
 `;
 
 export const DateTime = styled.div`
   position: relative;
-  width: 174px;
+
+  & > ${".react-datepicker-wrapper"} {
+    width: 140px;
+  }
+
+  & input {
+    font-size: 14px;
+    width: 140px;
+  }
+
+  @media only screen and (max-width: 1000px) {
+    & > ${".react-datepicker-wrapper"} {
+      width: 110px;
+    }
+
+    & input {
+      font-size: 12px;
+      width: 110px;
+    }
+  }
 `;
 
 export const Change = styled(PublishedWithChanges)`
@@ -24,11 +44,17 @@ export const Change = styled(PublishedWithChanges)`
 export const Done = styled(CheckDouble)`
   width: 20px;
   position: absolute;
-  right: 32px;
+
+  left: 125px;
   top: 0px;
   &:hover {
     cursor: pointer;
     color: green;
+  }
+
+  @media only screen and (max-width: 1000px) {
+    position: relative;
+    left: 0px;
   }
 `;
 
@@ -38,5 +64,9 @@ export const CancelIcon = styled(Cancel)`
   &:hover {
     cursor: pointer;
     color: red;
+  }
+
+  @media only screen and (max-width: 1000px) {
+    margin-left: 2px;
   }
 `;
