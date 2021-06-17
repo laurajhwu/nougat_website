@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PasswordInput from "../../../../../Components/Password";
 import ErrorComponent from "../../../../../Components/Error";
 import Api from "../../../../../utils/Api";
 import { useError } from "../../../../../Hooks/useAlert";
+import propTypes from "prop-types";
 
 import Input from "@material-ui/core/Input";
 import {
@@ -18,6 +18,7 @@ import {
 } from "./styles";
 
 function SignIn(props) {
+  const { setIsLoading } = props;
   const classes = useStyles();
   const [errorMsg, setErrorMsg] = useState();
   const [email, setEmail] = useState("test@test.com");
@@ -35,14 +36,14 @@ function SignIn(props) {
     setRegister(true);
     setCheckInput(true);
     if (validateInfo()) {
-      props.setIsLoading(true);
+      setIsLoading(true);
       Api.signIn(email, password)
         .then((userCredential) => {
           setRegister(false);
         })
         .catch((error) => {
           const errorCode = error.code;
-          const errorMessage = error.message;
+
           if (errorCode === "auth/wrong-password") {
             setErrorMsg("密碼錯誤");
           } else if (errorCode === "auth/user-not-found ") {
@@ -50,7 +51,7 @@ function SignIn(props) {
           } else {
             setErrorMsg(`登入失敗`);
           }
-          props.setIsLoading(false);
+          setIsLoading(false);
           setRegister(false);
         });
     } else {
@@ -100,6 +101,7 @@ function SignIn(props) {
         <Password>
           <Label>密碼</Label>
           <PasswordInput
+            // eslint-disable-next-line react/no-children-prop
             children={(type) => (
               <Input
                 onChange={(event) => handleChange(event, setPassword)}
@@ -119,5 +121,9 @@ function SignIn(props) {
     </Container>
   );
 }
+
+SignIn.propTypes = {
+  setIsLoading: propTypes.func,
+};
 
 export default SignIn;

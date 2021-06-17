@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { stringDate, stringTime } from "../../../../../utils/dateTimeFormat";
 import Calendar from "../../../../../MainWebsite/MainContent/Checkout/Time/Calendar";
 import Api from "../../../../../utils/Api";
-import { Container, DateTime, Change, Done, CancelIcon } from "./styles";
+import { DateTime, Change, Done, CancelIcon } from "./styles";
+import propTypes from "prop-types";
 
 export default function Time(props) {
   const { order } = props;
@@ -45,3 +46,7 @@ export default function Time(props) {
     </>
   );
 }
+
+Time.propTypes = {
+  order: propTypes.object,
+};

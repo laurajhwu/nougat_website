@@ -5,8 +5,10 @@ import {
   Marker,
   InfoWindow,
 } from "@react-google-maps/api";
+import propTypes from "prop-types";
 
 function MainMap(props) {
+  const { selectedLocation, locations, setSelectedLocation } = props;
   const [select, setSelect] = useState();
   const [mapSize, setMapSize] = useState();
   const API_KEY = process.env.REACT_APP_MAPS_API_KEY;
@@ -29,8 +31,8 @@ function MainMap(props) {
   }
 
   useEffect(() => {
-    setSelect(props.selectedLocation);
-  }, [props.selectedLocation]);
+    setSelect(selectedLocation);
+  }, [selectedLocation]);
 
   useEffect(() => {
     window.addEventListener("resize", handleWindowSizeChange);
@@ -50,12 +52,12 @@ function MainMap(props) {
       zoom={12}
       center={{ lat: 25.132410388599844, lng: 121.4987463275781 }}
     >
-      {props.locations.map((location) => (
+      {locations.map((location) => (
         <Marker
           key={location.place_id}
           position={{ lat: location.lat, lng: location.lng }}
           onClick={() => {
-            props.setSelectedLocation(location);
+            setSelectedLocation(location);
           }}
           onLoad={onMapLoad}
         />
@@ -66,18 +68,24 @@ function MainMap(props) {
             pixelOffset: new window.google.maps.Size(0, -30),
           }}
           position={{
-            lat: props.selectedLocation.lat,
-            lng: props.selectedLocation.lng,
+            lat: selectedLocation.lat,
+            lng: selectedLocation.lng,
           }}
           onCloseClick={() => {
             setSelect(null);
           }}
         >
-          <div>{props.selectedLocation.description}</div>
+          <div>{selectedLocation.description}</div>
         </InfoWindow>
       ) : null}
     </GoogleMap>
   );
 }
+
+MainMap.propTypes = {
+  selectedLocation: propTypes.object,
+  locations: propTypes.array,
+  setSelectedLocation: propTypes.func,
+};
 
 export default MainMap;

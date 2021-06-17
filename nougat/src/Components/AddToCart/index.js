@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import Api from "../../utils/Api";
 import convertArrToObj from "../../utils/arrayToObjectConverter";
 import { useAddedAlert, useError } from "../../Hooks/useAlert";
-import { gsap } from "gsap";
+import propTypes from "prop-types";
 
 import {
   Add,
@@ -23,19 +23,21 @@ export default function AddToCart(props) {
     setIsClicked,
     addToCartAnimation,
     isClickedRef,
-    showCart,
-    setShowCart,
+    member,
+    soldOut,
+    productId,
+    qty,
   } = props;
   const path = window.location.pathname;
-  const cartItems = props.member ? props.member.cart_items : null;
+  const cartItems = member ? member.cart_items : null;
   const cartObject = cartItems ? convertArrToObj(cartItems, "id") : {};
-  const isInCart = cartObject[props.productId];
+  const isInCart = cartObject[productId];
 
   function addOnClick() {
     if (!cartItems) {
       errorAlert();
     } else if (!isInCart) {
-      Api.getSpecificProduct(props.productId).then((product) => {
+      Api.getSpecificProduct(productId).then((product) => {
         const { name, image, id, price, unit } = product;
         const newCartItem = {
           name,
@@ -43,8 +45,8 @@ export default function AddToCart(props) {
           id,
           price,
           unit,
-          qty: props.qty,
-          total: price * props.qty,
+          qty: qty,
+          total: price * qty,
         };
 
         cartItems.push(newCartItem);
@@ -53,14 +55,11 @@ export default function AddToCart(props) {
           isClickedRef.current = true;
         }
 
-        Api.updateMember(props.member.id, "cart_items", cartItems)
+        Api.updateMember(member.id, "cart_items", cartItems)
           .then(() => {
             if (path === "/products") {
               setAddEvent(product.id);
               setIsClicked(true);
-              // if (!showCart) {
-              //   setShowCart(true);
-              // }
             } else {
               addToCartAnimation();
             }
@@ -68,35 +67,43 @@ export default function AddToCart(props) {
           })
           .catch(() => (isClickedRef.current = false));
       });
-    } else if (
-      cartObject[props.productId].qty !== props.qty &&
-      path === "/product"
-    ) {
-      const original = cartObject[props.productId].qty;
-      cartObject[props.productId].qty = props.qty;
-      cartObject[props.productId].total =
-        props.qty * cartObject[props.productId].price;
-      Api.updateMember(props.member.id, "cart_items", cartItems).then(() => {
-        dispatch(setQtyDiff(props.qty - original));
+    } else if (cartObject[productId].qty !== qty && path === "/product") {
+      const original = cartObject[productId].qty;
+      cartObject[productId].qty = qty;
+      cartObject[productId].total = qty * cartObject[productId].price;
+      Api.updateMember(member.id, "cart_items", cartItems).then(() => {
+        dispatch(setQtyDiff(qty - original));
       });
     }
   }
 
   return (
-    <Add onClick={addOnClick} disabled={props.soldOut}>
+    <Add onClick={addOnClick} disabled={soldOut}>
       {path === "/products" ? (
         isInCart ? (
           <CartPlusFillIcon />
-        ) : props.soldOut ? (
+        ) : soldOut ? (
           <CartDisableIcon />
         ) : (
           <CartPlusIcon className="cart-plus-icon" />
         )
       ) : (
-        <CartButton disabled={props.soldOut ? "disabled" : ""}>
-          加入購物車
-        </CartButton>
+        <CartButton disabled={soldOut ? "disabled" : ""}>加入購物車</CartButton>
       )}
     </Add>
   );
 }
+
+AddToCart.propTypes = {
+  setAddEvent: propTypes.func,
+  setIsClicked: propTypes.func,
+  addToCartAnimation: propTypes.func,
+  isClickedRef: propTypes.oneOfType([
+    propTypes.func,
+    propTypes.shape({ current: propTypes.bool }),
+  ]),
+  member: propTypes.object,
+  soldOut: propTypes.bool,
+  productId: propTypes.string,
+  qty: propTypes.number,
+};

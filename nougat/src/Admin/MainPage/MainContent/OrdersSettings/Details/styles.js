@@ -1,7 +1,4 @@
 import styled from "styled-components";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-
-import { Button, Header, Modal, Icon } from "semantic-ui-react";
 
 export const Container = styled.div`
   width: 100vw;

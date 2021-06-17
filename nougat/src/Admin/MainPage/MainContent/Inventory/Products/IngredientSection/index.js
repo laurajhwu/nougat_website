@@ -68,7 +68,7 @@ export default function IngredientSection(props) {
       <>
         {prodIngredient.map((ingredient) => {
           return (
-            <Form.Row>
+            <Form.Row key={ingredient.id}>
               <Form.Group as={Col} controlId="formGridState">
                 <Form.Label>食材</Form.Label>
                 <Form.Control

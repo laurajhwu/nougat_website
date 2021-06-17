@@ -1,14 +1,16 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import Api from "../../../../../utils/Api";
 import { useError } from "../../../../../Hooks/useAlert";
 import GoogleImage from "../../../../../images/google-logo.svg";
+import propTypes from "prop-types";
 
 import { FbContainer, GoogleContainer, FbIcon, GoogleIcon } from "./styles";
 
 function SocialLogin(props) {
+  const { setIsLoading } = props;
   const errorAlert = useError("該信箱已被使用過囉！");
   function login(api) {
-    props.setIsLoading(true);
+    setIsLoading(true);
     api()
       .then((result) => {
         const user = result.user;
@@ -33,7 +35,7 @@ function SocialLogin(props) {
         if (email) {
           errorAlert();
         }
-        props.setIsLoading(false);
+        setIsLoading(false);
         throw (errorCode, errorMessage);
       });
   }
@@ -51,5 +53,9 @@ function SocialLogin(props) {
     </>
   );
 }
+
+SocialLogin.propTypes = {
+  setIsLoading: propTypes.func,
+};
 
 export default SocialLogin;

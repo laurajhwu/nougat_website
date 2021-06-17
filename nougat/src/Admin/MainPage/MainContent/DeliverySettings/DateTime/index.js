@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import DateSettings from "./DateSettings";
 import TimeSettings from "./TimeSettings";
-import Api from "../../../../../utils/Api";
 import { dbFormatDate } from "../../../../../utils/dateTimeFormat";
 
 import { Container, DateSection, TimeSection } from "./styles";
-import { getExcludedTimes } from "../../../../../redux/actions/dateTime";
 
 export default function DateTime() {
   const dateData = useSelector((state) => state.dateTime).date;

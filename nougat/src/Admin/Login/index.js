@@ -1,10 +1,13 @@
+/* eslint-disable react/no-children-prop */
 import React, { useState } from "react";
 import PasswordInput from "../../Components/Password";
 import Api from "../../utils/Api";
+import propTypes from "prop-types";
 
 import { Main, Username, Label, Password, Input, LoginBtn } from "./styles";
 
 export default function Login(props) {
+  const { setIsLogin } = props;
   const [username, setUsername] = useState("test");
   const [password, setPassword] = useState("test123");
   const [notValid, setNotValid] = useState();
@@ -23,7 +26,7 @@ export default function Login(props) {
           alert("密碼有誤！");
           setNotValid("password");
         } else {
-          props.setIsLogin(true);
+          setIsLogin(true);
         }
       });
     } else {
@@ -43,9 +46,7 @@ export default function Login(props) {
         <Label>管理者帳號</Label>
         <Input
           onChange={(event) => handleChange(event, setUsername)}
-          notValid={
-            notValid === "username" || notValid === false ? true : false
-          }
+          notValid={!!(notValid === "username" || notValid === false)}
           value={username}
         />
       </Username>
@@ -55,9 +56,7 @@ export default function Login(props) {
           children={(type) => (
             <Input
               onChange={(event) => handleChange(event, setPassword)}
-              notValid={
-                notValid === "password" || notValid === false ? true : false
-              }
+              notValid={!!(notValid === "password" || notValid === false)}
               type={type}
               value={password}
             />
@@ -75,3 +74,7 @@ export default function Login(props) {
     </Main>
   );
 }
+
+Login.propTypes = {
+  setIsLogin: propTypes.func.isRequired,
+};

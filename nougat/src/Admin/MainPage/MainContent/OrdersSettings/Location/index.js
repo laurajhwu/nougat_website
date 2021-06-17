@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import Api from "../../../../../utils/Api";
+import propTypes from "prop-types";
 
-import { Grid, TextField, InputAdornment } from "@material-ui/core";
+import { InputAdornment } from "@material-ui/core";
 
 import {
   Container,
@@ -87,8 +87,10 @@ export default function Location(props) {
       />
       <Suggests>
         {suggest ? (
-          suggest.map((option) => (
-            <Suggest onClick={() => onSelectSuggest(option)}>{option}</Suggest>
+          suggest.map((option, index) => (
+            <Suggest key={index} onClick={() => onSelectSuggest(option)}>
+              {option}
+            </Suggest>
           ))
         ) : (
           <></>
@@ -98,5 +100,7 @@ export default function Location(props) {
   );
 }
 
-//  order.order_info.delivery_address;
-// {getFullAddress(option)}
+Location.propTypes = {
+  order: propTypes.object,
+  locations: propTypes.array,
+};

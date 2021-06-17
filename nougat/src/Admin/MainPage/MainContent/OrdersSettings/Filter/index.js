@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { stringDate } from "../../../../../utils/dateTimeFormat";
+import propTypes from "prop-types";
 
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
@@ -88,7 +89,6 @@ export default function Filter(props) {
     const prop = filter.split(" ");
     if (!filter || (!searchValue && searchValue !== 0)) {
       setFilteredOrders(null);
-    } else if (filter === "email") {
     } else {
       setFilteredOrders(
         orders.filter((order) => {
@@ -126,7 +126,6 @@ export default function Filter(props) {
           <FilterIcon />
           <FilterOptions selected="" onChange={onChangeFilter} filter={filter}>
             <FilterOption value="">全部</FilterOption>
-            {/* <FilterOption value="email">信箱</FilterOption> */}
             <FilterOption value="personal_info line_id">Line ID</FilterOption>
             <FilterOption value="timestamp">下單日期</FilterOption>
             <FilterOption value="order_info delivery_time">
@@ -147,8 +146,10 @@ export default function Filter(props) {
             <SelectArea>
               <FormControl>
                 <Select value={searchValue} onChange={onChangeSearchInput}>
-                  {selectOptions.map(([key, value]) => (
-                    <MenuItem value={isNaN(key) ? key : +key}>{value}</MenuItem>
+                  {selectOptions.map(([key, value], index) => (
+                    <MenuItem value={isNaN(key) ? key : +key} key={index}>
+                      {value}
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>
@@ -208,3 +209,10 @@ export default function Filter(props) {
     </Container>
   );
 }
+
+Filter.propTypes = {
+  orders: propTypes.array,
+  filteredOrders: propTypes.array,
+  setFilteredOrders: propTypes.func,
+  setPage: propTypes.func,
+};

@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import Api from "../../../../utils/Api";
 import CreateAccount from "./CreateAccount";
@@ -52,7 +51,7 @@ function Login() {
             });
           }
         })
-        .catch((error) => {
+        .catch(() => {
           errorAlert();
           setIsLoading(false);
         });

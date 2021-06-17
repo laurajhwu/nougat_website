@@ -3,6 +3,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import Api from "../../../../../../utils/Api";
 import handleEnter from "../../../../../../utils/noEnterSubmit";
+import propTypes from "prop-types";
 
 import {
   InputLabel,
@@ -302,3 +303,10 @@ export default function DateSettings(props) {
     </>
   );
 }
+
+DateSettings.propTypes = {
+  setSelectedDate: propTypes.func,
+  selectedDate: propTypes.instanceOf(Date),
+  dateData: propTypes.object,
+  initDate: propTypes.instanceOf(Date),
+};

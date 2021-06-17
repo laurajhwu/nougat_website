@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Api from "../../../../../utils/Api";
-import ReactDOM from "react-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Fade from "@material-ui/core/Fade";
 
@@ -85,8 +84,6 @@ export default function OrderProduct() {
         newState[sourceIndex] = products;
         setOrderedProducts(newState);
         updateProductOrder(newState);
-      } else {
-        return;
       }
     } else {
       const result = move(
@@ -179,6 +176,6 @@ export default function OrderProduct() {
       </Container>
     );
   } else {
-    return <></>;
+    return "";
   }
 }

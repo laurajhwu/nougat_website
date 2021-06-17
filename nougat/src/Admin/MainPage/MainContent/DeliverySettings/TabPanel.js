@@ -1,5 +1,6 @@
 import React from "react";
 import { Typography, Box } from "@material-ui/core";
+import propTypes from "prop-types";
 
 export default function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -17,3 +18,9 @@ export default function TabPanel(props) {
     </Typography>
   );
 }
+
+TabPanel.propTypes = {
+  children: propTypes.node,
+  value: propTypes.number,
+  index: propTypes.number,
+};

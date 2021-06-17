@@ -1,11 +1,10 @@
 import React from "react";
+import propTypes from "prop-types";
 
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import { Clear } from "@styled-icons/material";
-
-import { Container } from "./styles";
 
 export default function SearchBar(props) {
   const { searchValue, setSearchValue } = props;
@@ -37,3 +36,8 @@ export default function SearchBar(props) {
     />
   );
 }
+
+SearchBar.propTypes = {
+  searchValue: propTypes.string,
+  setSearchValue: propTypes.func,
+};

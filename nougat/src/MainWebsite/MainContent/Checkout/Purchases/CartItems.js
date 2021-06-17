@@ -53,7 +53,7 @@ function AllProducts(props) {
           </Product>
         ) : (
           cartItems.map((product) => (
-            <Product id={product.id}>
+            <Product id={product.id} key={product.id}>
               <Link
                 to={`/product?id=${product.id}`}
                 style={{ textDecoration: "none", color: "black" }}

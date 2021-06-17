@@ -1,12 +1,9 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import BGImage from "../../../images/landing-page-bg.jpg";
 import BowlImage from "../../../images/bowl.svg";
 import WhiskImage from "../../../images/whisk.svg";
-import NougatImage from "../../../images/nougat.svg";
-import CandyImage from "../../../images/candy.svg";
-import CookieImage from "../../../images/cookies.svg";
 import { gsap } from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import Loading from "../../../Components/LoadingPage";
@@ -17,9 +14,6 @@ import {
   Whisk,
   Animation,
   SplashArea,
-  Nougat,
-  Candy,
-  Cookie,
   Product,
   About,
   AboutContent,
@@ -47,15 +41,6 @@ export default function LandingPage() {
 
   function getRandomNum(min, max) {
     return Math.ceil(Math.random() * (max - min)) + min;
-  }
-
-  function getRandomNumArray(min, max) {
-    const num = getRandomNum(min, max);
-    const arr = [];
-    for (let i = 0; i < num; i++) {
-      arr.push(i);
-    }
-    return arr;
   }
 
   function mixingAnimation() {
@@ -107,15 +92,12 @@ export default function LandingPage() {
         },
         "-=0.1"
       );
-    return (
-      gsap
-        .timeline()
-        // .to("body", { backgroundColor: "#d6cfde", ease: "power1.in" }, "-=1")
-        .from(animationRef.current, { opacity: 0, duration: 1.5 }, "-=1.5")
-        .addLabel("mix")
-        .add(whiskTimeline, "mix")
-        .add(whiskScale, "mix")
-    );
+    return gsap
+      .timeline()
+      .from(animationRef.current, { opacity: 0, duration: 1.5 }, "-=1.5")
+      .addLabel("mix")
+      .add(whiskTimeline, "mix")
+      .add(whiskScale, "mix");
   }
 
   function splashItemsAnimation() {
@@ -257,15 +239,6 @@ export default function LandingPage() {
           {products.map((product) => (
             <Product key={product.id} url={product.image}></Product>
           ))}
-          {/* {getRandomNumArray(5, 7).map((value) => (
-            <Nougat key={`nougat${value}`} src={NougatImage} />
-          ))}
-          {getRandomNumArray(3, 5).map((value) => (
-            <Candy key={`candy${value}`} src={CandyImage} />
-          ))}
-          {getRandomNumArray(2, 4).map((value) => (
-            <Cookie key={`cookie${value}`} src={CookieImage} />
-          ))} */}
         </SplashArea>
         <Animation ref={animationRef}>
           <Whisk src={WhiskImage} ref={whiskRef} />

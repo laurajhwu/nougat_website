@@ -1,34 +1,39 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Form, Col } from "react-bootstrap";
 import convertToObj from "../../../../../../../utils/arrayToObjectConverter";
 import Remove from "../Remove";
-
-import { Container } from "./styles";
+import propTypes from "prop-types";
 
 export default function NewRow(props) {
+  const {
+    setAddNew,
+    product,
+    prodIngredient,
+    setProdIngredient,
+    invalid,
+    remaining,
+  } = props;
+
   function addNewIngredient(event) {
     if (event.target.value !== "choose") {
-      const originalIngredientsObj = convertToObj(
-        props.product.ingredients,
-        "id"
-      );
-      props.setAddNew(false);
-      props.prodIngredient.push({
+      const originalIngredientsObj = convertToObj(product.ingredients, "id");
+      setAddNew(false);
+      prodIngredient.push({
         id: event.target.value,
         amount: originalIngredientsObj[event.target.value]
           ? originalIngredientsObj[event.target.value].amount
           : 0,
       });
-      props.setProdIngredient([...props.prodIngredient]);
+      setProdIngredient([...prodIngredient]);
     }
   }
 
   function addNewProductIngredient(event) {
     if (event.target.value !== "choose") {
-      props.setAddNew(false);
+      setAddNew(false);
 
-      props.setProdIngredient([
-        ...props.prodIngredient,
+      setProdIngredient([
+        ...prodIngredient,
         {
           id: event.target.value,
           amount: 0,
@@ -44,13 +49,13 @@ export default function NewRow(props) {
         <Form.Control
           as="select"
           defaultValue="choose"
-          onChange={props.product ? addNewIngredient : addNewProductIngredient}
-          isInvalid={props.invalid ? props.invalid : false}
+          onChange={product ? addNewIngredient : addNewProductIngredient}
+          isInvalid={invalid}
         >
           <option key="choose" value="choose">
             選取食材
           </option>
-          {Object.values(props.remaining).map((remain) => {
+          {Object.values(remaining).map((remain) => {
             return (
               <option key={remain.id} value={remain.id}>
                 {remain.name}
@@ -65,15 +70,15 @@ export default function NewRow(props) {
 
       <Form.Group as={Col} xs={7} controlId="formGridZip">
         <Form.Label>{`每${
-          props.product ? props.product.unit : "單位"
+          product ? product.unit : "單位"
         }所需公克數`}</Form.Label>
         <Form.Control placeholder="公克" />
       </Form.Group>
-      {props.prodIngredient.length > 0 ? (
+      {prodIngredient.length > 0 ? (
         <Remove
-          prodIngredient={props.prodIngredient}
-          setProdIngredient={props.setProdIngredient}
-          setAddNew={props.setAddNew}
+          prodIngredient={prodIngredient}
+          setProdIngredient={setProdIngredient}
+          setAddNew={setAddNew}
           noValue={true}
         />
       ) : (
@@ -82,3 +87,12 @@ export default function NewRow(props) {
     </Form.Row>
   );
 }
+
+NewRow.propTypes = {
+  setAddNew: propTypes.func,
+  product: propTypes.object,
+  prodIngredient: propTypes.array,
+  setProdIngredient: propTypes.func,
+  invalid: propTypes.bool,
+  remaining: propTypes.object,
+};

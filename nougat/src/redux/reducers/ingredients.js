@@ -5,10 +5,10 @@ function ingredients(state = null, action) {
     case "ADD_INGREDIENT":
       return action.payload.id
         ? {
-            ...(state ? state : {}),
+            ...(state || {}),
             ...{ [action.payload.id]: action.payload },
           }
-        : { ...(state ? state : {}) };
+        : { ...(state || {}) };
     case "MODIFY_INGREDIENT":
       return {
         ...state,

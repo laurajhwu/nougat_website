@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Api from "../../../../utils/Api";
+import propTypes from "prop-types";
 
 import {
   Dialog,
@@ -20,6 +21,17 @@ import {
 let isLoading = false;
 
 export default function UpdateStockDialog(props) {
+  const {
+    handleClose,
+    data,
+    ingredients,
+    productId,
+    productsObj,
+    productAmount,
+    providerRef,
+    reset,
+    open,
+  } = props;
   const initOptionsState = {
     ingredient: {
       decrease: false,
@@ -41,16 +53,16 @@ export default function UpdateStockDialog(props) {
     selected[category] = option;
   }
 
-  function handleClose() {
+  function handleCloseDialog() {
     setOptions(initOptionsState);
     setSelected({});
-    props.handleClose();
+    handleClose();
   }
 
   function canDecreaseIngredientStock() {
-    if (props.data) {
-      return Object.entries(props.data).every(
-        ([id, amount]) => props.ingredients[id].stock >= amount
+    if (data) {
+      return Object.entries(data).every(
+        ([id, amount]) => ingredients[id].stock >= amount
       );
     }
   }
@@ -67,64 +79,64 @@ export default function UpdateStockDialog(props) {
     const newProductsData = {};
 
     if (selected.ingredient === "decrease") {
-      Object.entries(props.data).forEach(([id, amount]) => {
+      Object.entries(data).forEach(([id, amount]) => {
         Object.assign(newIngredientsData, {
           [id]: {
-            stock: props.ingredients[id].stock - amount,
-            used: props.ingredients[id].used + amount,
+            stock: ingredients[id].stock - amount,
+            used: ingredients[id].used + amount,
           },
         });
       });
     } else if (selected.ingredient === "increase") {
-      Object.entries(props.data).forEach(([id, amount]) => {
+      Object.entries(data).forEach(([id, amount]) => {
         Object.assign(newIngredientsData, {
           [id]: {
-            stock: props.ingredients[id].stock + amount,
+            stock: ingredients[id].stock + amount,
           },
         });
       });
     } else if (selected.ingredient === "used") {
-      Object.entries(props.data).forEach(([id, amount]) => {
+      Object.entries(data).forEach(([id, amount]) => {
         Object.assign(newIngredientsData, {
           [id]: {
-            used: props.ingredients[id].used + amount,
+            used: ingredients[id].used + amount,
           },
         });
       });
     }
 
     if (selected.product === "increase") {
-      const id = props.productId;
+      const id = productId;
       Object.assign(newProductsData, {
         [id]: {
-          stock: props.productsObj[id].stock + props.productAmount,
+          stock: productsObj[id].stock + productAmount,
         },
       });
     } else if (selected.product === "all") {
       Object.assign(newProductsData, {
-        [props.productId]: {
-          stock: props.productAmount,
+        [productId]: {
+          stock: productAmount,
         },
       });
     }
 
     Api.updateProduct("", "", newProductsData).then(() => {
-      props.providerRef.current.enqueueSnackbar("更新產品庫存！", {
+      providerRef.current.enqueueSnackbar("更新產品庫存！", {
         variant: "success",
       });
       if (selected.ingredient !== "unchanged") {
         Api.updateIngredients("", "", newIngredientsData).then(() => {
-          props.providerRef.current.enqueueSnackbar("更新食材庫存！", {
+          providerRef.current.enqueueSnackbar("更新食材庫存！", {
             variant: "success",
           });
           isLoading = false;
-          props.reset();
-          handleClose();
+          reset();
+          handleCloseDialog();
         });
       } else {
         isLoading = false;
-        props.reset();
-        handleClose();
+        reset();
+        handleCloseDialog();
       }
     });
   }
@@ -138,8 +150,8 @@ export default function UpdateStockDialog(props) {
 
   return (
     <Dialog
-      open={props.open}
-      onClose={handleClose}
+      open={open}
+      onClose={handleCloseDialog}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
@@ -190,7 +202,7 @@ export default function UpdateStockDialog(props) {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleCloseDialog} color="primary">
           取消
         </Button>
         <Button onClick={handleConfirmUpdate} color="secondary" autoFocus>
@@ -200,3 +212,15 @@ export default function UpdateStockDialog(props) {
     </Dialog>
   );
 }
+
+UpdateStockDialog.propTypes = {
+  handleClose: propTypes.func,
+  data: propTypes.object,
+  ingredients: propTypes.object,
+  productId: propTypes.string,
+  productsObj: propTypes.object,
+  productAmount: propTypes.number,
+  providerRef: propTypes.node,
+  reset: propTypes.func,
+  open: propTypes.bool,
+};

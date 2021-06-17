@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Accordion, Card, Button } from "react-bootstrap";
+import { Accordion, Card } from "react-bootstrap";
 
 export const Container = styled.div`
   display: flex;

@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Col } from "react-bootstrap";
 import Api from "../../../../../../utils/Api";
+import propTypes from "prop-types";
 
 import {} from "./styles";
 
 export default function Edit(props) {
+  const { handleClose, show } = props;
   const [invalid, setInvalid] = useState({});
   const [changes, setChanges] = useState({});
 
   function handleCloseModal() {
     setChanges({});
     setInvalid({});
-    props.handleClose();
+    handleClose();
   }
 
   function getEditData(event, prop) {
@@ -83,7 +85,7 @@ export default function Edit(props) {
 
   return (
     <Modal
-      show={props.show}
+      show={show}
       onHide={handleCloseModal}
       backdrop="static"
       keyboard={false}
@@ -145,3 +147,8 @@ export default function Edit(props) {
     </Modal>
   );
 }
+
+Edit.propTypes = {
+  handleClose: propTypes.func,
+  show: propTypes.bool,
+};

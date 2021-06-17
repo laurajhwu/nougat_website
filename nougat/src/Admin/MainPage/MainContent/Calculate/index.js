@@ -150,7 +150,9 @@ export default function Calculate() {
               請選擇產品
             </MenuItem>
             {products.map((product) => (
-              <MenuItem value={product.id}>{product.name}</MenuItem>
+              <MenuItem value={product.id} key={product.id}>
+                {product.name}
+              </MenuItem>
             ))}
           </Select>
           <FormHelperText>產品</FormHelperText>
@@ -166,7 +168,7 @@ export default function Calculate() {
               }
             >
               {productsObj[value].ingredients.map((ingredient) => (
-                <Ingredient>
+                <Ingredient key={ingredient.id}>
                   <Text
                     id={ingredient.id}
                     primary={ingredients[ingredient.id].name}
@@ -193,7 +195,7 @@ export default function Calculate() {
                 <Btn
                   variant="contained"
                   color="secondary"
-                  disabled={result ? false : true}
+                  disabled={!result}
                   onClick={handleOpen}
                 >
                   更新庫存

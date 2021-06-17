@@ -1,8 +1,7 @@
 import React from "react";
 import { Button, Header, Image, Modal } from "semantic-ui-react";
 import LineQR from "../../../images/line-QR.png";
-
-import { Container } from "./styles";
+import propTypes from "prop-types";
 
 export default function ContactUs(props) {
   const { handleClose } = props;
@@ -17,6 +16,7 @@ export default function ContactUs(props) {
         image
         style={{
           background: "rgb(0,185,0)",
+          // eslint-disable-next-line no-dupe-keys
           background:
             "linear-gradient(156deg, rgba(0,185,0,1) 0%, rgba(134,230,178,1) 100%)",
           "font-size": "20px",
@@ -60,3 +60,7 @@ export default function ContactUs(props) {
     </>
   );
 }
+
+ContactUs.propTypes = {
+  handleClose: propTypes.func,
+};

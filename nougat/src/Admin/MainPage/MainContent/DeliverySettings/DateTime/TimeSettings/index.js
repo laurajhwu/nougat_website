@@ -7,6 +7,7 @@ import {
   dbFormatTime,
 } from "../../../../../../utils/dateTimeFormat";
 import getTimeRange from "../../../../../../utils/getTimeRange";
+import propTypes from "prop-types";
 
 import {
   Input,
@@ -239,7 +240,7 @@ export default function TimeSettings(props) {
           ? sortedTimes.map((time, index) => {
               if (time.order) {
                 return (
-                  <Time>
+                  <Time key={index}>
                     <Chip
                       avatar={<Avatar>訂</Avatar>}
                       label={<TimeLabel>{time.order}</TimeLabel>}
@@ -249,7 +250,7 @@ export default function TimeSettings(props) {
                 );
               } else if (time.exclude) {
                 return (
-                  <Time>
+                  <Time key={index}>
                     <Chip
                       avatar={<Avatar>休</Avatar>}
                       label={<TimeLabel>{time.exclude}</TimeLabel>}
@@ -261,7 +262,7 @@ export default function TimeSettings(props) {
                 );
               }
               return (
-                <Time>
+                <Time key={index}>
                   <Chip
                     avatar={<Avatar>空</Avatar>}
                     label={<TimeLabel>{time.available}</TimeLabel>}
@@ -277,3 +278,10 @@ export default function TimeSettings(props) {
     </Container>
   );
 }
+
+TimeSettings.propTypes = {
+  dbFormatDate: propTypes.func,
+  selectedDate: propTypes.instanceOf(Date),
+  timeData: propTypes.object,
+  excludedTimes: propTypes.array,
+};

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Facebook, Google } from "@styled-icons/bootstrap";
+import { Facebook } from "@styled-icons/bootstrap";
 
 const Container = styled.div`
   display: flex;

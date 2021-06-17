@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
+import propTypes from "prop-types";
 
-import { Container } from "./styles";
-
-export default function Map(props) {
+export default function Maps(props) {
   const [zoom, setZoom] = useState(12);
   const { lat, lng } = props.coordinates;
 
@@ -36,3 +35,7 @@ export default function Map(props) {
     </GoogleMap>
   );
 }
+
+Maps.propTypes = {
+  coordinates: propTypes.object,
+};

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useSelector } from "react-redux";
-import { useHistory, Router, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { setMinutes, setHours } from "date-fns";
 import Api from "../../../utils/Api";
 import CartItems from "./Purchases/CartItems";
@@ -13,12 +13,11 @@ import RememberMe from "../../../Components/RememberMe";
 import updateProductStock from "../../../utils/updateProductStock";
 import addDays from "../../../utils/addDays";
 import Loading from "../../../Components/LoadingPage";
-import { useConfirmCheckout } from "../../../Hooks/useAlert";
+import { useConfirmCheckout, useError } from "../../../Hooks/useAlert";
 import ErrorComponent from "../../../Components/Error";
 import BGImage from "../../../images/checkout-bg2.png";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useError } from "../../../Hooks/useAlert";
 
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
@@ -44,7 +43,6 @@ import {
   Design3,
 } from "./styles";
 
-// let isClicked = false;
 const id = uuid();
 
 gsap.registerPlugin(ScrollTrigger);
@@ -161,11 +159,11 @@ function CheckOut() {
   }
 
   function validateCheckoutInfo() {
-    return !order.order_info.delivery_address ||
+    return !(
+      !order.order_info.delivery_address ||
       !order.personal_info.name ||
       !order.personal_info.line_id
-      ? false
-      : true;
+    );
   }
 
   function handleRememberMe(prop, data) {

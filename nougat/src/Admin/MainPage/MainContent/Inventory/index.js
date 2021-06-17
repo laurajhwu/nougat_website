@@ -3,12 +3,7 @@ import { Accordion, Card, Button } from "react-bootstrap";
 import TabsBS from "./TabsBS";
 import DragAndDropOrders from "./OrderProducts";
 
-import {
-  Container,
-  AccordionContainer,
-  CardContainer,
-  CardBody,
-} from "./styles";
+import { AccordionContainer, CardContainer, CardBody } from "./styles";
 
 export default function Inventory() {
   return (

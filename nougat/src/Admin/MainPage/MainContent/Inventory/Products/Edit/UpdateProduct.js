@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Col } from "react-bootstrap";
 import IngredientSection from "../IngredientSection";
-import { useSelector } from "react-redux";
 import Api from "../../../../../../utils/Api";
+import propTypes from "prop-types";
 
 import { Img, File } from "./styles";
 
 export default function Edit(props) {
-  const product = props.product;
+  const { product, handleClose, show } = props;
   const [prodIngredient, setProdIngredient] = useState();
   const [invalid, setInvalid] = useState({});
   const [changes, setChanges] = useState({});
@@ -24,7 +24,7 @@ export default function Edit(props) {
     }
     setChanges({});
     setInvalid({});
-    props.handleClose();
+    handleClose();
   }
 
   function getEditData(event, prop) {
@@ -177,7 +177,7 @@ export default function Edit(props) {
   if (prodIngredient) {
     return (
       <Modal
-        show={props.show}
+        show={show}
         onHide={handleCloseModal}
         backdrop="static"
         keyboard={false}
@@ -245,9 +245,7 @@ export default function Edit(props) {
               <File id="formcheck-api-custom" custom>
                 <Form.File.Input
                   accept="image/*,.pdf"
-                  isValid={
-                    image !== product.image ? (image ? true : false) : false
-                  }
+                  isValid={image !== product.image ? !!image : false}
                   isInvalid={invalid.image}
                   onChange={handleUploadImage}
                 />
@@ -293,3 +291,9 @@ export default function Edit(props) {
     return <>Loading...</>;
   }
 }
+
+Edit.propTypes = {
+  handleClose: propTypes.func,
+  product: propTypes.object,
+  show: propTypes.bool,
+};

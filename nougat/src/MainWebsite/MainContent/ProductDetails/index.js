@@ -123,9 +123,13 @@ function ProductDetails() {
                   }}
                   disableUnderline
                 >
-                  {qtyOptions(product.stock).map((option) => {
+                  {qtyOptions(product.stock).map((option, index) => {
                     return (
-                      <Option value={+option} className={classes.option}>
+                      <Option
+                        value={+option}
+                        className={classes.option}
+                        key={index}
+                      >
                         {option}
                         {product.unit}
                       </Option>

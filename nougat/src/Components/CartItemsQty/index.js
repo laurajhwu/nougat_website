@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Api from "../../utils/Api";
 import qtyOptions from "../../utils/qtyOptions";
 import { useSelector } from "react-redux";
+import propTypes from "prop-types";
 
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -52,10 +53,12 @@ if (window.location.pathname === "/cart") {
 }
 
 export default function QuantityBtn(props) {
+  const { productId, qty, stock, menuStyle, selectStyle, containerStyle } =
+    props;
   const member = useSelector((state) => state.member);
   const cartItems = member.cart_items;
-  const product = cartItems.find((cartItem) => cartItem.id === props.productId);
-  const [selectedOption, setSelectedOption] = useState(props.qty);
+  const product = cartItems.find((cartItem) => cartItem.id === productId);
+  const [selectedOption, setSelectedOption] = useState(qty);
   const classes = useStyles();
 
   function handleChange(event) {
@@ -66,11 +69,11 @@ export default function QuantityBtn(props) {
   }
 
   return (
-    <QuantityBar style={props.containerStyle}>
+    <QuantityBar style={containerStyle}>
       <Select
         onChange={handleChange}
         value={selectedOption}
-        style={props.selectStyle}
+        style={selectStyle}
         className={classes.select}
         inputProps={{
           classes: {
@@ -78,12 +81,13 @@ export default function QuantityBtn(props) {
           },
         }}
       >
-        {qtyOptions(props.stock).map((option) => {
+        {qtyOptions(stock).map((option, index) => {
           return (
             <MenuItem
               value={+option}
-              style={props.menuStyle}
+              style={menuStyle}
               className={classes.option}
+              key={index}
             >
               {option}
             </MenuItem>
@@ -94,3 +98,12 @@ export default function QuantityBtn(props) {
     </QuantityBar>
   );
 }
+
+QuantityBtn.propTypes = {
+  productId: propTypes.string,
+  qty: propTypes.number,
+  stock: propTypes.number,
+  menuStyle: propTypes.object,
+  selectStyle: propTypes.object,
+  containerStyle: propTypes.object,
+};

@@ -25,8 +25,10 @@ export default function Status(props) {
           <Select value={order.status} onChange={handleStatusChange}>
             {Object.entries(fixedData.status)
               .sort((a, b) => a[1] - b[1])
-              .map(([key, value]) => (
-                <MenuItem value={+key}>{value}</MenuItem>
+              .map(([key, value], index) => (
+                <MenuItem key={index} value={+key}>
+                  {value}
+                </MenuItem>
               ))}
           </Select>
         </FormControl>

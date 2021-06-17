@@ -6,6 +6,7 @@ import PlacesAutocomplete, {
   getLatLng,
 } from "react-places-autocomplete";
 import Geocode from "react-geocode";
+import propTypes from "prop-types";
 
 import { InputAdornment, Zoom, Fab } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
@@ -59,9 +60,9 @@ export default function SearchLocations(props) {
       "zh-TW",
       "TW"
     ).then((response) => {
-      let city,
-        district,
-        address = "";
+      let city;
+      let district;
+      let address = "";
       const description = mainText;
 
       response.results[0].address_components.forEach((component) => {
@@ -149,11 +150,7 @@ export default function SearchLocations(props) {
                     size="small"
                     color="secondary"
                     aria-label="add"
-                    disabled={
-                      coordinates.lat && coordinates.lng && mainText
-                        ? false
-                        : true
-                    }
+                    disabled={!(coordinates.lat && coordinates.lng && mainText)}
                     onClick={AddNewLocation}
                   >
                     <AddIcon />
@@ -163,7 +160,7 @@ export default function SearchLocations(props) {
 
               <Suggestions>
                 {loading ? <div>loading...</div> : null}
-                {suggestions.map((suggestion) => {
+                {suggestions.map((suggestion, index) => {
                   const style = {
                     backgroundColor: suggestion.active ? "#D7CDCC" : "#fff",
                     color: suggestion.active ? "#474973" : "#000",
@@ -171,6 +168,7 @@ export default function SearchLocations(props) {
 
                   return (
                     <Suggestion
+                      key={index}
                       {...getSuggestionItemProps(suggestion, { style })}
                     >
                       {suggestion.description}
@@ -185,3 +183,10 @@ export default function SearchLocations(props) {
     </>
   );
 }
+
+SearchLocations.propTypes = {
+  add: propTypes.object,
+  coordinates: propTypes.object,
+  setCoordinates: propTypes.func,
+  API_KEY: propTypes.string,
+};

@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import { GlobeSearch } from "@styled-icons/fluentui-system-regular";
-import { TextField } from "@material-ui/core";
 
 export const Container = styled.div`
   width: 100%;

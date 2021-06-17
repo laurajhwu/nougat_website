@@ -3,6 +3,7 @@ import SearchLocations from "./SearchLocations";
 import { useLoadScript } from "@react-google-maps/api";
 import Map from "./Map";
 import DisplayAllLocations from "./DisplayAll";
+import propTypes from "prop-types";
 
 import { Container, SearchContainer, DisplayContainer } from "./styles";
 
@@ -44,3 +45,8 @@ export default function Locations(props) {
     </Container>
   );
 }
+
+Locations.propTypes = {
+  transitionDuration: propTypes.number,
+  isIn: propTypes.bool,
+};

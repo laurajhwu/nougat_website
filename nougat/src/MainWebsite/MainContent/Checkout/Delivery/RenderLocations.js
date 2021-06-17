@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import UseAnimations from "react-useanimations";
 import explore from "react-useanimations/lib/explore";
+import propTypes from "prop-types";
 
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
@@ -62,26 +63,29 @@ const useStyles = makeStyles((theme) => ({
 
 function RenderLocations(props) {
   const classes = useStyles();
+  const { locations, setSelectedLocation, selectedLocation } = props;
 
   return (
     <List className={classes.root}>
-      {props.locations.map((location) => {
+      {locations.map((location, index) => {
         return (
           <UseAnimations
             animation={explore}
             size={26}
+            key={index}
             onClick={() => {
-              props.setSelectedLocation(location);
+              setSelectedLocation(location);
             }}
             render={(eventProps, animationProps) => (
               <Location
                 className={classes.listItem}
                 selected={
-                  props.selectedLocation &&
-                  location.place_id === props.selectedLocation.place_id
+                  selectedLocation &&
+                  location.place_id === selectedLocation.place_id
                 }
                 button
                 {...eventProps}
+                key={location.place_id}
               >
                 <ListItemAvatar>
                   <Avatar className={classes.avatar}>
@@ -105,5 +109,11 @@ function RenderLocations(props) {
     </List>
   );
 }
+
+RenderLocations.propTypes = {
+  locations: propTypes.array,
+  setSelectedLocation: propTypes.func,
+  selectedLocation: propTypes.object,
+};
 
 export default RenderLocations;

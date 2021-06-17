@@ -2,10 +2,11 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { stringTime, stringDate } from "../../../../../utils/dateTimeFormat";
 
-import { Button, Header, Modal, Icon } from "semantic-ui-react";
+import { Button, Header, Modal } from "semantic-ui-react";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import propTypes from "prop-types";
 
 import {
   Container,
@@ -101,3 +102,8 @@ export default function Details(props) {
     </Container>
   );
 }
+
+Details.propTypes = {
+  handleClose: propTypes.func,
+  order: propTypes.object,
+};

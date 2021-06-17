@@ -11,10 +11,12 @@ import addDays from "../../../../utils/addDays";
 import "react-datepicker/dist/react-datepicker.css";
 import UseAnimations from "react-useanimations";
 import calendar from "react-useanimations/lib/calendar";
+import propTypes from "prop-types";
 
 import { Container, Value } from "./styles";
 
 function Calendar(props) {
+  const { date, setDate } = props;
   const dateSettings = useSelector((state) => state.dateTime).date;
   const timeSettings = useSelector((state) => state.dateTime).time;
   const orderTimes = useSelector((state) => state.orders).filter(
@@ -34,15 +36,17 @@ function Calendar(props) {
     </Container>
   ));
 
+  CustomInput.displayName = "CustomInput";
+
   const timesToExclude = [
     ...orderTimes
       .filter(
         (order) =>
           stringDate(order.order_info.delivery_time.toDate()) ===
-          stringDate(props.date)
+          stringDate(date)
       )
       .map((order) => order.order_info.delivery_time.toDate()),
-    ...(timeSettings.excluded_times[dbFormatDate(props.date)] || []),
+    ...(timeSettings.excluded_times[dbFormatDate(date)] || []),
   ];
 
   function filterDates(date) {
@@ -70,11 +74,11 @@ function Calendar(props) {
   }
 
   function getTimestamp(time) {
-    return new Date(`${stringDate(props.date)} ${time}`);
+    return new Date(`${stringDate(date)} ${time}`);
   }
 
   function handleChange(date) {
-    props.setDate(date);
+    setDate(date);
   }
 
   function noAvailableTime(date, timesToExclude) {
@@ -113,7 +117,7 @@ function Calendar(props) {
   return (
     <DatePicker
       onChange={handleChange}
-      selected={props.date}
+      selected={date}
       locale="zh-TW"
       showTimeSelect
       dateFormat="yyyy/MM/dd, HH:mm"
@@ -133,5 +137,12 @@ function Calendar(props) {
     />
   );
 }
+
+Calendar.propTypes = {
+  date: propTypes.instanceOf(Date),
+  setDate: propTypes.func,
+  onClick: propTypes.func,
+  value: propTypes.string,
+};
 
 export default Calendar;

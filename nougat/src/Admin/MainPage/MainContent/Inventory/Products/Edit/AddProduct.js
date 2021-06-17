@@ -3,10 +3,12 @@ import { useSelector } from "react-redux";
 import { Modal, Button, Form, Col } from "react-bootstrap";
 import IngredientSection from "../IngredientSection";
 import Api from "../../../../../../utils/Api";
+import propTypes from "prop-types";
 
 import { Img, File } from "./styles";
 
 export default function Edit(props) {
+  const { handleClose, show } = props;
   const products = useSelector((state) => state.products);
   const [prodIngredient, setProdIngredient] = useState([]);
   const [invalid, setInvalid] = useState({});
@@ -18,7 +20,7 @@ export default function Edit(props) {
     setImage("");
     setChanges({});
     setInvalid({});
-    props.handleClose();
+    handleClose();
   }
 
   function getEditData(event, prop) {
@@ -138,7 +140,7 @@ export default function Edit(props) {
 
   return (
     <Modal
-      show={props.show}
+      show={show}
       onHide={handleCloseModal}
       backdrop="static"
       keyboard={false}
@@ -197,7 +199,7 @@ export default function Edit(props) {
             <File id="formcheck-api-custom" custom>
               <Form.File.Input
                 accept="image/*,.pdf"
-                isValid={image ? true : false}
+                isValid={!!image}
                 isInvalid={invalid.image}
                 onChange={handleUploadImage}
               />
@@ -239,3 +241,8 @@ export default function Edit(props) {
     </Modal>
   );
 }
+
+Edit.propTypes = {
+  handleClose: propTypes.func,
+  show: propTypes.bool,
+};

@@ -147,6 +147,7 @@ function AllProducts() {
   useEffect(() => {
     if (cartItems) {
       if (cartItems.length > cartLength) {
+        // eslint-disable-next-line space-before-function-paren
         window.setTimeout(function () {
           setCartLength(cartItems.length);
         }, 2100);
@@ -252,6 +253,7 @@ function AllProducts() {
                   ref={index === cartItems.length - 1 ? cartItemRef : undefined}
                   opacity={isClicked || isClickedRef.current ? 0 : 1}
                   className="cart-items"
+                  key={index}
                 >
                   <CardActionArea>
                     <CardContent style={{ paddingBottom: "10px" }}>

@@ -1,6 +1,8 @@
-import styled from "styled-components";
+import React from "react";
 import Modal from "react-bootstrap/Modal";
 import { stringDate, stringTime } from "../../../../../utils/dateTimeFormat";
+import propTypes from "prop-types";
+
 import {
   ModalContainer,
   DetailTitle,
@@ -16,16 +18,11 @@ import {
 } from "./styles";
 
 function OrderDetails(props) {
-  const order = props.order;
-  const fixedData = props.fixedData;
+  const { order, fixedData, show, handleClose } = props;
   const deliveryTime = order.order_info.delivery_time.toDate();
   return (
     <>
-      <ModalContainer
-        show={props.show}
-        onHide={props.handleClose}
-        keyboard={false}
-      >
+      <ModalContainer show={show} onHide={handleClose} keyboard={false}>
         <Modal.Header closeButton style={{ borderBottom: "none" }}>
           <DetailTitle>
             訂單：<span>{order.id}</span>
@@ -70,7 +67,7 @@ function OrderDetails(props) {
           </GeneralInfo>
           <Products>
             {order.products.map((product) => (
-              <Product>
+              <Product key={product.id}>
                 <ProductImage src={product.image} />
                 <ProductDetails>
                   <div>{product.name}</div>
@@ -93,7 +90,7 @@ function OrderDetails(props) {
           <Total>總額：${order.total}</Total>
         </ModalBody>
         <Modal.Footer style={{ borderTop: "none" }}>
-          <ConfirmBtn variant="secondary" onClick={props.handleClose}>
+          <ConfirmBtn variant="secondary" onClick={handleClose}>
             確認
           </ConfirmBtn>
         </Modal.Footer>
@@ -101,5 +98,12 @@ function OrderDetails(props) {
     </>
   );
 }
+
+OrderDetails.propTypes = {
+  order: propTypes.object,
+  fixedData: propTypes.object,
+  show: propTypes.bool,
+  handleClose: propTypes.func,
+};
 
 export default OrderDetails;

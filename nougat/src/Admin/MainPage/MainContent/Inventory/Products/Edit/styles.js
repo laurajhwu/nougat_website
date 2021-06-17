@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Modal, Button, Form, Col } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 
 export const Container = styled.div`
   display: flex;

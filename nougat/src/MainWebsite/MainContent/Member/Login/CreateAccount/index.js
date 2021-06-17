@@ -22,7 +22,8 @@ function CreateAccount() {
   const classes = useStyles();
   const [errorMsg, setErrorMsg] = useState();
   const [name, setName] = useState();
-  const [line_id, setLine] = useState();
+
+  const [lineId, setLineId] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [confirmPW, setConfirmPW] = useState();
@@ -48,7 +49,7 @@ function CreateAccount() {
           };
           Api.addNewMember(user.uid, {
             name,
-            line_id,
+            lineId,
             email,
             cart_items: [],
             order_info: {},
@@ -70,7 +71,6 @@ function CreateAccount() {
         })
         .catch((error) => {
           const errorCode = error.code;
-          const errorMessage = error.message;
           if (errorCode === "auth/email-already-in-use") {
             setErrorMsg("該信箱已有註冊帳號！");
           } else {
@@ -99,7 +99,7 @@ function CreateAccount() {
   function validateInfo() {
     if (!validEmail()) {
       setErrorMsg("信箱格式有誤！");
-    } else if (!(name && line_id)) {
+    } else if (!(name && lineId)) {
       setErrorMsg("所有空格皆為必填");
     } else if (!validPassword()) {
       setErrorMsg("密碼需至少有6字！");
@@ -132,11 +132,11 @@ function CreateAccount() {
         <Line>
           <Label>Line ID</Label>
           <Input
-            onChange={(event) => handleChange(event, setLine)}
-            value={line_id}
+            onChange={(event) => handleChange(event, setLineId)}
+            value={lineId}
             className={classes.input}
           />
-          {ErrorComponent(checkInput && !line_id)}
+          {ErrorComponent(checkInput && !lineId)}
         </Line>
         <Email>
           <Label>信箱</Label>
@@ -150,6 +150,7 @@ function CreateAccount() {
         <Password>
           <Label>密碼</Label>
           <PasswordInput
+            // eslint-disable-next-line react/no-children-prop
             children={(type) => (
               <Input
                 onChange={(event) => handleChange(event, setPassword)}
@@ -166,6 +167,7 @@ function CreateAccount() {
         <Password>
           <Label>確認密碼</Label>
           <PasswordInput
+            // eslint-disable-next-line react/no-children-prop
             children={(type) => (
               <Input
                 onChange={(event) => handleChange(event, setConfirmPW)}

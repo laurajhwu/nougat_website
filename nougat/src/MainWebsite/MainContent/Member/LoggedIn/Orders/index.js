@@ -70,7 +70,7 @@ export default function Orders() {
         </Order>
         <OrdersWrapper>
           {pageSplitter(orders, 5)[page - 1].map((order) => (
-            <Order className="order" ref={orderRef}>
+            <Order className="order" ref={orderRef} key={order.id}>
               <OrderNumLink variant="link" onClick={() => handleShow(order.id)}>
                 {order.id}
               </OrderNumLink>

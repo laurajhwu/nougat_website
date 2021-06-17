@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import Api from "../../../../../utils/Api";
-import EditableInput from "../../../../../Components/EditableInput";
 import Update from "./Edit/UpdateIngredient";
 import AddIngredient from "./Edit/AddIngredient";
 import Delete from "../DeleteIventory";
@@ -38,10 +37,6 @@ export default function Ingredients() {
   const handleShowUpdate = (id) => setShowUpdate(id);
   const handleCloseAdd = () => setShowAdd(false);
   const handleShowAdd = () => setShowAdd(true);
-
-  function handleNoteEdit(id, data) {
-    Api.updateIngredients(id, { notes: data });
-  }
 
   function handleChecked(event, id) {
     setDeleteItems(
