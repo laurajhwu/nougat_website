@@ -118,7 +118,7 @@ export default function IngredientSection(props) {
                   ingredientId={ingredient.id}
                 />
               ) : (
-                <></>
+                ""
               )}
             </Form.Row>
           );
@@ -133,10 +133,10 @@ export default function IngredientSection(props) {
             invalid={props.invalid}
           />
         ) : (
-          <></>
+          ""
         )}
         {Object.keys(remaining).length === 0 ? (
-          <></>
+          ""
         ) : (
           <Form.Row>
             <Form.Group as={Col} xs={12}>

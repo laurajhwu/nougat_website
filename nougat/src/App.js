@@ -118,9 +118,6 @@ function App() {
         (obj, time) => ({ ...obj, [time.id]: convertData(time.data()) }),
         {}
       );
-      // snapshot.forEach((time) => {
-      //   times[time.id] = convertData(time.data());
-      // });
       dispatch(getExcludedTimes(times));
       initExcludedTimes = false;
     } else {
@@ -176,7 +173,7 @@ function App() {
           </Switch>
         </Router>
       ) : (
-        <></>
+        ""
       )}
     </>
   );

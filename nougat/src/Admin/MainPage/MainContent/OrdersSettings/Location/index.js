@@ -86,15 +86,13 @@ export default function Location(props) {
         disabled={!edit}
       />
       <Suggests>
-        {suggest ? (
-          suggest.map((option, index) => (
-            <Suggest key={index} onClick={() => onSelectSuggest(option)}>
-              {option}
-            </Suggest>
-          ))
-        ) : (
-          <></>
-        )}
+        {suggest
+          ? suggest.map((option, index) => (
+              <Suggest key={index} onClick={() => onSelectSuggest(option)}>
+                {option}
+              </Suggest>
+            ))
+          : ""}
       </Suggests>
     </Container>
   );

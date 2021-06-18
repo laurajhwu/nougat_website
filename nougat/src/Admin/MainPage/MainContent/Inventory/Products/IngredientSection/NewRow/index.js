@@ -82,7 +82,7 @@ export default function NewRow(props) {
           noValue={true}
         />
       ) : (
-        <></>
+        ""
       )}
     </Form.Row>
   );

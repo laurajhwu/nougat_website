@@ -12,7 +12,7 @@ export default function ErrorComponent(isError, size = 30) {
           size={size}
         />
       ) : (
-        <></>
+        ""
       )}
     </>
   );

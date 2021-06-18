@@ -79,7 +79,7 @@ export default function Profile() {
           />
         </Info>
         {Object.keys(fixedData).length === 0 ? (
-          <></>
+          ""
         ) : (
           <>
             <Info>

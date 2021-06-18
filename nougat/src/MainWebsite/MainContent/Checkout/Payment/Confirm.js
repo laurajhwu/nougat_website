@@ -43,7 +43,7 @@ function Confirm() {
   if (isLoading) {
     return <Loading />;
   } else {
-    return <></>;
+    return "";
   }
 }
 

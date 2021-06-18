@@ -166,7 +166,7 @@ export default function Filter(props) {
             </InputArea>
           )
         ) : (
-          <></>
+          ""
         )}
       </section>
       <section>

@@ -312,7 +312,7 @@ function AllProducts() {
               ))}
             </>
           ) : (
-            <></>
+            ""
           )}
         </Cart>
         <Pagination
