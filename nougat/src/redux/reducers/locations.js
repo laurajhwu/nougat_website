@@ -3,20 +3,22 @@ function locations(state = [], action) {
     case "GET_LOCATIONS":
       return action.payload;
     case "MODIFY_LOCATION": {
-      const i = state.findIndex(
+      const copiedState = [...state];
+      const index = state.findIndex(
         (location) => !location.id || location.id === action.payload.id
       );
-      state[i] = action.payload;
-      return [...state];
+      copiedState.splice(index, 1, action.payload);
+      return [...copiedState];
     }
     case "ADD_LOCATION":
       return [...state, action.payload];
     case "REMOVE_LOCATION": {
+      const copiedState = [...state];
       const index = state.findIndex(
         (location) => location.id === action.payload.id
       );
-      state.splice(index, 1);
-      return [...state];
+      copiedState.splice(index, 1);
+      return [...copiedState];
     }
     default:
       return state;

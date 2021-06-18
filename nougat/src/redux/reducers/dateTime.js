@@ -5,8 +5,10 @@ function dateTime(state = {}, action) {
     case "GET_TIME":
       return { ...state, time: { ...(state.time || {}), ...action.payload } };
     case "GET_EXCLUDED_TIMES":
-      state.time.excluded_times = action.payload;
-      return { ...state };
+      return {
+        ...state,
+        time: { ...state.time, excluded_times: action.payload },
+      };
     case "ADD_EXCLUDED_TIMES":
       state.time.excluded_times = {
         ...state.time.excluded_times,
