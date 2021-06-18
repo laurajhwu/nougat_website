@@ -1,15 +1,15 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { renderPage } from "../../redux/actions/renderPage";
-import LogoIcon from "../../images/logo2.png";
 import { gsap } from "gsap";
-import ContactInfo from "./ContactUs";
-import { Modal } from "semantic-ui-react";
-import { useError } from "../../Hooks/useAlert";
 import UseAnimations from "react-useanimations";
 import menu3 from "react-useanimations/lib/menu3";
+import { renderPage } from "../../redux/actions/renderPage";
+import ContactInfo from "./ContactUs";
+import { useError } from "../../Hooks/useAlert";
+import LogoIcon from "../../images/logo2.png";
 
+import { Modal } from "semantic-ui-react";
 import {
   Nav,
   Container,
@@ -82,6 +82,29 @@ function Header() {
     setVw(window.innerWidth);
   }
 
+  function handleRWD() {
+    if (vw <= 760) {
+      handleNavAnimation();
+      gsap.set(".products-nav, .contact-nav", {
+        display: "none",
+        opacity: 0,
+      });
+      gsap.set(".hamburger", {
+        display: "block",
+        opacity: 1,
+      });
+    } else {
+      gsap.set(".products-nav, .contact-nav", {
+        display: "block",
+        opacity: 1,
+      });
+      gsap.set(".hamburger", {
+        display: "none",
+        opacity: 0,
+      });
+    }
+  }
+
   useEffect(() => {
     if (logoRef.current && window.location.pathname === "/") {
       headerAnimation();
@@ -90,26 +113,7 @@ function Header() {
 
   useEffect(() => {
     if (!init.current) {
-      if (vw <= 760) {
-        handleNavAnimation();
-        gsap.set(".products-nav, .contact-nav", {
-          display: "none",
-          opacity: 0,
-        });
-        gsap.set(".hamburger", {
-          display: "block",
-          opacity: 1,
-        });
-      } else {
-        gsap.set(".products-nav, .contact-nav", {
-          display: "block",
-          opacity: 1,
-        });
-        gsap.set(".hamburger", {
-          display: "none",
-          opacity: 0,
-        });
-      }
+      handleRWD();
     }
   }, [showNav, vw]);
 
@@ -126,8 +130,6 @@ function Header() {
         <Logo src={LogoIcon} ref={logoRef} />
       </Link>
       <Nav ref={navRef}>
-        {/* <Link to="/">首頁</Link> */}
-
         <UseAnimations
           animation={menu3}
           size={40}
