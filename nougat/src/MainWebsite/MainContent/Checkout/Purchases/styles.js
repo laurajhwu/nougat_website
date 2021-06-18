@@ -21,6 +21,15 @@ export const Container = styled.div`
   }
 `;
 
+export const Products = styled.div`
+  padding: 10px 20px;
+  display: flex;
+  position: relative;
+  @media only screen and (max-width: 570px) {
+    justify-content: center;
+  }
+`;
+
 export const Product = styled.div`
   display: flex;
   flex-flow: row nowrap;
@@ -59,6 +68,7 @@ export const Group = styled.div`
     }
   }
 `;
+
 export const Name = styled.div`
   font-size: 20px;
   @media only screen and (max-width: 1000px) {
@@ -70,6 +80,7 @@ export const Name = styled.div`
 `;
 
 export const Price = styled.div``;
+
 export const Total = styled.div`
   font-style: italic;
 `;
@@ -96,5 +107,62 @@ export const EmptyCart = styled.div`
       width: 100px;
       margin: 10px 0;
     }
+  }
+`;
+
+export const GrandTotal = styled.div`
+  margin: auto auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 32px;
+  font-weight: 700;
+  color: #b6174b;
+
+  & * {
+    padding: 5px;
+    text-align: center;
+    line-height: 30px;
+    &:last-child {
+      font-size: 32px;
+      margin-top: 10px;
+      font-style: italic;
+      padding-bottom: 10px;
+      border-bottom: thick double #b6174b;
+      @media only screen and (max-width: 760px) {
+        font-size: 26px;
+      }
+      @media only screen and (max-width: 660px) {
+        font-size: 22px;
+        border-bottom: none;
+      }
+      @media only screen and (max-width: 570px) {
+        font-size: 20px;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 760px) {
+    font-size: 26px;
+    font-style: italic;
+    position: absolute;
+    bottom: 10px;
+    left: 480px;
+  }
+
+  @media only screen and (max-width: 660px) {
+    font-size: 22px;
+    font-style: italic;
+    position: absolute;
+    bottom: -25px;
+    left: 320px;
+    flex-direction: row;
+  }
+
+  @media only screen and (max-width: 570px) {
+    bottom: -30px;
+    font-size: 20px;
+    left: 130px;
   }
 `;

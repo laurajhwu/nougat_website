@@ -38,7 +38,6 @@ function Calendar(props) {
       />
     </Container>
   ));
-
   CustomInput.displayName = "CustomInput";
 
   function getTimesToExclude(date) {

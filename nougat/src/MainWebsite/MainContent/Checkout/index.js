@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-<<<<<<< Updated upstream
-import { setMinutes, setHours } from "date-fns";
-=======
+// <<<<<<< Updated upstream
+// import { setMinutes, setHours } from "date-fns";
+// <<<<<<< HEAD
+// =======
 // import { setMinutes, setHours } from "date-fns";
 import { gsap } from "gsap";
 import uuid from "react-uuid";
@@ -14,100 +15,83 @@ import Payment from "./Payment";
 import PersonalInfo from "./PersonalInfo";
 import BGAnimation from "./BGAnimation";
 import CheckoutAlert from "./CheckoutAlert";
->>>>>>> Stashed changes
+// >>>>>>> Stashed changes
+// import Api from "../../../utils/Api";
+// import CartItems from "./Purchases/CartItems";
+// import Map from "./Delivery/Map";
+// import Locations from "./Delivery/RenderLocations";
+// import getGeoInfo from "./Delivery/GetGeoInfo";
+// import PickDate from "./Time/Calendar";
+// =======
+// import { gsap } from "gsap";
+// >>>>>>> 91cba0a (refactor checkout page)
+// import uuid from "react-uuid";
+// import CartItems from "./Purchases";
+// import Delivery from "./Delivery";
+// import PickDate from "./Time/Calendar";
+// import Payment from "./Payment";
+// import PersonalInfo from "./PersonalInfo";
+// import BGAnimation from "./BGAnimation";
+// import CheckoutAlert from "./CheckoutAlert";
 import Api from "../../../utils/Api";
-import CartItems from "./Purchases/CartItems";
-import Map from "./Delivery/Map";
-import Locations from "./Delivery/RenderLocations";
-import getGeoInfo from "./Delivery/GetGeoInfo";
-import PickDate from "./Time/Calendar";
-import uuid from "react-uuid";
-import RememberMe from "../../../Components/RememberMe";
 import updateProductStock from "../../../utils/updateProductStock";
 // import addDays from "../../../utils/addDays";
 import Loading from "../../../Components/LoadingPage";
 import { useConfirmCheckout, useError } from "../../../Hooks/useAlert";
-import ErrorComponent from "../../../Components/Error";
+import useStyleAnimation from "../../../Hooks/useStyleAnimation";
 import BGImage from "../../../images/checkout-bg2.png";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
 
 import {
   useStyles,
   Container,
-  Products,
-  Total,
-  Delivery,
   Label,
-  Options,
-  Option,
   Calendar,
-  PersonalInfo,
-  Info,
-  Payment,
   CheckoutBtn,
   Group,
-  Design1,
-  Design2,
-  Design3,
 } from "./styles";
 
 const id = uuid();
-
-gsap.registerPlugin(ScrollTrigger);
 
 function CheckOut() {
   const isClicked = useRef(false);
   const classes = useStyles();
   const history = useHistory();
-  const checkoutAlert = useConfirmCheckout((swal) => (
-    <>
-      <span
-        style={{ color: "#AC7B7D", "text-decoration": "underline" }}
-        onClick={() => {
-          swal.close();
-          history.push("/member");
-        }}
-        onMouseEnter={(event) => (event.target.style.cursor = "pointer")}
-      >
-        會員頁面
-      </span>
-      可瀏覽您的訂單
-    </>
-  ));
   const member = useSelector((state) => state.member);
-<<<<<<< Updated upstream
-  const dateSettings = useSelector((state) => state.dateTime).date;
-  const timeSettings = useSelector((state) => state.dateTime).time;
-  const cartItems = member ? member.cart_items : null;
-=======
+  // <<<<<<< Updated upstream
+  //   const dateSettings = useSelector((state) => state.dateTime).date;
+  //   const timeSettings = useSelector((state) => state.dateTime).time;
+  // <<<<<<< HEAD
+  //   const cartItems = member ? member.cart_items : null;
+  // =======
   // const dateSettings = useSelector((state) => state.dateTime).date;
   // const timeSettings = useSelector((state) => state.dateTime).time;
->>>>>>> Stashed changes
+  // >>>>>>> Stashed changes
+  // =======
+  // >>>>>>> 91cba0a (refactor checkout page)
   const allLocations = useSelector((state) => state.locations).filter(
     (location) => location.active
   );
   const allProducts = useSelector((state) => state.products);
+  const [cartItems, setCartItems] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const [delivery, setDelivery] = useState();
-  const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState();
   const [payment, setPayment] = useState();
-<<<<<<< Updated upstream
-  const initTime = timeSettings ? timeSettings.start_time.split(":") : null;
-  const [date, setDate] = useState(
-    dateSettings
-      ? setHours(
-          setMinutes(addDays(dateSettings.buffer), +initTime[1]),
-          +initTime[0]
-        )
-      : null
-  );
-=======
+  // <<<<<<< HEAD
+  // <<<<<<< Updated upstream
+  //   const initTime = timeSettings ? timeSettings.start_time.split(":") : null;
+  // =======
+  //   const initTime = timeSettings?.start_time.split(":");
+  // >>>>>>> 91cba0a (refactor checkout page)
+  //   const [date, setDate] = useState(
+  //     dateSettings
+  //       ? setHours(
+  //           setMinutes(addDays(dateSettings.buffer), +initTime[1]),
+  //           +initTime[0]
+  //         )
+  //       : null
+  //   );
+  // =======
   // const initTime = timeSettings?.start_time.split(":");
   const [date, setDate] = useState();
   // dateSettings
@@ -116,70 +100,29 @@ function CheckOut() {
   //       +initTime[0]
   //     )
   //   : null
->>>>>>> Stashed changes
+  // >>>>>>> Stashed changes
   const [order, setOrder] = useState({});
   const [personalInfo, setPersonalInfo] = useState({});
   const [remember, setRemember] = useState();
-  const [vWidth, setVWidth] = useState();
   const errorAlert = useError(errorMsg, () => setErrorMsg(null));
-  const timeline = gsap.timeline({
-    repeat: -1,
-    yoyo: true,
-    defaults: { ease: "power1.inOut" },
-  });
+  const btnRef = useStyleAnimation(checkoutBtnAnimation);
+  const checkoutAlert = useConfirmCheckout((swal) => (
+    <CheckoutAlert swal={swal} />
+  ));
 
-  const btnRef = useCallback(
-    (ref) => {
-      if (ref) {
-        timeline
-          .to(ref, { scale: 0.9, opacity: 0.8, duration: 1 })
-          .to(ref, { scale: 1, opacity: 1, duration: 1 });
-      }
-    },
-    [member]
-  );
-
-  const design1Ref = useCallback(
-    (ref) => {
-      if (ref) {
-        design1Animation(ref);
-      }
-    },
-    [member]
-  );
-
-  const design2Ref = useCallback(
-    (ref) => {
-      if (ref) {
-        design2Animation(ref);
-      }
-    },
-    [member]
-  );
-
-  const design3Ref = useCallback(
-    (ref) => {
-      if (ref) {
-        design3Animation(ref);
-      }
-    },
-    [member]
-  );
-
-  function deliveryOptionChange(event) {
-    setDelivery(event.target.value);
-  }
-
-  function paymentOptionChange(event) {
-    setPayment(event.target.value);
-  }
-
-  function personalInfoOnChange(event) {
-    const target = event.target;
-    const prop = target.getAttribute("name");
+  function initState() {
+    setCartItems(member.cart_items);
+    setDelivery(member.order_info.delivery || "face-to-face");
+    setPayment(member.order_info.payment || "cash");
+    setRemember({
+      order_info: {
+        delivery: member.order_info.delivery || "",
+        payment: member.order_info.payment || "",
+      },
+    });
     setPersonalInfo({
-      ...personalInfo,
-      [prop]: target.value.trim(),
+      name: member.name || "",
+      line_id: member.line_id || "",
     });
   }
 
@@ -240,66 +183,46 @@ function CheckOut() {
     }
   }
 
-  function design1Animation(ref) {
-    gsap
-      .timeline({
-        scrollTrigger: {
-          trigger: ref,
-          start: "top top",
-          toggleActions: "restart reset resume restart",
-        },
-      })
-      .from(ref, {
-        opacity: 0,
-        duration: 1,
-        ease: "power1.in",
-      });
+  function submitCheckoutInfo() {
+    if (validateCheckoutInfo()) {
+      updateRememberedData();
+      if (payment === "line-pay") {
+        isClicked.current = false;
+        window.localStorage.setItem("order", JSON.stringify(order));
+        history.push("/cart/line-pay");
+      } else {
+        isClicked.current = false;
+        Api.postCheckoutOrder(order, member, (order) =>
+          updateProductStock(order, allProducts)
+        ).then(() => {
+          checkoutAlert();
+        });
+      }
+    } else {
+      setErrorMsg("必填項目中有誤！");
+      isClicked.current = false;
+    }
   }
 
-  function design2Animation(ref) {
-    gsap
-      .timeline({
-        scrollTrigger: {
-          trigger: ref,
-          start: "top 80%",
-          end: "+=200",
-          scrub: 0.5,
-        },
-      })
-      .from(ref, { x: -500, opacity: 0, duration: 1.5, ease: "power1.in" });
-  }
+  function checkoutBtnAnimation(ref) {
+    const timeline = gsap.timeline({
+      repeat: -1,
+      yoyo: true,
+      defaults: { ease: "power1.inOut" },
+    });
 
-  function design3Animation(ref) {
-    gsap
-      .timeline({
-        scrollTrigger: {
-          trigger: ref,
-          start: "bottom 80%",
-          end: "+=300",
-          scrub: 0.5,
-        },
-      })
-      .from(ref, {
-        y: -500,
-        x: 700,
-        opacity: 0,
-        duration: 2,
-        ease: "power1.in",
-      });
-  }
-
-  function handleWindowSizeChange() {
-    setVWidth(window.innerWidth);
+    timeline
+      .to(ref, { scale: 0.9, opacity: 0.8, duration: 1 })
+      .to(ref, { scale: 1, opacity: 1, duration: 1 });
   }
 
   useEffect(() => {
-    window.addEventListener("resize", handleWindowSizeChange);
-    handleWindowSizeChange();
-
-    return () => {
-      window.removeEventListener("resize", handleWindowSizeChange);
-    };
-  }, []);
+    if (member) {
+      initState();
+    } else {
+      history.push("/member");
+    }
+  }, [member]);
 
   useEffect(() => {
     if (errorMsg) {
@@ -308,224 +231,63 @@ function CheckOut() {
   }, [errorMsg]);
 
   useEffect(() => {
-    const promises = allLocations.map((location) => getGeoInfo(location));
-    Promise.all(promises).then((values) => {
-      setLocations(values);
-    });
-  }, []);
-
-  useEffect(() => {
     if (Object.keys(order).length !== 0) {
-      if (validateCheckoutInfo()) {
-        updateRememberedData();
-        if (payment === "line-pay") {
-          isClicked.current = false;
-          window.localStorage.setItem("order", JSON.stringify(order));
-          history.push("/cart/line-pay");
-        } else {
-          isClicked.current = false;
-          Api.postCheckoutOrder(order, member, (order) =>
-            updateProductStock(order, allProducts)
-          ).then(() => {
-            checkoutAlert();
-          });
-        }
-      } else {
-        setErrorMsg("必填項目中有誤！");
-        isClicked.current = false;
-      }
+      submitCheckoutInfo();
     }
   }, [order]);
 
-  useEffect(() => {
-    if (member) {
-      setDelivery(member.order_info.delivery || "face-to-face");
-      setPayment(member.order_info.payment || "cash");
-      setRemember({
-        order_info: {
-          delivery: member.order_info.delivery || "",
-          payment: member.order_info.payment || "",
-        },
-      });
-      setPersonalInfo({
-        name: member.name || "",
-        line_id: member.line_id || "",
-      });
-    } else {
-      history.push("/member");
-    }
-  }, [member]);
-
-  if (member && locations.length !== 0) {
+  if (member && allLocations.length !== 0 && cartItems) {
     return (
       <Container url={BGImage}>
-        <Design1 ref={design1Ref}>
-          <div></div>
-        </Design1>
-        <Label id="cart-label"> 購物車 ({cartItems.length})</Label>
-        <Products>
-          <CartItems member={member} />
-          <Total>
-            <div>總計：</div>
-            <div>$ {getOrderTotal()}</div>
-          </Total>
-        </Products>
-        <Design2 vw={vWidth} ref={design2Ref}>
-          <div />
-        </Design2>
+        <BGAnimation design="design1" />
+        <CartItems
+          cartItems={cartItems}
+          member={member}
+          getOrderTotal={getOrderTotal}
+        />
+        <BGAnimation design="design2" />
         <Delivery
-          notFilled={
-            order.order_info &&
-            (order.order_info.delivery === "select" ||
-              !order.order_info.delivery_address)
-          }
-        >
-          <div>
-            <div>
-              <ErrorComponent
-                isError={order.order_info && !order.order_info.delivery_address}
-              />
-              <Label>取貨方式* :</Label>
-              <FormControl className={classes.formControl}>
-                <Options
-                  onChange={deliveryOptionChange}
-                  value={delivery}
-                  className={classes.select}
-                  inputProps={{
-                    classes: {
-                      icon: classes.icon,
-                    },
-                  }}
-                >
-                  <Option value="face-to-face" className={classes.option}>
-                    面交
-                  </Option>
-                </Options>
-              </FormControl>
-              <RememberMe
-                prop="delivery"
-                handleRememberData={() =>
-                  handleRememberMe("order_info", {
-                    ...remember.order_info,
-                    delivery,
-                  })
-                }
-                style={{
-                  color: "#584573",
-                }}
-              />
-            </div>
-            <Locations
-              locations={locations}
-              selectedLocation={selectedLocation}
-              setSelectedLocation={setSelectedLocation}
-            />
-          </div>
-          <div>
-            <Map
-              locations={locations}
-              selectedLocation={selectedLocation}
-              setSelectedLocation={setSelectedLocation}
-            />
-          </div>
-        </Delivery>
+          {...{
+            order,
+            setDelivery,
+            delivery,
+            classes,
+            handleRememberMe,
+            remember,
+            allLocations,
+            selectedLocation,
+            setSelectedLocation,
+          }}
+        />
         <Group>
           <div>
             <Calendar>
               <Label>取貨時間* :</Label>
               <PickDate date={date} setDate={setDate} />
             </Calendar>
-            <Payment>
-              <Label> 付款方式* :</Label>
-              <FormControl className={classes.formControl}>
-                <Options
-                  onChange={paymentOptionChange}
-                  value={payment}
-                  className={classes.select}
-                  inputProps={{
-                    classes: {
-                      icon: classes.icon,
-                    },
-                  }}
-                >
-                  <Option value="cash" className={classes.option}>
-                    面交現金
-                  </Option>
-                  <Option value="line-pay" className={classes.option}>
-                    Line Pay
-                  </Option>
-                </Options>
-                <FormHelperText className={classes.label}></FormHelperText>
-              </FormControl>
-              <RememberMe
-                prop="payment"
-                handleRememberData={() =>
-                  handleRememberMe("order_info", {
-                    ...remember.order_info,
-                    payment,
-                  })
-                }
-              />
-            </Payment>
-            <PersonalInfo>
-              <Info>
-                <ErrorComponent
-                  isError={order.personal_info && !order.personal_info.name}
-                />
-
-                <Label>姓名* :</Label>
-                <TextField
-                  name="name"
-                  type="text"
-                  defaultValue={personalInfo.name}
-                  onChange={personalInfoOnChange}
-                  className={classes.input}
-                />
-                <div></div>
-              </Info>
-              <Info>
-                <ErrorComponent
-                  isError={order.personal_info && !order.personal_info.line_id}
-                />
-                <Label>Line ID* :</Label>
-                <TextField
-                  name="line_id"
-                  defaultValue={personalInfo.line_id}
-                  type="text"
-                  onChange={personalInfoOnChange}
-                  className={classes.input}
-                />
-                <RememberMe
-                  prop="line-pay"
-                  handleRememberData={() =>
-                    handleRememberMe("line_id", personalInfo.line_id)
-                  }
-                />
-              </Info>
-              <Info>
-                <Label>備註 :</Label>
-                <TextField
-                  name="notes"
-                  type="text"
-                  onChange={personalInfoOnChange}
-                  className={classes.input}
-                />
-              </Info>
-            </PersonalInfo>
+            <Payment
+              {...{
+                classes,
+                setPayment,
+                payment,
+                handleRememberMe,
+                remember,
+              }}
+            />
+            <PersonalInfo
+              {...{
+                personalInfo,
+                setPersonalInfo,
+                order,
+                classes,
+                handleRememberMe,
+              }}
+            />
           </div>
-          <CheckoutBtn
-            onClick={handleCheckout}
-            ref={btnRef}
-            onMouseEnter={() => {
-              timeline.paused(true);
-            }}
-            onMouseLeave={() => {
-              timeline.paused(false);
-            }}
-          >
+          <CheckoutBtn onClick={handleCheckout} ref={btnRef}>
             結帳
           </CheckoutBtn>
-          <Design3 vw={vWidth} ref={design3Ref} />
+          <BGAnimation design="design3" />
         </Group>
       </Container>
     );
