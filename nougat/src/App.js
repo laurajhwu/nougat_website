@@ -43,10 +43,7 @@ function App() {
 
   function productsOnSnapshot(snapshot) {
     if (initProducts) {
-      const products = [];
-      snapshot.forEach((product) => {
-        products.push(product.data());
-      });
+      const products = snapshot.docs.map((product) => product.data());
       dispatch(getProductsData(products));
       initProducts = false;
     } else {
@@ -66,10 +63,7 @@ function App() {
 
   function ordersOnSnapshot(snapshot) {
     if (initOrders) {
-      const orders = [];
-      snapshot.forEach((order) => {
-        orders.push(order.data());
-      });
+      const orders = snapshot.docs.map((order) => order.data());
       dispatch(getAllOrders(orders));
       initOrders = false;
     } else {
@@ -89,10 +83,7 @@ function App() {
 
   function locationsOnSnapshot(snapshot) {
     if (initLocations) {
-      const locations = [];
-      snapshot.forEach((location) => {
-        locations.push(location.data());
-      });
+      const locations = snapshot.docs.map((location) => location.data());
       dispatch(getLocations(locations));
       initLocations = false;
     } else {
@@ -123,10 +114,13 @@ function App() {
       Object.values(data).map((time) => time.toDate());
 
     if (initExcludedTimes) {
-      const times = {};
-      snapshot.forEach((time) => {
-        times[time.id] = convertData(time.data());
-      });
+      const times = snapshot.docs.reduce(
+        (obj, time) => ({ ...obj, [time.id]: convertData(time.data()) }),
+        {}
+      );
+      // snapshot.forEach((time) => {
+      //   times[time.id] = convertData(time.data());
+      // });
       dispatch(getExcludedTimes(times));
       initExcludedTimes = false;
     } else {

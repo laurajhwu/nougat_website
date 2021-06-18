@@ -38,10 +38,7 @@ function LoggedIn() {
     } else if (member.id) {
       Api.getMemberOrders(member.id)
         .then((querySnapshot) => {
-          const orders = [];
-          querySnapshot.forEach((order) => {
-            orders.push(order.data());
-          });
+          const orders = querySnapshot.docs.map((order) => order.data());
           dispatch(getMemberOrders(orders));
           dispatch(getOrderFixedData());
         })

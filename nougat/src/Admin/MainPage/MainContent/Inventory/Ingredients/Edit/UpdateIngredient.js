@@ -3,8 +3,6 @@ import { Modal, Button, Form, Col } from "react-bootstrap";
 import Api from "../../../../../../utils/Api";
 import propTypes from "prop-types";
 
-import {} from "./styles";
-
 export default function Edit(props) {
   const { ingredient, handleClose, show } = props;
   const [invalid, setInvalid] = useState({});

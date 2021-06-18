@@ -18,10 +18,10 @@ export default function MainPage() {
 
   function handleIngredientsOnSnapshot(snapshot) {
     if (initIngredients) {
-      const ingredients = {};
-      snapshot.forEach((doc) => {
-        Object.assign(ingredients, { [doc.data().id]: doc.data() });
-      });
+      const ingredients = snapshot.docs.reduce(
+        (obj, doc) => ({ ...obj, [doc.data().id]: doc.data() }),
+        {}
+      );
       dispatch(getAllIngredients(ingredients));
       initIngredients = false;
     } else {
