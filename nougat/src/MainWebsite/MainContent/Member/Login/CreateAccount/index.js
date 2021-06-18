@@ -127,7 +127,7 @@ function CreateAccount() {
             value={name}
             className={classes.input}
           />
-          {ErrorComponent(checkInput && !name)}
+          <ErrorComponent isError={checkInput && !name} />
         </Name>
         <Line>
           <Label>Line ID</Label>
@@ -136,7 +136,7 @@ function CreateAccount() {
             value={lineId}
             className={classes.input}
           />
-          {ErrorComponent(checkInput && !lineId)}
+          <ErrorComponent isError={checkInput && !lineId} />
         </Line>
         <Email>
           <Label>信箱</Label>
@@ -145,7 +145,7 @@ function CreateAccount() {
             value={email}
             className={classes.input}
           />
-          {ErrorComponent(checkInput && !validEmail())}
+          <ErrorComponent isError={checkInput && !validEmail()} />
         </Email>
         <Password>
           <Label>密碼</Label>
@@ -162,7 +162,7 @@ function CreateAccount() {
             )}
             iconTheme={iconTheme}
           />
-          {ErrorComponent(checkInput && !validPassword())}
+          <ErrorComponent isError={checkInput && !validPassword()} />
         </Password>
         <Password>
           <Label>確認密碼</Label>
@@ -178,7 +178,7 @@ function CreateAccount() {
             )}
             iconTheme={iconTheme}
           />
-          {ErrorComponent(checkInput && !validConfirmPW())}
+          <ErrorComponent isError={checkInput && !validConfirmPW()} />
         </Password>
         <Register type="submit" disabled={register}>
           註冊

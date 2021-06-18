@@ -96,7 +96,7 @@ function SignIn(props) {
             value={email}
             className={classes.input}
           />
-          {ErrorComponent(checkInput && !validEmail())}
+          <ErrorComponent isError={checkInput && !validEmail()} />
         </Email>
         <Password>
           <Label>密碼</Label>
@@ -112,7 +112,7 @@ function SignIn(props) {
             )}
             iconTheme={iconTheme}
           />
-          {ErrorComponent(checkInput && !validPassword())}
+          <ErrorComponent isError={checkInput && !validPassword()} />
         </Password>
         <Register type="submit" disabled={register}>
           登入

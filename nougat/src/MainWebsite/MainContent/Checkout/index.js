@@ -382,9 +382,9 @@ function CheckOut() {
         >
           <div>
             <div>
-              {ErrorComponent(
-                order.order_info && !order.order_info.delivery_address
-              )}
+              <ErrorComponent
+                isError={order.order_info && !order.order_info.delivery_address}
+              />
               <Label>取貨方式* :</Label>
               <FormControl className={classes.formControl}>
                 <Options
@@ -469,9 +469,10 @@ function CheckOut() {
             </Payment>
             <PersonalInfo>
               <Info>
-                {ErrorComponent(
-                  order.personal_info && !order.personal_info.name
-                )}
+                <ErrorComponent
+                  isError={order.personal_info && !order.personal_info.name}
+                />
+
                 <Label>姓名* :</Label>
                 <TextField
                   name="name"
@@ -483,9 +484,9 @@ function CheckOut() {
                 <div></div>
               </Info>
               <Info>
-                {ErrorComponent(
-                  order.personal_info && !order.personal_info.line_id
-                )}
+                <ErrorComponent
+                  isError={order.personal_info && !order.personal_info.line_id}
+                />
                 <Label>Line ID* :</Label>
                 <TextField
                   name="line_id"
