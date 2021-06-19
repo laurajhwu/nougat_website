@@ -20,6 +20,47 @@ export const useStyles = makeStyles((theme) => ({
   },
 }));
 
+export const iconBtnStyle = (vw) => ({
+  padding: vw <= 740 ? "7px" : "10px",
+  ...(vw <= 740
+    ? {
+        position: "absolute",
+        right: "10px",
+        bottom: "5px",
+      }
+    : {
+        position: "absolute",
+        right: "5px",
+        bottom: "5px",
+      }),
+});
+
+export const deleteStyle = (vw) => ({
+  color: "#805e6e",
+  "&:hover": { color: "#820933" },
+  width: vw < 740 ? "24px" : "28px",
+});
+
+export const quantityBtnStyle = (vw) => ({
+  select: {
+    "font-size": vw < 740 ? "16px" : "18px",
+    color: "#805e6e",
+    "font-weight": "bold",
+    width: vw < 740 ? "60px" : "65px",
+
+    fontFamily: "chalk",
+  },
+  menu: {
+    "font-size": "16px",
+    color: "#37323e",
+    "max-height": "300px",
+  },
+  container: {
+    "font-size": vw < 740 ? "16px" : "18px",
+    color: "#805e6e",
+  },
+});
+
 export const Container = styled.div`
   display: flex;
   width: 100%;
