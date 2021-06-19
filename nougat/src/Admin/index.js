@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { Route, useHistory, useRouteMatch, Switch } from "react-router-dom";
 import Login from "./Login";
 import Main from "./MainPage";
-import Page404 from "../Components/Page404";
 
 const Container = styled.div``;
 
@@ -29,7 +28,6 @@ function Admin() {
         <Route path={`${match.url}/auth`}>
           <Main setIsLogin={setIsLogin} />
         </Route>
-        <Route path="" component={Page404} />
       </Switch>
     </Container>
   );

@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import Header from "./Header";
 import MainContent from "./MainContent";
 import Api from "../utils/Api";
-
 import { getMember } from "../redux/actions/member";
 
 import { Container } from "./styles";

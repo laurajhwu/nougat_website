@@ -44,12 +44,12 @@ export default function Header() {
       >
         訂單管理
       </Btn>
-      <Btn
+      {/* <Btn
         variant="outline-info"
         onClick={() => handleClick("/admin/auth/finance")}
       >
         財務管理
-      </Btn>
+      </Btn> */}
       <SettingIcon onClick={() => handleClick("/admin/auth/settings")} />
     </Container>
   );
