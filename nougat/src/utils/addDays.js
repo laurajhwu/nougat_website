@@ -1,5 +1,5 @@
-export default function addDays(days) {
-  const initDate = new Date();
+export default function addDays(days, date = undefined) {
+  const initDate = date || new Date();
   initDate.setDate(initDate.getDate() + days);
   return initDate;
 }

@@ -1,7 +1,20 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+<<<<<<< Updated upstream
 import { setMinutes, setHours } from "date-fns";
+=======
+// import { setMinutes, setHours } from "date-fns";
+import { gsap } from "gsap";
+import uuid from "react-uuid";
+import CartItems from "./Purchases";
+import Delivery from "./Delivery";
+import PickDate from "./Time/Calendar";
+import Payment from "./Payment";
+import PersonalInfo from "./PersonalInfo";
+import BGAnimation from "./BGAnimation";
+import CheckoutAlert from "./CheckoutAlert";
+>>>>>>> Stashed changes
 import Api from "../../../utils/Api";
 import CartItems from "./Purchases/CartItems";
 import Map from "./Delivery/Map";
@@ -11,7 +24,7 @@ import PickDate from "./Time/Calendar";
 import uuid from "react-uuid";
 import RememberMe from "../../../Components/RememberMe";
 import updateProductStock from "../../../utils/updateProductStock";
-import addDays from "../../../utils/addDays";
+// import addDays from "../../../utils/addDays";
 import Loading from "../../../Components/LoadingPage";
 import { useConfirmCheckout, useError } from "../../../Hooks/useAlert";
 import ErrorComponent from "../../../Components/Error";
@@ -67,9 +80,14 @@ function CheckOut() {
     </>
   ));
   const member = useSelector((state) => state.member);
+<<<<<<< Updated upstream
   const dateSettings = useSelector((state) => state.dateTime).date;
   const timeSettings = useSelector((state) => state.dateTime).time;
   const cartItems = member ? member.cart_items : null;
+=======
+  // const dateSettings = useSelector((state) => state.dateTime).date;
+  // const timeSettings = useSelector((state) => state.dateTime).time;
+>>>>>>> Stashed changes
   const allLocations = useSelector((state) => state.locations).filter(
     (location) => location.active
   );
@@ -79,6 +97,7 @@ function CheckOut() {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState();
   const [payment, setPayment] = useState();
+<<<<<<< Updated upstream
   const initTime = timeSettings ? timeSettings.start_time.split(":") : null;
   const [date, setDate] = useState(
     dateSettings
@@ -88,6 +107,16 @@ function CheckOut() {
         )
       : null
   );
+=======
+  // const initTime = timeSettings?.start_time.split(":");
+  const [date, setDate] = useState();
+  // dateSettings
+  //   ? setHours(
+  //       setMinutes(addDays(dateSettings.buffer), +initTime[1]),
+  //       +initTime[0]
+  //     )
+  //   : null
+>>>>>>> Stashed changes
   const [order, setOrder] = useState({});
   const [personalInfo, setPersonalInfo] = useState({});
   const [remember, setRemember] = useState();

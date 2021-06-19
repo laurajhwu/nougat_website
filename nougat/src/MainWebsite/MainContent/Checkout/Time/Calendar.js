@@ -1,5 +1,6 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
+import { setMinutes, setHours, addMinutes } from "date-fns";
 import DatePicker from "react-datepicker";
 import {
   stringDate,
@@ -17,11 +18,13 @@ import { Container, Value } from "./styles";
 
 function Calendar(props) {
   const { date, setDate } = props;
+  const dateRef = useRef(date ? stringDate(date) : "");
   const dateSettings = useSelector((state) => state.dateTime).date;
   const timeSettings = useSelector((state) => state.dateTime).time;
   const orderTimes = useSelector((state) => state.orders).filter(
     (order) => order.status <= 1
   );
+  // eslint-disable-next-line react/prop-types
   const CustomInput = forwardRef(({ value, onClick }, ref) => (
     <Container>
       <Value>{value}</Value>
@@ -38,16 +41,86 @@ function Calendar(props) {
 
   CustomInput.displayName = "CustomInput";
 
-  const timesToExclude = [
-    ...orderTimes
-      .filter(
-        (order) =>
-          stringDate(order.order_info.delivery_time.toDate()) ===
-          stringDate(date)
+  function getTimesToExclude(date) {
+    return [
+      ...orderTimes
+        .filter(
+          (order) =>
+            stringDate(order.order_info.delivery_time.toDate()) ===
+            stringDate(date)
+        )
+        .map((order) => order.order_info.delivery_time.toDate()),
+      ...(timeSettings.excluded_times[dbFormatDate(date)] || []),
+    ];
+  }
+
+  function getFirstAvailableDate() {
+    let numberOfDays = dateSettings.buffer;
+
+    while (
+      dateSettings.exclude_dates
+        .map((date) => date.toDate())
+        .some((date) => stringDate(addDays(numberOfDays)) === stringDate(date))
+    ) {
+      numberOfDays++;
+    }
+    return addDays(numberOfDays);
+  }
+
+  function getFirstAvailableTime() {
+    // eslint-disable-next-line camelcase
+    const { start_time } = timeSettings;
+    const init = setHours(
+      setMinutes(date, +start_time.split(":")[1]),
+      +start_time.split(":")[0]
+    );
+    let minutes = 0;
+
+    while (
+      getTimesToExclude(init).some(
+        (time) => stringTime(time) === stringTime(addMinutes(init, minutes))
       )
-      .map((order) => order.order_info.delivery_time.toDate()),
-    ...(timeSettings.excluded_times[dbFormatDate(date)] || []),
-  ];
+    ) {
+      minutes += timeSettings.interval;
+    }
+    return addMinutes(init, minutes);
+  }
+
+  function initDate() {
+    // eslint-disable-next-line camelcase
+    const { start_time, end_time } = timeSettings;
+    const getDateTimeString = (dateTime) =>
+      `${stringDate(dateTime)}${stringTime(dateTime)}`;
+    const getTimeSum = (time) => time.getHours() + time.getMinutes() / 60;
+    const end = setHours(
+      setMinutes(getFirstAvailableDate(), +end_time.split(":")[1]),
+      +end_time.split(":")[0]
+    );
+    let init = setHours(
+      setMinutes(getFirstAvailableDate(), +start_time.split(":")[1]),
+      +start_time.split(":")[0]
+    );
+    let minutes = 0;
+
+    while (
+      getTimesToExclude(init).some(
+        (time) =>
+          getDateTimeString(time) ===
+          getDateTimeString(addMinutes(init, minutes))
+      )
+    ) {
+      minutes += timeSettings.interval;
+
+      if (getTimeSum(addMinutes(init, minutes)) > getTimeSum(end)) {
+        init = setHours(
+          setMinutes(addDays(1, init), +start_time.split(":")[1]),
+          +start_time.split(":")[0]
+        );
+        minutes = 0;
+      }
+    }
+    return addMinutes(init, minutes);
+  }
 
   function filterDates(date) {
     const { include } = dateSettings;
@@ -66,7 +139,7 @@ function Calendar(props) {
   }
 
   function filterTimes(time) {
-    return !timesToExclude.some(
+    return !getTimesToExclude(date).some(
       (excludeTime) =>
         `${stringDate(excludeTime)} ${stringTime(excludeTime)}` ===
         `${stringDate(new Date(time))} ${stringTime(new Date(time))}`
@@ -114,28 +187,46 @@ function Calendar(props) {
     });
   }
 
-  return (
-    <DatePicker
-      onChange={handleChange}
-      selected={date}
-      locale="zh-TW"
-      showTimeSelect
-      dateFormat="yyyy/MM/dd, HH:mm"
-      timeFormat="HH:mm"
-      timeInputLabel="時間:"
-      minDate={addDays(dateSettings.buffer)}
-      maxDate={addDays(dateSettings.buffer + dateSettings.range)}
-      filterDate={filterDates}
-      excludeDates={getUnavailableDates()}
-      timeIntervals={timeSettings.interval}
-      minTime={getTimestamp(timeSettings.start_time)}
-      maxTime={getTimestamp(timeSettings.end_time)}
-      filterTime={filterTimes}
-      customInput={
-        window.location.pathname === "/cart" ? <CustomInput /> : null
-      }
-    />
-  );
+  useEffect(() => {
+    if (dateSettings && timeSettings) {
+      setDate(initDate());
+      dateRef.current = stringDate(initDate());
+    }
+  }, [dateSettings, timeSettings]);
+
+  useEffect(() => {
+    if (stringDate(date) !== dateRef.current) {
+      setDate(getFirstAvailableTime());
+      dateRef.current = stringDate(date);
+    }
+  }, [date]);
+
+  if (date) {
+    return (
+      <DatePicker
+        onChange={handleChange}
+        selected={date}
+        locale="zh-TW"
+        showTimeSelect
+        dateFormat="yyyy/MM/dd, HH:mm"
+        timeFormat="HH:mm"
+        timeInputLabel="時間:"
+        minDate={addDays(dateSettings.buffer)}
+        maxDate={addDays(dateSettings.buffer + dateSettings.range)}
+        filterDate={filterDates}
+        excludeDates={getUnavailableDates()}
+        timeIntervals={timeSettings.interval}
+        minTime={getTimestamp(timeSettings.start_time)}
+        maxTime={getTimestamp(timeSettings.end_time)}
+        filterTime={filterTimes}
+        customInput={
+          window.location.pathname === "/cart" ? <CustomInput /> : null
+        }
+      />
+    );
+  } else {
+    return "";
+  }
 }
 
 Calendar.propTypes = {

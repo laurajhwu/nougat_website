@@ -44,7 +44,6 @@ export const Ingredients = styled(List)`
 `;
 
 export const Ingredient = styled(ListItem)`
-  /* outline: 1px solid black; */
   height: 60px;
 `;
 

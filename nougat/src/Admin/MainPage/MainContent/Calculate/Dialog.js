@@ -162,18 +162,22 @@ export default function UpdateStockDialog(props) {
             <UpdateContent>食材庫存</UpdateContent>
             <UpdateOptions>
               <UpdateOption
-                label="減少庫存"
+                label={
+                  canDecreaseIngredientStock()
+                    ? "從現有庫存移除"
+                    : "現有庫存不夠，不能減少"
+                }
                 color={options.ingredient.decrease ? "secondary" : ""}
                 onClick={() => handleClickOptions("ingredient", "decrease")}
                 disabled={!canDecreaseIngredientStock()}
               />
               <UpdateOption
-                label="新增庫存"
+                label="新增至庫存"
                 color={options.ingredient.increase ? "secondary" : ""}
                 onClick={() => handleClickOptions("ingredient", "increase")}
               />
               <UpdateOption
-                label="做為已使用"
+                label="已使用"
                 color={options.ingredient.used ? "secondary" : ""}
                 onClick={() => handleClickOptions("ingredient", "used")}
               />
