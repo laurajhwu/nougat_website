@@ -27,12 +27,10 @@ export default function Orders() {
   const [refs, setRefs] = useState({ order: null, fold: null });
   const [page, setPage] = useState(1);
   const orderRef = useCallback((ref) => {
-    refs.order = refs.order ? [...refs.order, ref] : [ref];
-    setRefs({ ...refs });
+    setRefs({ order: [...(refs.order || []), ref] });
   }, []);
   const foldRef = useCallback((ref) => {
-    refs.fold = refs.fold ? [...refs.fold, ref] : [ref];
-    setRefs({ ...refs });
+    setRefs({ fold: [...(refs.fold || []), ref] });
   }, []);
 
   const handleClose = () => setShow(false);

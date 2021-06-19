@@ -90,14 +90,7 @@ export default function DisplayProducts(props) {
                   <AddToCart
                     {...addToCartProps}
                     productId={product.id}
-                    // qty={qty}
-                    // member={member}
                     soldOut={product.stock === 0}
-                    // setAddEvent={setAddEvent}
-                    // setIsClicked={setIsClicked}
-                    // isClickedRef={isClickedRef}
-                    // showCart={showCart}
-                    // setShowCart={setShowCart}
                   />
                 </AddToCartIcon>
               </IconButton>

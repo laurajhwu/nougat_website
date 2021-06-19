@@ -35,6 +35,9 @@ function CreateAccount() {
   function handleChange(event, setFunc) {
     setFunc(event.target.value.trim());
   }
+  function handleOnBlur(value, setFunc) {
+    setFunc(value.trim());
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -49,7 +52,7 @@ function CreateAccount() {
           };
           Api.addNewMember(user.uid, {
             name,
-            lineId,
+            line_id: lineId,
             email,
             cart_items: [],
             order_info: {},
@@ -123,9 +126,10 @@ function CreateAccount() {
         <Name>
           <Label>姓名</Label>
           <Input
-            onChange={(event) => handleChange(event, setName)}
+            onChange={(event) => setName(event.target.value)}
             value={name}
             className={classes.input}
+            onBlur={() => handleOnBlur(name, setName)}
           />
           <ErrorComponent isError={checkInput && !name} />
         </Name>

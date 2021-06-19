@@ -28,11 +28,7 @@ function LoggedIn() {
     setPage(page);
   }
 
-  useEffect(() => {
-    history.push(`/member/logged-in/${page}`);
-  }, [page]);
-
-  useEffect(() => {
+  function handleMemberVerification() {
     if (!member) {
       history.push(`/member`);
     } else if (member.id) {
@@ -48,6 +44,14 @@ function LoggedIn() {
     } else if (!member.id) {
       verifyEmailAlert();
     }
+  }
+
+  useEffect(() => {
+    history.push(`/member/logged-in/${page}`);
+  }, [page]);
+
+  useEffect(() => {
+    handleMemberVerification();
   }, []);
 
   if (member) {
