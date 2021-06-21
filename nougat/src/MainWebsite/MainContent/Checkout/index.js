@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-// <<<<<<< Updated upstream
-// import { setMinutes, setHours } from "date-fns";
-// <<<<<<< HEAD
-// =======
-// import { setMinutes, setHours } from "date-fns";
 import { gsap } from "gsap";
 import uuid from "react-uuid";
 import CartItems from "./Purchases";
@@ -15,27 +10,8 @@ import Payment from "./Payment";
 import PersonalInfo from "./PersonalInfo";
 import BGAnimation from "./BGAnimation";
 import CheckoutAlert from "./CheckoutAlert";
-// >>>>>>> Stashed changes
-// import Api from "../../../utils/Api";
-// import CartItems from "./Purchases/CartItems";
-// import Map from "./Delivery/Map";
-// import Locations from "./Delivery/RenderLocations";
-// import getGeoInfo from "./Delivery/GetGeoInfo";
-// import PickDate from "./Time/Calendar";
-// =======
-// import { gsap } from "gsap";
-// >>>>>>> 91cba0a (refactor checkout page)
-// import uuid from "react-uuid";
-// import CartItems from "./Purchases";
-// import Delivery from "./Delivery";
-// import PickDate from "./Time/Calendar";
-// import Payment from "./Payment";
-// import PersonalInfo from "./PersonalInfo";
-// import BGAnimation from "./BGAnimation";
-// import CheckoutAlert from "./CheckoutAlert";
 import Api from "../../../utils/Api";
 import updateProductStock from "../../../utils/updateProductStock";
-// import addDays from "../../../utils/addDays";
 import Loading from "../../../Components/LoadingPage";
 import { useConfirmCheckout, useError } from "../../../Hooks/useAlert";
 import useStyleAnimation from "../../../Hooks/useStyleAnimation";
@@ -50,24 +26,11 @@ import {
   Group,
 } from "./styles";
 
-const id = uuid();
-
 function CheckOut() {
   const isClicked = useRef(false);
   const classes = useStyles();
   const history = useHistory();
   const member = useSelector((state) => state.member);
-  // <<<<<<< Updated upstream
-  //   const dateSettings = useSelector((state) => state.dateTime).date;
-  //   const timeSettings = useSelector((state) => state.dateTime).time;
-  // <<<<<<< HEAD
-  //   const cartItems = member ? member.cart_items : null;
-  // =======
-  // const dateSettings = useSelector((state) => state.dateTime).date;
-  // const timeSettings = useSelector((state) => state.dateTime).time;
-  // >>>>>>> Stashed changes
-  // =======
-  // >>>>>>> 91cba0a (refactor checkout page)
   const allLocations = useSelector((state) => state.locations).filter(
     (location) => location.active
   );
@@ -77,30 +40,7 @@ function CheckOut() {
   const [delivery, setDelivery] = useState();
   const [selectedLocation, setSelectedLocation] = useState();
   const [payment, setPayment] = useState();
-  // <<<<<<< HEAD
-  // <<<<<<< Updated upstream
-  //   const initTime = timeSettings ? timeSettings.start_time.split(":") : null;
-  // =======
-  //   const initTime = timeSettings?.start_time.split(":");
-  // >>>>>>> 91cba0a (refactor checkout page)
-  //   const [date, setDate] = useState(
-  //     dateSettings
-  //       ? setHours(
-  //           setMinutes(addDays(dateSettings.buffer), +initTime[1]),
-  //           +initTime[0]
-  //         )
-  //       : null
-  //   );
-  // =======
-  // const initTime = timeSettings?.start_time.split(":");
   const [date, setDate] = useState();
-  // dateSettings
-  //   ? setHours(
-  //       setMinutes(addDays(dateSettings.buffer), +initTime[1]),
-  //       +initTime[0]
-  //     )
-  //   : null
-  // >>>>>>> Stashed changes
   const [order, setOrder] = useState({});
   const [personalInfo, setPersonalInfo] = useState({});
   const [remember, setRemember] = useState();
@@ -173,7 +113,7 @@ function CheckOut() {
           status: 0,
           timestamp: new Date(),
           total: getOrderTotal(),
-          id,
+          id: uuid(),
           member_id: member.id,
         });
         isClicked.current = true;
