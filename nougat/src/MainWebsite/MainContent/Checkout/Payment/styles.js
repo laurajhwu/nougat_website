@@ -1,5 +1,18 @@
 import styled from "styled-components";
 
+export const Container = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  @media screen and (max-width: 960px) {
+    display: flex;
+    flex-flow: row wrap;
+    & > label {
+      width: 90%;
+    }
+  }
+`;
+
 export const Pay = styled.div`
   display: flex;
   margin: 200px auto;

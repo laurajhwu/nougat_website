@@ -32,7 +32,6 @@ export default function Profile() {
         } else if (error.code === "auth/requires-recent-login") {
           setErrorMsg("因更改敏感資料，請登出後再重新登入試一次");
         }
-
         throw error;
       });
     } else {
@@ -60,6 +59,7 @@ export default function Profile() {
             initValue={member.name}
             handleFinishEdit={(data) => handleFinishEdit("name", data)}
             doneIconStyle={doneIconStyle}
+            trimOnBlur={true}
           />
         </Info>
         <Info>
@@ -79,7 +79,7 @@ export default function Profile() {
           />
         </Info>
         {Object.keys(fixedData).length === 0 ? (
-          <></>
+          ""
         ) : (
           <>
             <Info>
@@ -95,7 +95,6 @@ export default function Profile() {
           </>
         )}
       </ProfilePage>
-
       <Logout onClick={logout}>登出</Logout>
     </Container>
   );

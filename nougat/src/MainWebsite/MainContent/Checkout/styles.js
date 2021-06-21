@@ -77,112 +77,10 @@ export const Container = styled.div`
     background-color: #f6f4f4;
   }
 `;
-export const Products = styled.div`
-  padding: 10px 20px;
-  display: flex;
-  position: relative;
-  @media only screen and (max-width: 570px) {
-    justify-content: center;
-  }
-`;
-
-export const Total = styled.div`
-  margin: auto auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 32px;
-  font-weight: 700;
-  color: #b6174b;
-
-  & * {
-    padding: 5px;
-    text-align: center;
-    line-height: 30px;
-    &:last-child {
-      font-size: 32px;
-      margin-top: 10px;
-      font-style: italic;
-      padding-bottom: 10px;
-      border-bottom: thick double #b6174b;
-      @media only screen and (max-width: 760px) {
-        font-size: 26px;
-      }
-      @media only screen and (max-width: 660px) {
-        font-size: 22px;
-        border-bottom: none;
-      }
-      @media only screen and (max-width: 570px) {
-        font-size: 20px;
-      }
-    }
-  }
-
-  @media only screen and (max-width: 760px) {
-    font-size: 26px;
-    font-style: italic;
-    position: absolute;
-    bottom: 10px;
-    left: 480px;
-  }
-
-  @media only screen and (max-width: 660px) {
-    font-size: 22px;
-    font-style: italic;
-    position: absolute;
-    bottom: -25px;
-    left: 320px;
-    flex-direction: row;
-  }
-
-  @media only screen and (max-width: 570px) {
-    bottom: -30px;
-    font-size: 20px;
-    left: 130px;
-  }
-`;
 
 export const Options = styled(Select)``;
+
 export const Option = styled(MenuItem)``;
-
-export const Delivery = styled.div`
-  border-color: ${(props) => (props.notFilled ? "red" : "black")};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  margin-top: 50px;
-  width: auto;
-
-  & > * {
-    &:first-child {
-      & > div {
-        display: flex;
-        align-items: center;
-
-        margin-bottom: 30px;
-        margin-right: 20px;
-        @media screen and (max-width: 530px) {
-          display: flex;
-          flex-wrap: wrap;
-          & > label {
-            width: 90%;
-          }
-        }
-      }
-    }
-    @media screen and (max-width: 875px) {
-      &:last-child {
-        margin-top: 20px;
-      }
-    }
-  }
-
-  @media screen and (max-width: 875px) {
-    flex-direction: column;
-  }
-`;
 
 export const Group = styled.div`
   display: flex;
@@ -222,25 +120,6 @@ export const Calendar = styled.div`
   }
 `;
 
-export const PersonalInfo = styled.div``;
-
-export const Info = styled.div`
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-  @media screen and (max-width: 960px) {
-    display: flex;
-    flex-flow: row wrap;
-    & > label {
-      width: 90%;
-    }
-  }
-`;
-
-export const Input = styled.input`
-  border: 1px solid black;
-  border-color: ${(props) => (props.notFilled ? "red" : "black")};
-`;
 export const Label = styled.label`
   font-size: 22px;
   color: #711509;
@@ -249,19 +128,6 @@ export const Label = styled.label`
   letter-spacing: 3px;
   line-height: 20px;
   margin-left: ${(props) => (props.id ? "20px" : 0)};
-`;
-
-export const Payment = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 20px;
-  @media screen and (max-width: 960px) {
-    display: flex;
-    flex-flow: row wrap;
-    & > label {
-      width: 90%;
-    }
-  }
 `;
 
 export const CheckoutBtn = styled.div`
@@ -304,107 +170,5 @@ export const CheckoutBtn = styled.div`
   @media screen and (max-width: 760px) {
     position: absolute;
     bottom: 0;
-  }
-`;
-
-export const Design1 = styled.div`
-  height: 700px;
-  width: 300px;
-  position: absolute;
-  top: -400px;
-  right: 80px;
-  z-index: -1;
-
-  background: rgb(194, 61, 102);
-  background: linear-gradient(
-    180deg,
-    rgba(194, 61, 102, 0.7) 0%,
-    rgba(218, 130, 158, 0.7) 16%,
-    rgba(227, 145, 149, 0.7) 47%,
-    rgba(247, 191, 229, 0.7) 76%,
-    rgba(241, 232, 238, 0) 100%
-  );
-  & * {
-    width: 100%;
-    height: 50%;
-    position: absolute;
-    bottom: calc(-50% / 2);
-    border-radius: 50%;
-    background-color: #f1f9f6;
-    background: rgb(247, 191, 229);
-    background: linear-gradient(
-      180deg,
-      rgba(247, 191, 229, 0.1) 0%,
-      rgba(241, 232, 238, 0.2) 40%,
-      rgba(241, 232, 238, 0.5) 50%,
-      rgba(241, 232, 238, 0.7) 100%
-    );
-  }
-
-  @media only screen and (max-width: 1000px) {
-    /* width: 250px; */
-    right: 100px;
-    left: auto;
-  }
-
-  @media only screen and (max-width: 440px) {
-    left: 60px;
-  }
-`;
-
-export const Design2 = styled.div`
-  height: 300px;
-  width: 50vw;
-  min-width: 550px;
-  max-width: 900px;
-  position: absolute;
-  top: 725px;
-  left: ${(props) =>
-    props.vw > 1016 ? `-${(props.vw - 1016) / 2 + 150}px` : `-150px`};
-  z-index: -1;
-  border-radius: 150px;
-  background-color: #f1f9f6;
-  background: rgb(0, 173, 185);
-  background: linear-gradient(
-    156deg,
-    rgba(0, 173, 185, 0.4) 0%,
-    rgba(255, 250, 227, 0.5) 100%
-  );
-`;
-
-export const Design3 = styled.div`
-  height: 300px;
-  width: 60vw;
-
-  min-width: 600px;
-  position: absolute;
-  right: ${(props) =>
-    props.vw > 1016 ? `-${(props.vw - 1016) / 2 + 200}px` : `-200px`};
-  transform: rotate(-25deg);
-  top: 1080px;
-  z-index: -1;
-  border-radius: 150px;
-  background-color: #f1f9f6;
-  background: rgb(238, 174, 202);
-  background: linear-gradient(
-    0deg,
-    rgba(238, 174, 202, 0.4) 0%,
-    rgba(148, 187, 233, 0.4) 100%
-  );
-  @media screen and (max-width: 1200px) {
-    top: 1120px;
-  }
-
-  @media screen and (max-width: 960px) {
-    top: 1180px;
-  }
-
-  @media screen and (max-width: 875px) {
-    top: 1600px;
-  }
-
-  @media screen and (max-width: 760px) {
-    top: 1400px;
-    width: 700px;
   }
 `;

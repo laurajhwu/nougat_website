@@ -12,7 +12,7 @@ import {
 } from "./styles";
 
 export default function EditableInput(props) {
-  const { initValue, handleFinishEdit, doneIconStyle } = props;
+  const { initValue, handleFinishEdit, doneIconStyle, trimOnBlur } = props;
   const classes = useStyles();
   const [isEditing, setIsEditing] = useState(false);
   const [data, setData] = useState(initValue);
@@ -28,7 +28,15 @@ export default function EditableInput(props) {
   }
 
   function handleChange(event) {
-    setData(event.target.value.trim());
+    trimOnBlur
+      ? setData(event.target.value)
+      : setData(event.target.value.trim());
+  }
+
+  function handleBlur() {
+    if (trimOnBlur) {
+      setData(data.trim());
+    }
   }
 
   useEffect(() => {
@@ -49,6 +57,7 @@ export default function EditableInput(props) {
             style={{
               width: width,
             }}
+            onBlur={handleBlur}
           />
           <Done onClick={handleClick} theme={doneIconStyle} />
         </>
@@ -66,4 +75,5 @@ EditableInput.propTypes = {
   initValue: propTypes.node,
   handleFinishEdit: propTypes.func,
   doneIconStyle: propTypes.func,
+  trimOnBlur: propTypes.bool,
 };

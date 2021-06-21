@@ -35,6 +35,9 @@ function CreateAccount() {
   function handleChange(event, setFunc) {
     setFunc(event.target.value.trim());
   }
+  function handleOnBlur(value, setFunc) {
+    setFunc(value.trim());
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -49,7 +52,7 @@ function CreateAccount() {
           };
           Api.addNewMember(user.uid, {
             name,
-            lineId,
+            line_id: lineId,
             email,
             cart_items: [],
             order_info: {},
@@ -123,11 +126,12 @@ function CreateAccount() {
         <Name>
           <Label>姓名</Label>
           <Input
-            onChange={(event) => handleChange(event, setName)}
+            onChange={(event) => setName(event.target.value)}
             value={name}
             className={classes.input}
+            onBlur={() => handleOnBlur(name, setName)}
           />
-          {ErrorComponent(checkInput && !name)}
+          <ErrorComponent isError={checkInput && !name} />
         </Name>
         <Line>
           <Label>Line ID</Label>
@@ -136,7 +140,7 @@ function CreateAccount() {
             value={lineId}
             className={classes.input}
           />
-          {ErrorComponent(checkInput && !lineId)}
+          <ErrorComponent isError={checkInput && !lineId} />
         </Line>
         <Email>
           <Label>信箱</Label>
@@ -145,7 +149,7 @@ function CreateAccount() {
             value={email}
             className={classes.input}
           />
-          {ErrorComponent(checkInput && !validEmail())}
+          <ErrorComponent isError={checkInput && !validEmail()} />
         </Email>
         <Password>
           <Label>密碼</Label>
@@ -162,7 +166,7 @@ function CreateAccount() {
             )}
             iconTheme={iconTheme}
           />
-          {ErrorComponent(checkInput && !validPassword())}
+          <ErrorComponent isError={checkInput && !validPassword()} />
         </Password>
         <Password>
           <Label>確認密碼</Label>
@@ -178,7 +182,7 @@ function CreateAccount() {
             )}
             iconTheme={iconTheme}
           />
-          {ErrorComponent(checkInput && !validConfirmPW())}
+          <ErrorComponent isError={checkInput && !validConfirmPW()} />
         </Password>
         <Register type="submit" disabled={register}>
           註冊

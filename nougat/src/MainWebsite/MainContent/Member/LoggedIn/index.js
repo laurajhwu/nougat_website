@@ -28,20 +28,13 @@ function LoggedIn() {
     setPage(page);
   }
 
-  useEffect(() => {
-    history.push(`/member/logged-in/${page}`);
-  }, [page]);
-
-  useEffect(() => {
+  function handleMemberVerification() {
     if (!member) {
       history.push(`/member`);
     } else if (member.id) {
       Api.getMemberOrders(member.id)
         .then((querySnapshot) => {
-          const orders = [];
-          querySnapshot.forEach((order) => {
-            orders.push(order.data());
-          });
+          const orders = querySnapshot.docs.map((order) => order.data());
           dispatch(getMemberOrders(orders));
           dispatch(getOrderFixedData());
         })
@@ -51,6 +44,14 @@ function LoggedIn() {
     } else if (!member.id) {
       verifyEmailAlert();
     }
+  }
+
+  useEffect(() => {
+    history.push(`/member/logged-in/${page}`);
+  }, [page]);
+
+  useEffect(() => {
+    handleMemberVerification();
   }, []);
 
   if (member) {

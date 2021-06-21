@@ -75,7 +75,7 @@ export default function Details(props) {
                   );
                 }
               } else {
-                return <></>;
+                return "";
               }
             })}
           </List>

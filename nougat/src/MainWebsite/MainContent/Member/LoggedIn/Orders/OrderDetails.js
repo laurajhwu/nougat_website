@@ -57,7 +57,7 @@ function OrderDetails(props) {
               <span>{fixedData.payment[order.order_info.payment]}</span>
             </DetailInfo>
             {order.order_info.notes === "N/A" ? (
-              <></>
+              ""
             ) : (
               <DetailInfo>
                 備註：
