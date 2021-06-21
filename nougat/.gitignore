@@ -25,3 +25,6 @@ yarn-error.log*
 
 .vscode/settings.json
 gua-gua-nougat-firebase-adminsdk-j83wo-2d4ba07bbc.json
+
+cert.pem
+keytmp.pem

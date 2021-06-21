@@ -2,3 +2,5 @@
 .vscode/settings.json
 .env
 .firebase
+cert.pem
+keytmp.pem
