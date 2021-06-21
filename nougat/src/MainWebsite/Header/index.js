@@ -144,7 +144,7 @@ function Header() {
         />
 
         <Link to="/products" className="products-nav">
-          所有產品
+          所有產品!!
         </Link>
 
         <Modal
