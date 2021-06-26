@@ -194,7 +194,7 @@ function Calendar(props) {
   }, [dateSettings, timeSettings]);
 
   useEffect(() => {
-    if (stringDate(date) !== dateRef.current) {
+    if (date && stringDate(date) !== dateRef.current) {
       setDate(getFirstAvailableTime());
       dateRef.current = stringDate(date);
     }

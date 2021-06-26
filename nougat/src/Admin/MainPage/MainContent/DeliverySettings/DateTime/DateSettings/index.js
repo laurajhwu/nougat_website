@@ -147,13 +147,15 @@ export default function DateSettings(props) {
 
   function tileDisabled({ date, view }) {
     if (disableDates && view === "month") {
-      return disableDates.some(
-        (disabledDate) =>
-          (date.getFullYear() === disabledDate.getFullYear() &&
-            date.getMonth() === disabledDate.getMonth() &&
-            date.getDate() === disabledDate.getDate()) ||
-          disableIncludeOptions(date)
-      );
+      return disableDates.length !== 0
+        ? disableDates.some(
+            (disabledDate) =>
+              (date.getFullYear() === disabledDate.getFullYear() &&
+                date.getMonth() === disabledDate.getMonth() &&
+                date.getDate() === disabledDate.getDate()) ||
+              disableIncludeOptions(date)
+          )
+        : disableIncludeOptions(date);
     }
 
     if (view === "month") {
