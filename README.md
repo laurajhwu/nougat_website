@@ -2,7 +2,6 @@
 
 ## About
 
-<hr />
 <p align="center">
 An e-commerce website that sells homemade nougats and other traditional Chinese desserts.
 </p>
@@ -18,8 +17,6 @@ An e-commerce website that sells homemade nougats and other traditional Chinese 
 
 ## Test Accounts
 
-<hr />
-
 ### Member Login
 
 email: test@test.com\
@@ -31,8 +28,6 @@ username: test\
 password: test123
 
 ## Technologies
-
-<hr />
 
 ### Front-End
 
@@ -88,8 +83,6 @@ password: test123
 
 ## Flow Chart
 
-<hr />
-
 ### Main Website
 
 <img src="./flow_charts/main_page.svg" align="center" />
@@ -102,8 +95,6 @@ password: test123
 <img src="./flow_charts/admin_page.svg" align="center" />
 
 ## Features
-
-<hr />
 
 ### Main Website
 
@@ -146,8 +137,6 @@ password: test123
 ![time](/gifs/time.gif)
 
 ## Future Features
-
-<hr />
 
 - Convenient store delivery option
 - Coffee shop recommendation
