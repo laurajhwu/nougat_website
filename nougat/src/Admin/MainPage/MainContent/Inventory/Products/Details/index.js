@@ -58,22 +58,18 @@ export default function Details(props) {
           </label>
           <Img src={product.image} />
           <List horizontal>
-            <div> 成分：</div>
+            <div>成分</div>
             {product.ingredients.map((ingredient, index) => {
               if (ingredients[ingredient.id]) {
-                if (index % 2 === 0) {
-                  return (
-                    <Item action variant="primary" key={ingredient.id}>
-                      {ingredients[ingredient.id].name}
-                    </Item>
-                  );
-                } else {
-                  return (
-                    <Item action variant="warning" key={ingredient.id}>
-                      {ingredients[ingredient.id].name}
-                    </Item>
-                  );
-                }
+                return (
+                  <Item
+                    action
+                    variant={index % 2 === 0 ? "primary" : "warning"}
+                    key={ingredient.id}
+                  >
+                    <div>{ingredients[ingredient.id].name}</div>
+                  </Item>
+                );
               } else {
                 return "";
               }

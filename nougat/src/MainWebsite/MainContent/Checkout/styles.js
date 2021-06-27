@@ -132,8 +132,8 @@ export const Label = styled.label`
 
 export const CheckoutBtn = styled.div`
   display: flex;
-  margin-right: 100px;
-  margin-bottom: 60px;
+  /* margin-right: 100px;
+  margin-bottom: 60px; */
   width: 200px;
   height: 200px;
   border-radius: 50%;
@@ -144,6 +144,9 @@ export const CheckoutBtn = styled.div`
   font-size: 34px;
   letter-spacing: 5px;
   border: 30px solid rgba(148, 187, 233, 0.3);
+  position: absolute;
+  bottom: 180px;
+  right: 150px;
   &:hover {
     cursor: pointer;
     transform: scale(1.1);
@@ -151,24 +154,21 @@ export const CheckoutBtn = styled.div`
   }
 
   @media screen and (max-width: 1300px) {
-    margin-right: 150px;
-    margin-bottom: 50px;
+    bottom: 200px;
   }
 
   @media screen and (max-width: 1200px) {
-    margin-right: 120px;
-    margin-bottom: 50px;
+    bottom: 180px;
   }
 
   @media screen and (max-width: 875px) {
-    margin-bottom: 0px;
-    margin-top: 5vw;
-    margin-right: auto;
-    margin-left: 20px;
+    bottom: 150px;
+    right: 80px;
   }
 
   @media screen and (max-width: 760px) {
-    position: absolute;
+    right: calc(50vw - 200px / 2);
+    left: calc(50vw - 200px / 2);
     bottom: 0;
   }
 `;

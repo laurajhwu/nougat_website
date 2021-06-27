@@ -92,6 +92,22 @@ export default function DateSettings(props) {
     return isValid;
   }
 
+  function handleInvalidDates() {
+    if (invalidDate.length !== 0) {
+      const indices = [];
+      invalidDate.forEach((state, index) => {
+        if (!state) {
+          indices.push(index);
+        }
+      });
+      if (indices.length !== 0) {
+        setDisableDates(indices.map((index) => new Date(date.exclude[index])));
+      } else {
+        setDisableDates(null);
+      }
+    }
+  }
+
   function handleDateRange(event) {
     date.range = Number(event.target.value.trim());
     if (isNaN(date.range) || date.range < 0) {
@@ -168,7 +184,7 @@ export default function DateSettings(props) {
     Api.updateDate({
       buffer: date.buffer,
       range: date.range,
-      exclude_dates: disableDates,
+      exclude_dates: disableDates || [],
       include: date.include,
     }).then(() => {
       alert("已更新日期");
@@ -176,19 +192,7 @@ export default function DateSettings(props) {
   }
 
   useEffect(() => {
-    if (invalidDate.length !== 0) {
-      const indices = [];
-      invalidDate.forEach((state, index) => {
-        if (!state) {
-          indices.push(index);
-        }
-      });
-      if (indices.length !== 0) {
-        setDisableDates(indices.map((index) => new Date(date.exclude[index])));
-      } else {
-        setDisableDates(null);
-      }
-    }
+    handleInvalidDates();
   }, [invalidDate]);
 
   return (
