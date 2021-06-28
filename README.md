@@ -141,6 +141,8 @@ password: test123
 - Convenient store delivery option
 - Coffee shop recommendation
 - Cancel order option
+- Line Login
+- Line chatbot to send customers their order through Line
 - Pagination for product re-ordering function
 - Download inventory data as csv file
 - Financial analysis for profitability
