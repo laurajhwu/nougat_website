@@ -44,6 +44,8 @@ export const Title = styled.div`
 export const Description = styled(ListGroup.Item)`
   width: 100% !important;
   white-space: pre-wrap;
+  display: flex;
+  line-height: 20px;
 `;
 
 export const CameraIcon = styled(Camera)`

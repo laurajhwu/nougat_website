@@ -1,9 +1,9 @@
 import { createGlobalStyle } from "styled-components";
-import OzCaramel from "./fonts/OzCaramel.ttf";
-import Marshmallow from "./fonts/HanyiSentyMarshmallow.ttf";
-import Chalk from "./fonts/HanyiSentyChalk.ttf";
-import Scholar from "./fonts/HanyiSentyScholar.ttf";
-import Lotus from "./fonts/HanyiSentyLotus.ttf";
+import OzCaramel from "./fonts/OzCaramel.woff";
+import Marshmallow from "./fonts/HanyiSentyMarshmallow.woff";
+import Chalk from "./fonts/HanyiSentyChalk.woff";
+import Scholar from "./fonts/HanyiSentyScholar.woff";
+import Lotus from "./fonts/HanyiSentyLotus.woff";
 
 const FontStyles = createGlobalStyle`
 
@@ -29,6 +29,7 @@ const FontStyles = createGlobalStyle`
   font-family: 'lotus';
   src: url(${Lotus})    
 }
+
 `;
 
 export default FontStyles;
