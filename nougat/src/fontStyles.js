@@ -1,5 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-import OzCaramel from "./fonts/OzCaramel.woff";
+import OzCaramel from "./fonts/OzCaramel.ttf";
 import Marshmallow from "./fonts/HanyiSentyMarshmallow.woff";
 import Chalk from "./fonts/HanyiSentyChalk.woff";
 import Scholar from "./fonts/HanyiSentyScholar.woff";

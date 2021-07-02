@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { stringDate } from "../../../../../utils/dateTimeFormat";
 import pageSplitter from "../../../../../utils/pageSplitter";
@@ -24,38 +24,42 @@ export default function Orders() {
   );
   const fixedData = useSelector((state) => state.fixedData);
   const [show, setShow] = useState(false);
-  const [refs, setRefs] = useState({ order: null, fold: null });
   const [page, setPage] = useState(1);
+  const timeline = gsap
+    .timeline({
+      repeat: -1,
+      yoyo: true,
+      defaults: { ease: "power1.inOut" },
+    })
+    .addLabel("start");
   const orderRef = useCallback((ref) => {
-    setRefs({ order: [...(refs.order || []), ref] });
+    orderAnimation(ref);
   }, []);
   const foldRef = useCallback((ref) => {
-    setRefs({ fold: [...(refs.fold || []), ref] });
+    paperFoldAnimation(ref);
   }, []);
 
   const handleClose = () => setShow(false);
   const handleShow = (id) => setShow(id);
 
-  function noteAnimation() {
-    gsap
-      .timeline({ repeat: -1, yoyo: true, defaults: { ease: "power1.inOut" } })
-      .addLabel("start")
-      .to(refs.fold, {
+  function orderAnimation(ref) {
+    timeline.to(ref, { "border-radius": "0 0 37% 0", duration: 1.5 }, "start");
+  }
+
+  function paperFoldAnimation(ref) {
+    timeline.to(
+      ref,
+      {
         right: 2,
         bottom: 15,
         width: 140,
         height: 56,
         rotation: -8,
         duration: 1.5,
-      })
-      .to(refs.order, { "border-radius": "0 0 37% 0", duration: 1.5 }, "start");
+      },
+      "start"
+    );
   }
-
-  useEffect(() => {
-    if (refs.order && refs.fold) {
-      noteAnimation();
-    }
-  }, [refs]);
 
   if (Object.keys(fixedData).length !== 0 && orders) {
     return (
