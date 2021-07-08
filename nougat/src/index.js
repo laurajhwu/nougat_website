@@ -7,6 +7,11 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./redux";
 import FontStyles from "./fontStyles";
+import(/* webpackPreload: true */ "./fonts/OzCaramel.ttf");
+import(/* webpackPreload: true */ "./fonts/HanyiSentyMarshmallow.woff");
+import(/* webpackPreload: true */ "./fonts/HanyiSentyChalk.woff");
+import(/* webpackPreload: true */ "./fonts/HanyiSentyScholar.woff");
+import(/* webpackPreload: true */ "./fonts/HanyiSentyLotus.woff");
 
 ReactDOM.render(
   <StrictMode>
