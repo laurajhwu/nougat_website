@@ -1,14 +1,11 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 import CreateAdmin from "./CreateAdmin";
 
 import { Container, Logout } from "./styles";
 
 export default function OtherSettings() {
-  const history = useHistory();
-
   function logout() {
-    history.push("/admin/login");
+    window.location.reload();
   }
 
   return (

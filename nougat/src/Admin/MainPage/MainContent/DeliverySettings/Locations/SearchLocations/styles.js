@@ -24,7 +24,6 @@ export const SearchInput = styled(TextField)`
   }
   & ${".MuiOutlinedInput-root.Mui-focused fieldset"} {
     border-color: #420039;
-    margin-left: 10px;
   }
   & ${"label.Mui-focused"} {
     color: #420039;
@@ -33,6 +32,7 @@ export const SearchInput = styled(TextField)`
 
 export const SearchLabel = styled.label`
   font-size: 20px;
+  margin-left: 10px;
   &:focus * {
     color: #420039;
   }
