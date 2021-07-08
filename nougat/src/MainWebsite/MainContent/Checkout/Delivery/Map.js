@@ -22,7 +22,7 @@ function MainMap(props) {
 
   function handleWindowSizeChange() {
     if (window.innerWidth > 1280) {
-      setMapSize({ width: "500px", height: "400px" });
+      setMapSize({ width: "450px", height: "400px" });
     } else if (window.innerWidth > 960) {
       setMapSize({ width: "450px", height: "400px" });
     } else if (window.innerWidth > 600) {

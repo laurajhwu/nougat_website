@@ -45,7 +45,7 @@ export const Done = styled(CheckDouble)`
   width: 20px;
   position: absolute;
 
-  left: 125px;
+  left: 127px;
   top: 0px;
   &:hover {
     cursor: pointer;
