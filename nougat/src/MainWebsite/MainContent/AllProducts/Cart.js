@@ -130,7 +130,7 @@ export default function DisplayCart(props) {
           {cartItems.map((product, index) => (
             <CartProduct
               ref={index === cartItems.length - 1 ? cartItemRef : undefined}
-              opacity={isClicked || isClickedRef.current ? 0 : 1}
+              opacity={isClicked ? 0 : 1}
               className="cart-items"
               key={index}
             >

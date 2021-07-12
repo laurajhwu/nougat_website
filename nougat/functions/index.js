@@ -29,7 +29,7 @@ function getConfigs(data) {
 
 exports.addMessage = functions
   .region("asia-east2")
-  .https.onRequest(async (req, res) => {
+  .https.onRequest((req, res) => {
     cors(req, res, () => {
       axios
         .post(

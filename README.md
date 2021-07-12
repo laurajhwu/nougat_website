@@ -85,7 +85,7 @@ password: test123
 
 ### Main Website
 
-<img src="https://firebasestorage.googleapis.com/v0/b/gua-gua-nougat.appspot.com/o/gifs%2Fmain.gif?alt=media&token=49788973-f5f0-4c1d-8711-a9ad59e685bf" align="center" />
+<img src="./flow_charts/main_page.svg" align="center" />
 <br/>
 
 &nbsp;
@@ -100,41 +100,41 @@ password: test123
 
 - Login with social media or create own account (access control)
 
-![Login](https://firebasestorage.googleapis.com/v0/b/gua-gua-nougat.appspot.com/o/gifs%2Flogin.gif?alt=media&token=281b7b33-065d-49a4-a823-fd082084b958)
+![Login](./gifs/login.gif)
 
 - Native registrations must verify email to access profile information
 
-![Register](https://firebasestorage.googleapis.com/v0/b/gua-gua-nougat.appspot.com/o/gifs%2Fregister.gif?alt=media&token=671ff8a4-d510-4ff0-acc7-6335bfe5a2a9)
+![Register](./gifs/register.gif)
 
 - Add to cart animations
 
-![Add to cart](https://firebasestorage.googleapis.com/v0/b/gua-gua-nougat.appspot.com/o/gifs%2Fadd_to_cart.gif?alt=media&token=5e73a6b5-033f-40c7-8d33-fd71507bc3e1)
+![Add to cart](./gifs/add_to_cart.gif)
 
 - Line Pay stimulation
 
-![Add to cart](https://firebasestorage.googleapis.com/v0/b/gua-gua-nougat.appspot.com/o/gifs%2Flinepay.gif?alt=media&token=ac1a8735-33f6-423e-a416-c7eb343f8bf8)
+![Line Pay](./gifs/linepay.gif)
 
 ### Admin Page
 
 - Manage product and ingredients inventory (CRUD)
 
-![inventory management](https://firebasestorage.googleapis.com/v0/b/gua-gua-nougat.appspot.com/o/gifs%2Finventory.gif?alt=media&token=0919c7e4-e310-4b00-b531-36e11b17bf0c)
+![inventory management](./gifs/inventory.gif)
 
 - Rearrange product display order via drag and drop
 
-![Rearrange product display order](https://firebasestorage.googleapis.com/v0/b/gua-gua-nougat.appspot.com/o/gifs%2Forder_products.gif?alt=media&token=cef78077-4388-43da-a343-6bbedf95426b)
+![Rearrange product display order](./gifs/order_products.gif)
 
 - Calculate production amount based on ingredients and update inventory
 
-![calculate](https://firebasestorage.googleapis.com/v0/b/gua-gua-nougat.appspot.com/o/gifs%2Fcalculate.gif?alt=media&token=fadfe699-1a38-4415-bd04-3ad7f1efe01f)
+![calculate](./gifs/calculate.gif)
 
 - Add, disable, and remove in-person delivery locations
 
-![location](https://firebasestorage.googleapis.com/v0/b/gua-gua-nougat.appspot.com/o/gifs%2Flocation.gif?alt=media&token=2de08aec-5085-4d6f-bcb6-25e140d6e39f)
+![location](./gifs/location.gif)
 
 - Delivery date and time settings to set range and include / exclude certain date / times
 
-![time](https://firebasestorage.googleapis.com/v0/b/gua-gua-nougat.appspot.com/o/gifs%2Ftime.gif?alt=media&token=b72de88b-caa9-45b0-8bfe-c90ce33442b4)
+![time](./gifs/time.gif)
 
 ## Future Features
 
